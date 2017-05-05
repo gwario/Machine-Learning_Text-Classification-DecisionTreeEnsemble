@@ -31,6 +31,8 @@ def identity(arg):
     """
     return arg
 
+
+# Source: http://bbengfort.github.io/tutorials/2016/05/19/text-classification-nltk-sckit-learn.html
 class NLTKPreprocessor(BaseEstimator, TransformerMixin):
 
 	def __init__(self, stopwords=None, punct=None,
