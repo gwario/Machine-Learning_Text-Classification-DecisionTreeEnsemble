@@ -20,7 +20,16 @@ Since designing the structure of the tree and thereby the decision rules manuall
 Most of these decision tree learning algorithms employ a top-down, greedy search through the space of possible decision trees. [2]
 An example for this is the ID3 algorithm, which will be described in the next section.
 
+
 ID3
+
+The ID3 algorithm begins constructing a decision tree by starting at the root and selecting the "best" attribute to split the training data on. The specifics of what represents the "best" attribute will be described in a later section, but in general, each attribute is evaluated on its ability to classify training examples on its own.
+This selected attributed is then used as the test at the root node, and for each possible value of the attribute, a child node for the root is created. The training data is split using the selected attribute and sorted to the child nodes correspondingly. [2]
+This process is repeated recursively at each node, until all examples are perfectly classified or a depth threshold is met.
+
+The algorithm forms a greedy search through the space of possible decision trees, as on each split a locally optimal decision is made, however without considering different choices for ancestor nodes.
+
+// TODO: Add ID3 pseudocode here
 
 
 
