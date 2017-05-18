@@ -1,0 +1,29 @@
+Decision Trees 
+
+A Decision Tree is an algorithm for supervised learning and can be used in classification as well as regression tasks.
+The basic principle is to learn simple decision rules from a labeled feature data set in order to predict a target variable. [1]
+
+The decision tree is a tree data structure which contains nodes that correspond to individual features. The branches from a node to its children represent tests on the feature of the node. Each node therefore has as many children as there are possible values for the corresponding feature.
+The leaf nodes represent predicted target values.
+
+Predicting the target value for an unlabeled feature set can be accomplished by starting at the root node of the tree and following the edges which positively test for a feature given by the current node in the feature set to be classified, until a leaf node has been reached.
+The time complexity is therefore linear in the height of the tree, i.e. O(h).
+
+In the case of binary classification, a decision tree can be interpreted as a disjunction of conjunction of constraints [2], where each path from the root to a leaf corresponds to a conjunction of attribute tests.
+
+Decision Trees have been successfully applied to many different problems, such as classifying medical patients by their disease, equipment malfunctions by their cause, and loan applicants by their likelihood of defaulting on payments. [2]
+
+Decision Tree Learning
+
+Since designing the structure of the tree and thereby the decision rules manually is too inefficient and likely suboptimal, decision tree learning algorithms are used to automatically construct a decision tree in a supervised fashion.
+
+Most of these decision tree learning algorithms employ a top-down, greedy search through the space of possible decision trees. [2]
+An example for this is the ID3 algorithm, which will be described in the next section.
+
+ID3
+
+
+
+
+[1]: http://scikit-learn.org/stable/modules/tree.html#tree
+[2]: http://www.cs.princeton.edu/courses/archive/spr07/cos424/papers/mitchell-dectrees.pdf

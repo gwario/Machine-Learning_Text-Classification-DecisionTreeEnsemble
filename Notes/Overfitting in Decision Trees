@@ -1,0 +1,36 @@
+Overfitting in Decision Trees
+
+By splitting until each node contains one sample from the training set, the training set can be classified perfectly, however this leads to very poor generalization and overfitting on new data. (https://www.youtube.com/watch?v=i_0-5rdxsfg)
+In order to avoid this, the recursive learning algorithm can be stopped at a certain depth.
+Another way to avoid overfitting is to first build up the full tree, and then use a validation set to prune it.
+The basic algorithm for pruning a decision tree goes as follows:
+For each node:
+	- Remove the node and all its children from the tree
+	- Measure performance on the validation set
+- Remove the node which results in the greatest performance improvement
+- Repeat until further pruning reduces performance (https://www.youtube.com/watch?v=f3aVt9-pHZ8)
+It's important to carry out the pruning on the validation set and not on the training set, since the decision tree is already optimized for the training set and therefore any pruning would lead to a reduction in performance.
+Pruning is a greedy algorithm because it commits to a cut once it has been decided. Finding the optimal solution is exponential in the number of nodes and therefore intractable in practice.
+
+Problems with Information Gain (https://www.youtube.com/watch?v=rb1jdBPKzDk)
+
+Information Gain is biased towards attributes with a lot of values, which can lead to overfitting as well.
+To avoid this problem, the Gain Ratio can be used.
+Split Entropy:
+The Split Entropy implies whether an attribute will lead to a high number of small subsets when used to split the data.
+The higher the value of the Split Entropy, the higher the number of small subsets.
+Gain Ratio = Gain(S, A) / SplitEntropy(S, A), therefore penalizes attributes with many values
+
+Continuous Attributes (https://www.youtube.com/watch?v=N08cHUKxENE)
+
+When dealing with continuous attributes, the algorithm does not pick a value, but instead decides on a threshold on which to split the data.
+
+Pros and Cons (https://www.youtube.com/watch?v=BqOgaENTr08)
+
+
+Preprocessing
+
+In the preprocessing step, every document first gets split into sentences. Every sentence then gets split into part of speech tagged tokens.
+The token gets normalized by making it lowercase, as well as removing any leading or trailing whitespaces. If the token is part of a set of stop words or punctuation, it is being ignored.
+
+The tuple of (token, pos_tag) is then being used by a lemmatizer provided by NLTK in order to get a list of lemmatized tokens for further processing.
