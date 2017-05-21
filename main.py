@@ -55,8 +55,8 @@ pipeline_parameters_grid = {
     #'vect__ngram_range': ((1, 1), (1, 2)),  # unigrams or bigrams
     #'clf__alpha': (0.00001, 0.000001),
     #'clf__n_iter': (10, 50, 80),
-    'clf__max_depth': 8,
-    'clf__n_estimators': 10,
+    'clf__max_depth': (10, 50, 80),
+    'clf__n_estimators': (10, 50, 80),
 }
 
 # This custom set of parameters is used when --grid was NOT specified.
@@ -132,6 +132,10 @@ if __name__ == '__main__':
                 # Pipeline for pulling features from the articles's title
                 ('title', Pipeline([
                     ('selector', ItemSelector(key='Title')),
+                    ('hasher', HashingVectorizer()),
+                ])),
+                ('abstract', Pipeline([
+                    ('selector', ItemSelector(key='Abstract')),
                     ('hasher', HashingVectorizer()),
                 ])),
                 #TODO add your feature vectors here
