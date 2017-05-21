@@ -55,7 +55,7 @@ pipeline_parameters_grid = {
     #'vect__ngram_range': ((1, 1), (1, 2)),  # unigrams or bigrams
     #'clf__alpha': (0.00001, 0.000001),
     #'clf__n_iter': (10, 50, 80),
-    'clf__max_depth': (10, 50, 80),
+    'clf__max_depth': (3, 8),
     'clf__n_estimators': (10, 50, 80),
 }
 
@@ -78,7 +78,7 @@ def get_best_parameters_grid(parameter_grid, articles, categories):
     pprint(parameter_grid)
     t0 = datetime.now()
     grid_search.fit(articles, categories)
-    print("done in %0.3fs" % (datetime.now() - t0))
+    print("done in {}".format(datetime.now() - t0))
     print()
 
     print("Best score: %0.3f" % grid_search.best_score_)
