@@ -120,8 +120,7 @@ if __name__ == '__main__':
         parser.print_help()
         exit(1)
 
-
-    pipeline = Pipeline([
+    pipeline = joblib.load(args.model) if args.model else Pipeline([
         # Extract the title & body
         ('idtitleabstract', IdTitleAbstractExtractor()),
 
@@ -147,7 +146,8 @@ if __name__ == '__main__':
             ],
         )),
 
-        ('clf', joblib.load(args.model) if args.model else RandomForestClassifier()),
+        #('clf', joblib.load(args.model) if args.model else RandomForestClassifier()),
+        ('clf', RandomForestClassifier()),
     ])
 
     if args.train:
@@ -174,7 +174,8 @@ if __name__ == '__main__':
         print(classification_report(y_true, y_pred))
 
         model_filename = 'model_{}.pkl'.format(datetime.now().strftime('%Y-%m-%d--%H-%M-%S'))
-        joblib.dump(pipeline.named_steps['clf'], model_filename)
+        #joblib.dump(pipeline.named_steps['clf'], model_filename)
+        joblib.dump(pipeline, model_filename)
 
     if args.predict:
         log.info("Predicting...")
