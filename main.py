@@ -182,5 +182,5 @@ if __name__ == '__main__':
         rp.print_prediction_report(pipeline, dtPredict, prediction)
 
         filename = 'prediction_{}.csv'.format(datetime.now().strftime('%Y-%m-%d--%H-%M-%S'))
-        io.save_prediction(prediction, filename)
+        io.save_prediction(prediction.loc[:, ['Id', 'Category']], filename)
 

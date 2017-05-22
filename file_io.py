@@ -41,5 +41,5 @@ def save_model(pipeline, model_filename):
 def save_prediction(prediction, prediction_filename):
     """Saves the prediction to prediction_filename."""
 
-    prediction.to_csv(prediction_filename, sep='\t', encoding='utf-8')
+    prediction.to_csv(prediction_filename, sep=',', index=False, encoding='utf-8')
     print("Prediction saved as {}\n".format(prediction_filename))
