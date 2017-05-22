@@ -2,4 +2,5 @@
 
 *.iml
 
-*-pyc
+*.pyc
+model_*

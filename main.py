@@ -27,8 +27,6 @@ from sys import exit
 import argparse
 from pprint import pprint
 from datetime import datetime
-import csv
-import numpy as np
 import pandas as pd
 
 from sklearn.externals import joblib
@@ -39,7 +37,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 
 from sklearn.feature_extraction.text import HashingVectorizer
-from extractor import IdTitleAbstractExtractor, ItemSelector
+from extractor import Printer, ItemSelector
 
 # Display progress logs on stdout
 log.basicConfig(level=log.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
@@ -55,8 +53,8 @@ pipeline_parameters_grid = {
     #'vect__ngram_range': ((1, 1), (1, 2)),  # unigrams or bigrams
     #'clf__alpha': (0.00001, 0.000001),
     #'clf__n_iter': (10, 50, 80),
-    'clf__max_depth': (3, 8),
-    'clf__n_estimators': (10, 50, 80),
+    'clf__max_depth': (2, 5),
+    'clf__n_estimators': (10, 80),
 }
 
 # This custom set of parameters is used when --grid was NOT specified.
@@ -73,7 +71,7 @@ def get_best_parameters_grid(parameter_grid, articles, categories):
     grid_search = GridSearchCV(pipeline, parameter_grid, n_jobs=-1, verbose=1)
 
     print("Performing grid search...")
-    print("pipeline:", [name for name, _ in pipeline.steps])
+    print("Pipeline:", [name for name, _ in pipeline.steps])
     print("Parameter grid:")
     pprint(parameter_grid)
     t0 = datetime.now()
@@ -101,6 +99,18 @@ def load_data(file):
     return df.loc[:, ['Id', 'Title', 'Abstract']], df.loc[:, 'Category'] if 'Category' in df else None
 
 
+def filtered(params):
+    """Returns a new dictionary with union and steps omitted."""
+    filtered_params = { key: value for key, value in params.items()
+                        if not isinstance(value, Pipeline)
+                        and not isinstance(value, FeatureUnion)
+                        and not isinstance(value, HashingVectorizer)
+                        and not isinstance(value, RandomForestClassifier)
+                        and not key.endswith('steps')
+                        and not key.endswith('transformer_list')}
+    return filtered_params
+
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -121,21 +131,17 @@ if __name__ == '__main__':
         exit(1)
 
     pipeline = joblib.load(args.model) if args.model else Pipeline([
-        # Extract the title & body
-        ('idtitleabstract', IdTitleAbstractExtractor()),
-
-        # Use FeatureUnion to combine the features from subject and body
-        ('union', FeatureUnion(
-            transformer_list=[
+        # Use FeatureUnion to combine the features
+        ('union', FeatureUnion([
 
                 # Pipeline for pulling features from the articles's title
                 ('title', Pipeline([
-                    ('selector', ItemSelector(key='Title')),
-                    ('hasher', HashingVectorizer()),
+                    ('selector', ItemSelector(key='Title')),        # ('printer', Printer()),
+                    ('hasher', HashingVectorizer()),                # ('printer', Printer()),
                 ])),
                 ('abstract', Pipeline([
-                    ('selector', ItemSelector(key='Abstract')),
-                    ('hasher', HashingVectorizer()),
+                    ('selector', ItemSelector(key='Abstract')),     # ('printer', Printer()),
+                    ('hasher', HashingVectorizer()),                # ('printer', Printer()),
                 ])),
                 #TODO add your feature vectors here
                 # Pipeline for pulling features from the articles's abstract
@@ -145,8 +151,7 @@ if __name__ == '__main__':
                 #])),
             ],
         )),
-
-        #('clf', joblib.load(args.model) if args.model else RandomForestClassifier()),
+        #('printer', Printer()),
         ('clf', RandomForestClassifier()),
     ])
 
@@ -154,7 +159,6 @@ if __name__ == '__main__':
         log.info("Fitting...")
 
         articles, categories = load_data(args.train)
-        #print(pipeline.get_params())
 
         # Find the best hyper-parameter configuration or use the defined one.
         if args.grid:
@@ -169,12 +173,15 @@ if __name__ == '__main__':
 
         y_true, y_pred = categories, pipeline.predict(articles)
 
-        print("Crosvalidation report:")
+        print()
+        print("Crossvalidation report:")
+        print()
+        print("Hyper parameters:")
+        pprint(filtered(pipeline.get_params()))
         print()
         print(classification_report(y_true, y_pred))
 
         model_filename = 'model_{}.pkl'.format(datetime.now().strftime('%Y-%m-%d--%H-%M-%S'))
-        #joblib.dump(pipeline.named_steps['clf'], model_filename)
         joblib.dump(pipeline, model_filename)
 
     if args.predict:
@@ -192,5 +199,8 @@ if __name__ == '__main__':
         categories = pipeline.predict(articles)
 
         print("Classification report:")
+        print()
+        print("Hyper parameters:")
+        pprint(filtered(pipeline.get_params()))
         print()
         print(articles.assign(Category=pd.Series(categories).values))

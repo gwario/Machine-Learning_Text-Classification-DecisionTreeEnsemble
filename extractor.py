@@ -4,17 +4,14 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
 
-class IdTitleAbstractExtractor(BaseEstimator, TransformerMixin):
-    """Extract the subject & body from a usenet post in a single pass.
-
-    Takes a sequence of strings and produces a dict of sequences.  Keys are
-    `id`, `title`, `abstract` and  `class` (if present).
-    """
+class Printer(BaseEstimator, TransformerMixin):
+    """Prints the input."""
     def fit(self, x, y=None):
         return self
 
-    def transform(self, articles):
-        return articles
+    def transform(self, input):
+        print (input)
+        return input
 
 
 class ItemSelector(BaseEstimator, TransformerMixin):
