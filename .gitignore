@@ -4,3 +4,4 @@
 
 *.pyc
 model_*
+prediction_*
