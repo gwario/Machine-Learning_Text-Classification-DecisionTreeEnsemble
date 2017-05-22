@@ -15,10 +15,10 @@ Train only: (--train)
 # Python 2/3 compatibility
 from __future__ import print_function
 
-__author__ = "Mario Gastegger, , "
+__author__ = "Mario Gastegger, Alex Heemann, Desislava Velinova"
 __copyright__ = "Copyright 2017, "+__author__
-__license__ = "New BSD License"
-__version__ = "1.0"
+__license__ = "FreeBSD License"
+__version__ = "1.1"
 __status__ = "Production"
 
 
