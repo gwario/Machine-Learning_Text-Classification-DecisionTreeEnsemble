@@ -9,13 +9,9 @@ import argparse
 from datetime import datetime
 import pandas as pd
 
-
-from sklearn.pipeline import FeatureUnion, Pipeline
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 
-from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer
-from extractor import Printer, ItemSelector
+import config as cfg
 import report as rp
 import file_io as io
 
@@ -40,42 +36,21 @@ __status__ = "Production"
 # Display progress logs on stdout
 log.basicConfig(level=log.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
-# This parameters grid is used to find the best parameter configuration for the
-# pipeline when --grid was specified.
-# http://scikit-learn.org/stable/modules/grid_search.html#grid-search
-# TODO add some variation of the default parameters
-pipeline_parameters_grid = {
-    # 'vect__max_df': (0.5, 0.75, 1.0),
-    # 'vect__max_features': (None, 5000, 10000, 50000),
-    # 'vect__ngram_range': ((1, 1), (1, 2)),  # unigrams or bigrams
-    # 'clf__alpha': (0.00001, 0.000001),
-    # 'clf__n_iter': (10, 50, 80),
-    'clf__max_depth': (2, 5),
-    'clf__n_estimators': (10, 80),
-}
-
-# This custom set of parameters is used when --grid was NOT specified.
-# TODO add all the default parameters here
-pipeline_parameters = {
-    'clf__max_depth': 8,
-    'clf__n_estimators': 10,
-}
-
 
 def get_best_parameters_grid(parameter_grid, articles, categories):
     """ Finds and returns the best parameters for both the feature extraction and the classification.
-    Changing the grid ncreases processing time in a combinatorial way."""
+    Changing the grid increases processing time in a combinatorial way."""
 
     log.debug("Performing grid search...")
     grid_search = GridSearchCV(pipeline, parameter_grid, n_jobs=-1, verbose=1)
 
     t0 = datetime.now()
     grid_search.fit(articles, categories)
-    dtGrid = datetime.now() - t0
+    dt_grid = datetime.now() - t0
 
     best_parameters = grid_search.best_estimator_.get_params()
 
-    rp.print_hyper_parameter_search_report(pipeline, dtGrid, parameter_grid, grid_search.best_score_, best_parameters)
+    rp.print_hyper_parameter_search_report(pipeline, dt_grid, parameter_grid, grid_search.best_score_, best_parameters)
 
     return best_parameters
 
@@ -84,9 +59,11 @@ def get_args(parser):
     """Parses and returns the command line arguments."""
 
     parser.add_argument('--train', metavar='FILE', type=argparse.FileType('r'),
-                        help='The training data to be used to create a model. The created model <timestamp>.model is savede to disk.')
+                        help='''The training data to be used to create a model. The created model <timestamp>.model is 
+                        saved to disk.''')
     parser.add_argument('--grid', action='store_true',
-                        help='Whether or not to use grid search to get the optimal hyper-parameter configuration. See http://scikit-learn.org/stable/modules/grid_search.html#grid-search')
+                        help='''Whether or not to use grid search to get the optimal hyper-parameter configuration. 
+                        See http://scikit-learn.org/stable/modules/grid_search.html#grid-search''')
     parser.add_argument('--model', metavar='FILE', type=argparse.FileType('r'),
                         help='The model to be used for classification.')
     parser.add_argument('--predict', metavar='FILE', type=argparse.FileType('r'), help='Data to be classified.')
@@ -95,43 +72,77 @@ def get_args(parser):
     return parser.parse_args()
 
 
+def get_data_set(data_set):
+    """Returns the data-set identification string. One of 'binary', 'multi-class' or, in case of an invalid datas-et,
+    'unknown_data_set'"""
+
+    first_line = next(data_set)
+    data_set.seek(0)
+
+    if 'Title' in first_line and 'Abstract' in first_line:
+        return 'binary'
+    elif 'Text' in first_line:
+        return 'multi-class'
+    else:
+        return 'unknown_data_set'
+
+
+def check_mode_of_operation(args):
+    """Checks the mode of operation."""
+
+    if (args.train and args.model) \
+            or (args.model and not args.predict) \
+            or (args.predict and not args.train and not args.model):
+
+        print("Invalid mode of operation!")
+        parser.print_help()
+        exit(1)
+
+
+def get_configuration(args):
+    """Checks the supplied data-sets and returns the right pipeline and parameters."""
+
+    data_set_train = ''
+    data_set_predict = ''
+
+    if args.train:
+        data_set_train = get_data_set(args.train)
+        if data_set_train not in ['binary', 'multi-class']:
+            print("Training data-set invalid!")
+            exit(1)
+
+    if args.predict:
+        data_set_predict = get_data_set(args.predict)
+        if data_set_predict not in ['binary', 'multi-class']:
+            print("Prediction data-set invalid!")
+            exit(1)
+
+    if args.train and args.predict and data_set_train is not data_set_predict:
+        print("Training data-set does not match prediction data-set!")
+        exit(1)
+
+    if data_set_train is 'binary' or data_set_predict is 'binary':
+
+        log.info("Recognised data-set: binary")
+        return io.load_model(args.model) if args.model else cfg.binary_pipeline, \
+            cfg.binary_pipeline_parameters, cfg.binary_pipeline_parameters_grid
+
+    else:
+
+        log.info("Recognised data-set: multi-class")
+        return io.load_model(args.model) if args.model else cfg.multiclass_pipeline, \
+            cfg.multiclass_pipeline_parameters, cfg.multiclass_pipeline_parameters_grid
+
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     args = get_args(parser)
     log.debug("Commandline arguments: {}".format(args))
 
-    if (args.train and args.model) \
-    or (args.model and not args.predict) \
-    or (args.predict and not args.train and not args.model):
-        print("Invalid mode of operation!")
-        parser.print_help()
-        exit(1)
+    check_mode_of_operation(args)
 
-    pipeline = io.load_model(args.model) if args.model else Pipeline([
-        # Use FeatureUnion to combine the features
-        ('union', FeatureUnion([
-
-                # Pipeline for pulling features from the articles's title
-                ('title', Pipeline([
-                    ('selector', ItemSelector(key='Title')),        # ('printer', Printer()),
-                    ('count', CountVectorizer()),                   # ('printer', Printer()),
-                ])),
-                ('abstract', Pipeline([
-                    ('selector', ItemSelector(key='Abstract')),     # ('printer', Printer()),
-                    ('count', CountVectorizer()),                   # ('printer', Printer()),
-                ])),
-                #TODO add your feature vectors here
-                # Pipeline for pulling features from the articles's abstract
-                #('title', Pipeline([
-                #    ('selector', ItemSelector(key='abstract')),
-                #    ('hasher', HashingVectorizer()),
-                #])),
-            ],
-        )),
-        # ('printer', Printer()),
-        ('clf', RandomForestClassifier()),
-    ])
+    pipeline, pipeline_parameters, pipeline_parameters_grid = get_configuration(args)
 
     if args.train:
         log.info("Fitting...")

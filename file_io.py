@@ -21,7 +21,9 @@ def load_data(data_file):
     # df is DataFrame. If errors, do `list(tp)` instead of `tp`
     df = pd.concat(tp, ignore_index=True)
 
-    return df.loc[:, ['Id', 'Title', 'Abstract']], df.loc[:, 'Category'] if 'Category' in df else None
+    article_columns = [column for column in df if column in ['Id', 'Title', 'Abstract', 'Text']]
+
+    return df.loc[:, article_columns], df.loc[:, 'Category'] if 'Category' in df else None
 
 
 def load_model(model_file):

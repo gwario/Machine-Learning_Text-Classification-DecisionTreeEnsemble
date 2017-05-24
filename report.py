@@ -62,7 +62,6 @@ def print_hyper_parameter_search_report(pipeline, dt_search, parameter_grid, bes
     """Prints the i.e. grid search report."""
 
     print("Hyper parameter search report:")
-    print("Pipeline:", [name for name, _ in pipeline.steps])
     print("Parameter grid:")
     pprint(parameter_grid)
     print("Best score: %0.3f" % best_score)

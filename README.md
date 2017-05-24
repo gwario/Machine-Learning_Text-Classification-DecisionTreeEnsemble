@@ -1,5 +1,9 @@
 # TextClassification
 
+## Configuration
+The pipeline configuration for the multi-class and binary data-set can by applied separately in *config.py*.
+The pipeline can be configure with the variables *binary_pipeline*/*multiclass_pipeline*, the parameters for the pipeline with the variables *binary_pipeline_parameters*/*multiclass_pipeline_parameters* and the parameter grid (for *--grid*) with the variables *binary_pipeline_parameters_grid*/*multiclass_pipeline_parameters_grid*
+
 ## Usage
     usage: main.py [-h] [--train FILE] [--grid] [--model FILE] [--predict FILE]
 
