@@ -34,6 +34,8 @@ def filtered(params):
 def print_training_report(pipeline, dt_fitting, dt_validation, articles, categories_true, categories_predicted):
     """Prints the training report."""
 
+    # TODO Improve visualization of the cross-validation report i.e. add useful metrics from http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics
+
     print("Cross-validation report:")
     print("Hyper parameters:")
     pprint(filtered(pipeline.get_params()))
@@ -44,6 +46,9 @@ def print_training_report(pipeline, dt_fitting, dt_validation, articles, categor
 
 
 def print_prediction_report(pipeline, dt_predict, result):
+    """Prints the classification result."""
+
+    # TODO Improve visualization of the result report i.e. statistics on how many documents per class...
 
     print("Classification report:\n")
     print(result)

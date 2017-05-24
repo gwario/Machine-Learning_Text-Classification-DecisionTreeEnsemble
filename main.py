@@ -42,6 +42,7 @@ log.basicConfig(level=log.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
 # This parameters grid is used to find the best parameter configuration for the
 # pipeline when --grid was specified.
+# http://scikit-learn.org/stable/modules/grid_search.html#grid-search
 # TODO add some variation of the default parameters
 pipeline_parameters_grid = {
     # 'vect__max_df': (0.5, 0.75, 1.0),

@@ -1,9 +1,8 @@
 """
 Contains feature extractors.
 
-TODO Put your own extractor class down below!
 """
-
+# TODO Put your own extractor class down below!
 import numpy as np
 import pandas as pd
 
