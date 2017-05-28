@@ -10,6 +10,7 @@ from datetime import datetime
 import pandas as pd
 
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import cross_val_score
 
 import config as cfg
 import report as rp
@@ -165,13 +166,17 @@ if __name__ == '__main__':
         dtFit = datetime.now() - t0
 
         t0 = datetime.now()
+        cv_scores = cross_val_score(pipeline, articles, categories, cv=5)
+        dtCV = datetime.now() - t0
+
+        t0 = datetime.now()
         categories_true, categories_predicted = categories, pipeline.predict(articles)
         dtValid = datetime.now() - t0
 
         filename = 'model_{}.pkl'.format(datetime.now().strftime('%Y-%m-%d--%H-%M-%S'))
         io.save_model(pipeline, filename)
 
-        rp.print_training_report(pipeline, dtFit, dtValid, articles, categories_true, categories_predicted)
+        rp.print_training_report(pipeline, cv_scores, dtFit, dtValid, articles, categories_true, categories_predicted)
 
     if args.predict:
         log.info("Predicting...")

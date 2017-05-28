@@ -31,12 +31,14 @@ def filtered(params):
     return filtered_params
 
 
-def print_training_report(pipeline, dt_fitting, dt_validation, articles, categories_true, categories_predicted):
+def print_training_report(pipeline, cv_scores, dt_fitting, dt_validation, articles, categories_true, categories_predicted):
     """Prints the training report."""
 
     # TODO Improve visualization of the cross-validation report i.e. add useful metrics from http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics
 
     print("Cross-validation report:")
+    pprint(cv_scores)
+    print("Accuracy: %0.2f (+/- %0.2f)" % (cv_scores.mean(), cv_scores.std() * 2))
     print("Hyper parameters:")
     pprint(filtered(pipeline.get_params()))
     print("")
