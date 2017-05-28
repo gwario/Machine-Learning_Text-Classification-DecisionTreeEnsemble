@@ -8,9 +8,11 @@ from sys import exit
 import argparse
 from datetime import datetime
 import pandas as pd
+import numpy as np
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import train_test_split
 
 import config as cfg
 import report as rp
@@ -37,6 +39,13 @@ __status__ = "Production"
 # Display progress logs on stdout
 log.basicConfig(level=log.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
+# For passing in floating point ranges as cl arguments
+class Range(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+    def __eq__(self, other):
+        return self.start <= other <= self.end
 
 def get_best_parameters_grid(parameter_grid, articles, categories):
     """ Finds and returns the best parameters for both the feature extraction and the classification.
@@ -65,9 +74,13 @@ def get_args(parser):
     parser.add_argument('--grid', action='store_true',
                         help='''Whether or not to use grid search to get the optimal hyper-parameter configuration. 
                         See http://scikit-learn.org/stable/modules/grid_search.html#grid-search''')
+    parser.add_argument('--cv', action='store_true',
+                        help='''Whether or not to use cross validation for evaluating performance. 
+                        See http://scikit-learn.org/stable/modules/cross_validation.html#cross-validation''')
     parser.add_argument('--model', metavar='FILE', type=argparse.FileType('r'),
                         help='The model to be used for classification.')
     parser.add_argument('--predict', metavar='FILE', type=argparse.FileType('r'), help='Data to be classified.')
+    parser.add_argument('--test_size', type=float, choices=[Range(0.0, 1.0)], default=0.1, help='Size of the test/train split, as a fraction of the total data.')
     # parser.print_help()
 
     return parser.parse_args()
@@ -159,18 +172,19 @@ if __name__ == '__main__':
             log.info("Using the defined hyper parameter configuration...")
             pipeline.set_params(**pipeline_parameters)
 
-        # TODO Do real cross-validation here: http://scikit-learn.org/stable/modules/cross_validation.html
+        X_train, X_test, Y_train, Y_test = train_test_split(articles, categories, test_size=args.test_size, random_state=0)
 
         t0 = datetime.now()
-        pipeline.fit(articles, categories)
+        pipeline.fit(X_train, Y_train)
         dtFit = datetime.now() - t0
 
+        # Cross validation
         t0 = datetime.now()
-        cv_scores = cross_val_score(pipeline, articles, categories, cv=5)
+        cv_scores = cross_val_score(pipeline, articles, categories, cv=5) if args.cv else np.array([])
         dtCV = datetime.now() - t0
 
         t0 = datetime.now()
-        categories_true, categories_predicted = categories, pipeline.predict(articles)
+        categories_true, categories_predicted = Y_test, pipeline.predict(X_test)
         dtValid = datetime.now() - t0
 
         filename = 'model_{}.pkl'.format(datetime.now().strftime('%Y-%m-%d--%H-%M-%S'))

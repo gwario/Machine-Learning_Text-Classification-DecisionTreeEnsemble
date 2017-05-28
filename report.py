@@ -36,9 +36,11 @@ def print_training_report(pipeline, cv_scores, dt_fitting, dt_validation, articl
 
     # TODO Improve visualization of the cross-validation report i.e. add useful metrics from http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics
 
-    print("Cross-validation report:")
-    pprint(cv_scores)
-    print("Accuracy: %0.2f (+/- %0.2f)" % (cv_scores.mean(), cv_scores.std() * 2))
+    if (len(list(cv_scores)) > 0):
+        print("Cross-validation report:")
+        pprint(cv_scores)
+        print("Accuracy: %0.2f (+/- %0.2f)" % (cv_scores.mean(), cv_scores.std() * 2)) 
+           
     print("Hyper parameters:")
     pprint(filtered(pipeline.get_params()))
     print("")
