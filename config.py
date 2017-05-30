@@ -40,7 +40,7 @@ binary_pipeline = Pipeline([
     # Use FeatureUnion to combine the features
     ('union', FeatureUnion([
 
-        Pipeline for pulling features from the articles's title
+        # Pipeline for pulling features from the articles's title
         ('titleWordCount', Pipeline([
             ('selector', ItemSelector(key='Title')),        # ('printer', Printer()),
             ('count', CountVectorizer()),                   # ('printer', Printer()),
