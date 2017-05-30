@@ -5,17 +5,20 @@ The pipeline configuration for the multi-class and binary data-set can by applie
 The pipeline can be configure with the variables *binary_pipeline*/*multiclass_pipeline*, the parameters for the pipeline with the variables *binary_pipeline_parameters*/*multiclass_pipeline_parameters* and the parameter grid (for *--grid*) with the variables *binary_pipeline_parameters_grid*/*multiclass_pipeline_parameters_grid*
 
 ## Usage
-    usage: main.py [-h] [--train FILE] [--grid] [--model FILE] [--predict FILE]
+    usage: main.py [-h] [--train FILE] [--grid] [--model FILE] [--predict FILE] [--test_size SIZE] [--cv]
 
     optional arguments:
-      -h, --help      show this help message and exit
-      --train FILE    The training data to be used to create a model. The created
-                      model <timestamp>.model is savede to disk.
-      --grid          Whether or not to use grid search to get the optimal hyper-
-                      parameter configuration. See http://scikit-
-                      learn.org/stable/modules/grid_search.html#grid-search
-      --model FILE    The model to be used for classification.
-      --predict FILE  Data to be classified.
+      -h, --help        show this help message and exit
+      --train FILE      The training data to be used to create a model. The created
+                        model <timestamp>.model is savede to disk.
+      --grid            Whether or not to use grid search to get the optimal hyper-
+                        parameter configuration. See http://scikit-
+                        learn.org/stable/modules/grid_search.html#grid-search
+      --model FILE      The model to be used for classification.
+      --predict FILE    Data to be classified.
+      --test_size SIZE  The size of the test set, as a fraction of the whole dataset (between 0-1)
+      --cv              Whether or not to use cross validation for evaluating performance. 
+                        See http://scikit-learn.org/stable/modules/cross_validation.html#cross-validation
 
 ### Display help/usage:
     $ python ./main.py -h
@@ -34,3 +37,4 @@ The pipeline can be configure with the variables *binary_pipeline*/*multiclass_p
 
 ### Classification with a predefined model:
     $ python ./main.py --model model_<timestamp>.pkl --predict testLimited.csv
+

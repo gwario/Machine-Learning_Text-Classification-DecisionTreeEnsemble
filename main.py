@@ -80,7 +80,7 @@ def get_args(parser):
     parser.add_argument('--model', metavar='FILE', type=argparse.FileType('r'),
                         help='The model to be used for classification.')
     parser.add_argument('--predict', metavar='FILE', type=argparse.FileType('r'), help='Data to be classified.')
-    parser.add_argument('--test_size', type=float, choices=[Range(0.0, 1.0)], default=0.1, help='Size of the test/train split, as a fraction of the total data.')
+    parser.add_argument('--test_size', type=float, choices=[Range(0.0, 1.0)], default=0.1, help='The size of the test set, as a fraction of the whole dataset (between 0-1).')
     # parser.print_help()
 
     return parser.parse_args()
