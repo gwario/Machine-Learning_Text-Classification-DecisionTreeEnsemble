@@ -1,9 +1,15 @@
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.ensemble import RandomForestClassifier
 
-from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer
+from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer, TfidfVectorizer
 from extractor import Printer, ItemSelector
+from preprocessor import NLTKPreprocessor
 
+def identity(arg):
+    """
+    Simple identity function works as a passthrough.
+    """
+    return arg
 
 '''Contains the configuration for binary and multiclass data.'''
 
@@ -34,7 +40,7 @@ binary_pipeline = Pipeline([
     # Use FeatureUnion to combine the features
     ('union', FeatureUnion([
 
-        # Pipeline for pulling features from the articles's title
+        Pipeline for pulling features from the articles's title
         ('titleWordCount', Pipeline([
             ('selector', ItemSelector(key='Title')),        # ('printer', Printer()),
             ('count', CountVectorizer()),                   # ('printer', Printer()),
@@ -42,6 +48,11 @@ binary_pipeline = Pipeline([
         ('abstractWordCount', Pipeline([
             ('selector', ItemSelector(key='Abstract')),     # ('printer', Printer()),
             ('count', CountVectorizer()),                   # ('printer', Printer()),
+        ])),
+        ('tokenizedAndLemmatized', Pipeline([
+            ('selector', ItemSelector(key='Abstract')),
+            ('preprocessor', NLTKPreprocessor()),
+            ('vectorizer', TfidfVectorizer(tokenizer=identity, preprocessor=None, lowercase=False)),
         ])),
         #TODO add your feature vectors here
         # Pipeline for pulling features from the articles's abstract
@@ -85,6 +96,11 @@ multiclass_pipeline = Pipeline([
         ('textWordCount', Pipeline([
             ('selector', ItemSelector(key='Text')),         # ('printer', Printer()),
             ('count', CountVectorizer()),                   # ('printer', Printer()),
+        ])),
+        ('tokenizedAndLemmatized', Pipeline([
+            ('selector', ItemSelector(key='Text')),
+            ('preprocessor', NLTKPreprocessor()),
+            ('vectorizer', TfidfVectorizer(tokenizer=identity, preprocessor=None, lowercase=False)),
         ])),
         #TODO add your feature vectors here
         # Pipeline for pulling features from the articles's abstract
