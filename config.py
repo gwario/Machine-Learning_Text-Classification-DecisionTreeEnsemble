@@ -54,6 +54,12 @@ binary_pipeline = Pipeline([
             ('preprocessor', NLTKPreprocessor()),
             ('vectorizer', TfidfVectorizer(tokenizer=identity, preprocessor=None, lowercase=False)),
         ])),
+        
+        #('title', Pipeline([
+           # ('selector', ItemSelector(key='Title')),
+           # ('tfidf', TfidfVectorizer()),
+        #])),
+        
         #TODO add your feature vectors here
         # Pipeline for pulling features from the articles's abstract
         #('myfeature', Pipeline([
