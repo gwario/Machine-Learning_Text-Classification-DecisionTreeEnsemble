@@ -7,6 +7,7 @@ from extractor import Printer, ItemSelector
 
 '''Contains the configuration for binary and multiclass data.'''
 
+split_random_state = 123456
 
 # ### Binary ####################################################
 # This parameters grid is used to find the best parameter configuration for the

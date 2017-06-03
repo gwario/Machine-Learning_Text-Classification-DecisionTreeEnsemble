@@ -1,3 +1,4 @@
+import logging as log
 from pprint import pprint
 
 from sklearn.pipeline import FeatureUnion, Pipeline
@@ -31,45 +32,47 @@ def filtered(params):
     return filtered_params
 
 
-def print_training_report(pipeline, cv_scores, dt_fitting, dt_validation, articles, categories_true, categories_predicted):
+def print_fitting_report(pipeline, dt_fitting, x_train, y_train):
     """Prints the training report."""
 
-    # TODO Improve visualization of the cross-validation report i.e. add useful metrics from http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics
-
-    if (len(list(cv_scores)) > 0):
-        print("Cross-validation report:")
-        pprint(cv_scores)
-        print("Accuracy: %0.2f (+/- %0.2f)" % (cv_scores.mean(), cv_scores.std() * 2)) 
-           
-    print("Hyper parameters:")
-    pprint(filtered(pipeline.get_params()))
-    print("")
-    print(classification_report(categories_true, categories_predicted))
-    print("Fitting done in {}".format(dt_fitting))
-    print("Cross-validation done in {}\n".format(dt_validation))
+    log.debug("Fitted {} data points.".format(len(y_train)))
+    log.debug("Fitting done in {}".format(dt_fitting))
 
 
-def print_prediction_report(pipeline, dt_predict, result):
+def print_evaluation_report(pipeline, dt_evaluation, y_pred, y_true):
+    """Prints the cross-validation report."""
+
+    print("Evaluation report:")
+    print(classification_report(y_true, y_pred))
+    log.debug("Evaluation done in {}".format(dt_evaluation))
+
+    # TODO Improve visualization of the validation report i.e. add useful metrics from http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics
+
+
+def print_prediction_report(pipeline, dt_predict, data):
     """Prints the classification result."""
 
     # TODO Improve visualization of the result report i.e. statistics on how many documents per class...
 
-    print("Classification report:\n")
-    print(result)
-    print("\n")
-    print("Hyper parameters:\n")
-    pprint(filtered(pipeline.get_params()))
-    print("Done in {}\n".format(dt_predict))
+    #print("Classification report:")
+    # print(data)
+    log.debug("Prediction done in {}".format(dt_predict))
 
 
 def print_hyper_parameter_search_report(pipeline, dt_search, parameter_grid, best_score, best_parameters):
     """Prints the i.e. grid search report."""
 
     print("Hyper parameter search report:")
-    print("Parameter grid:")
-    pprint(parameter_grid)
+    print("Parameter grid: {}".format(parameter_grid))
     print("Best score: %0.3f" % best_score)
     print("Best parameters set:")
     for param_name in sorted(parameter_grid.keys()):
         print("\t%s: %r" % (param_name, best_parameters[param_name]))
-    print("Grid search done in {}\n".format(dt_search))
+    log.debug("Grid search done in {}".format(dt_search))
+
+
+def print_hyper_parameters(pipeline):
+    """Prints the i.e. grid search report."""
+
+    print("Hyper parameters:")
+    pprint(filtered(pipeline.get_params()))
