@@ -8,27 +8,33 @@ from sys import exit
 import argparse
 from datetime import datetime
 import pandas as pd
-import numpy as np
 
 from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import cross_val_score
+from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 
 import config as cfg
 import report as rp
 import file_io as io
 
-"""
+__doc__ = """
 Classifies, train and saves the model.
 
 Modes of operation:
 
-Train & classify: (--train --predict)
-    Trains the classifier, saves the model to disk and classifies.
-Load model & classify: (--model --predict)
-    Loads the model and classifies.
-Train only: (--train)
-    Trains the classifier and saves the model to disk.
+Score, train and predict:   (--score --train --predict)
+    Evaluates the classifier, trains it (model saved to disk) and predicts (prediction saved to disk).
+    
+Score and train:            (--score --train)
+    Evaluates the classifier and trains it (model saved to disk).
+    
+Train and predict:          (--train --predict)
+    Trains the classifier (model saved to disk) and predicts (prediction saved to disk).
+    
+Load model and predict:     (--model --predict)
+    Loads the model and predicts (prediction saved to disk).
+    
+All modes of operation support model selection with --hp.
 """
 __author__ = "Mario Gastegger, Alex Heemann, Desislava Velinova"
 __copyright__ = "Copyright 2017, "+__author__
@@ -39,23 +45,26 @@ __status__ = "Production"
 # Display progress logs on stdout
 log.basicConfig(level=log.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
+
 # For passing in floating point ranges as cl arguments
 class Range(object):
     def __init__(self, start, end):
         self.start = start
         self.end = end
+
     def __eq__(self, other):
         return self.start <= other <= self.end
 
-def get_best_parameters_grid(parameter_grid, articles, categories):
+
+def get_grid_result(pipeline, parameter_grid, hp_metric, x, y):
     """ Finds and returns the best parameters for both the feature extraction and the classification.
     Changing the grid increases processing time in a combinatorial way."""
 
-    log.debug("Performing grid search...")
-    grid_search = GridSearchCV(pipeline, parameter_grid, n_jobs=-1, verbose=1)
+    log.debug("Performing grid search, optimizing {} score...".format(hp_metric))
+    grid_search = GridSearchCV(pipeline, parameter_grid, scoring=hp_metric, n_jobs=-1, verbose=1)
 
     t0 = datetime.now()
-    grid_search.fit(articles, categories)
+    grid_search.fit(x, y)
     dt_grid = datetime.now() - t0
 
     best_parameters = grid_search.best_estimator_.get_params()
@@ -65,87 +74,168 @@ def get_best_parameters_grid(parameter_grid, articles, categories):
     return best_parameters
 
 
-def get_args(parser):
+def get_args(args_parser):
     """Parses and returns the command line arguments."""
 
-    parser.add_argument('--train', metavar='FILE', type=argparse.FileType('r'),
-                        help='''The training data to be used to create a model. The created model <timestamp>.model is 
-                        saved to disk.''')
-    parser.add_argument('--grid', action='store_true',
-                        help='''Whether or not to use grid search to get the optimal hyper-parameter configuration. 
-                        See http://scikit-learn.org/stable/modules/grid_search.html#grid-search''')
-    parser.add_argument('--cv', action='store_true',
-                        help='''Whether or not to use cross validation for evaluating performance. 
-                        See http://scikit-learn.org/stable/modules/cross_validation.html#cross-validation''')
-    parser.add_argument('--model', metavar='FILE', type=argparse.FileType('r'),
-                        help='The model to be used for classification.')
-    parser.add_argument('--predict', metavar='FILE', type=argparse.FileType('r'), help='Data to be classified.')
-    parser.add_argument('--test_size', type=float, choices=[Range(0.0, 1.0)], default=0.1, help='The size of the test set, as a fraction of the whole dataset (between 0-1).')
+    args_parser.add_argument('--train', metavar='FILE', type=argparse.FileType('r'),
+                             help='''The training data to be used to create a model. The created model <timestamp>.model
+                              is saved to disk.''')
+    args_parser.add_argument('--hp', metavar='METHOD', nargs='?', const='config', default='config',
+                             choices=['config', 'grid'],
+                             help='''The method to get the hyper-parameters. One of 'config' (use the pre-defined
+                             configuration in config.py) or 'grid' (GridSearchCV). (default: '%(default)s' ''')
+    args_parser.add_argument('--hp_metric', metavar='METRIC', nargs='?', const='f1_macro', default='f1_macro',
+                             choices=['accuracy', 'average_precision', 'f1', 'precision', 'recall',
+                                      'f1_micro', 'f1_macro', 'f1_weighted', 'f1_samples',
+                                      'precision_micro', 'precision_macro', 'precision_weighted', 'precision_samples',
+                                      'recall_micro', 'recall_macro', 'recall_weighted', 'recall_samples',
+                                      'roc_auc'],
+                             help='''The metric to use for the hyper-parameter optimization. Used with 'grid'.
+                             (default: '%(default)s' ''')
+    args_parser.add_argument('--score', action='store_true',
+                             help='''Whether or not to evaluate the estimator performance.''')
+    args_parser.add_argument('--test_size', metavar='FRACTION', type=float, choices=[Range(0.0, 1.0)], default=0.25,
+                             help='Size of the test/train split, as a fraction of the total data.')
+    args_parser.add_argument('--model', metavar='FILE', type=argparse.FileType('r'),
+                             help='The model to be used for classification.')
+    args_parser.add_argument('--predict', metavar='FILE', type=argparse.FileType('r'), help='Data to be classified.')
     # parser.print_help()
 
-    return parser.parse_args()
+    return args_parser.parse_args()
 
 
-def get_data_set(data_set):
-    """Returns the data-set identification string. One of 'binary', 'multi-class' or, in case of an invalid datas-et,
-    'unknown_data_set'"""
-
-    first_line = next(data_set)
-    data_set.seek(0)
-
-    if 'Title' in first_line and 'Abstract' in first_line:
-        return 'binary'
-    elif 'Text' in first_line:
-        return 'multi-class'
-    else:
-        return 'unknown_data_set'
-
-
-def check_mode_of_operation(args):
+def check_mode_of_operation(arguments):
     """Checks the mode of operation."""
 
-    if (args.train and args.model) \
-            or (args.model and not args.predict) \
-            or (args.predict and not args.train and not args.model):
-
+    if (arguments.score and arguments.train and arguments.predict) \
+            or (arguments.score and arguments.train) \
+            or (arguments.train and arguments.predict) \
+            or (arguments.model and arguments.predict):
+        log.debug("Valid mode of operation")
+    else:
         print("Invalid mode of operation!")
         parser.print_help()
         exit(1)
 
 
-def get_configuration(args):
-    """Checks the supplied data-sets and returns the right pipeline and parameters."""
+def get_configuration(data_set):
+    """Returns the right pipeline and parameters for the given data-set."""
 
-    data_set_train = ''
-    data_set_predict = ''
+    if data_set == 'binary':
+        return cfg.binary_pipeline, cfg.binary_pipeline_parameters, cfg.binary_pipeline_parameters_grid
 
-    if args.train:
-        data_set_train = get_data_set(args.train)
-        if data_set_train not in ['binary', 'multi-class']:
-            print("Training data-set invalid!")
-            exit(1)
+    elif data_set == 'multi-class':
+        return cfg.multiclass_pipeline, cfg.multiclass_pipeline_parameters, cfg.multiclass_pipeline_parameters_grid
 
-    if args.predict:
-        data_set_predict = get_data_set(args.predict)
-        if data_set_predict not in ['binary', 'multi-class']:
-            print("Prediction data-set invalid!")
-            exit(1)
 
-    if args.train and args.predict and data_set_train is not data_set_predict:
-        print("Training data-set does not match prediction data-set!")
-        exit(1)
+def get_optimized_parameters(pipeline, x_train, y_train, hp_metric, pipeline_parameters_grid):
 
-    if data_set_train is 'binary' or data_set_predict is 'binary':
+    # Find the best hyper-parameter configuration or use the defined one.
+    if args.hp == 'grid':
+        log.info("Using grid search on the training set to select the best model (hyper-parameters)...")
+        return get_grid_result(pipeline, pipeline_parameters_grid, hp_metric, x_train, y_train)
 
-        log.info("Recognised data-set: binary")
-        return io.load_model(args.model) if args.model else cfg.binary_pipeline, \
-            cfg.binary_pipeline_parameters, cfg.binary_pipeline_parameters_grid
+    # TODO add randomized...
+
+
+def mode_score(pipeline, x_train, y_train, x_test, y_test):
+    """Evaluates the estimator.
+
+    Returns
+    -------
+    pipeline: The parametrized, unfitted pipeline.
+    """
+
+    log.info("Evaluating the selected model on the test set...")
+    # The pipeline parameters
+    rp.print_hyper_parameters(pipeline)
+
+    tFit = datetime.now()
+    pipeline.fit(x_train, y_train)
+    rp.print_fitting_report(pipeline,
+                            dt_fitting=datetime.now() - tFit,
+                            x_train=x_train,
+                            y_train=y_train)
+
+    tPredict = datetime.now()
+    categories_true, categories_predicted = y_test, pipeline.predict(x_test)
+    rp.print_evaluation_report(pipeline,
+                               dt_evaluation=datetime.now() - tPredict,
+                               y_true=categories_true,
+                               y_pred=categories_predicted)
+
+    # Reset the estimator to the state be for fitting
+    pipeline = clone(pipeline)
+
+    return pipeline
+
+
+def select_model(args, data_set, x_train, y_train):
+    """Selects a model according to args.hp and args.hp_metric either by using the predefined ones or by using a
+    cross-validated search strategy.
+    The model is selected based on the args.train data-set.
+
+    Returns
+    -------
+    pipeline: The parametrized pipeline.
+    """
+
+    pipeline, pipeline_parameters, pipeline_parameters_grid = get_configuration(data_set)
+
+    if args.hp == 'config':
+        log.info("Using the pre-selected model (hyper-parameters)...")
+        pipeline.set_params(**pipeline_parameters)
 
     else:
+        best_params = get_optimized_parameters(pipeline, pipeline_parameters_grid, x_train, y_train)
+        pipeline.set_params(**best_params)
 
-        log.info("Recognised data-set: multi-class")
-        return io.load_model(args.model) if args.model else cfg.multiclass_pipeline, \
-            cfg.multiclass_pipeline_parameters, cfg.multiclass_pipeline_parameters_grid
+        # Reset the estimator to the state be for fitting
+        pipeline = clone(pipeline)
+
+    return pipeline
+
+
+def mode_train(pipeline, x, y):
+    """Trains the model.
+
+    Returns
+    -------
+    pipeline: The parametrized and fitted pipeline.
+    """
+    model_filename = 'model_{}.pkl'.format(datetime.now().strftime('%Y-%m-%d--%H-%M-%S'))
+
+    log.info("Building the selected model on the whole data set...")
+    # The pipeline parameters
+    rp.print_hyper_parameters(pipeline)
+
+    t_fit = datetime.now()
+    pipeline.fit(x, y)
+    rp.print_fitting_report(pipeline,
+                            dt_fitting=datetime.now() - t_fit,
+                            x_train=x,
+                            y_train=y)
+
+    io.save_model(pipeline, model_filename)
+
+    return pipeline
+
+
+def mode_predict(pipeline, x):
+    """Predicts using the given model."""
+
+    prediction_filename = 'prediction_{}.csv'.format(datetime.now().strftime('%Y-%m-%d--%H-%M-%S'))
+
+    log.info("Predicting {} data points...".format(len(x)))
+
+    t_predict = datetime.now()
+    y = pipeline.predict(x)
+    combined_data = x.assign(Category=pd.Series(y).values)
+    rp.print_prediction_report(pipeline,
+                               dt_predict=datetime.now() - t_predict,
+                               data=combined_data)
+
+    io.save_prediction(combined_data.loc[:, ['Id', 'Category']], prediction_filename)
 
 
 if __name__ == '__main__':
@@ -156,62 +246,83 @@ if __name__ == '__main__':
 
     check_mode_of_operation(args)
 
-    pipeline, pipeline_parameters, pipeline_parameters_grid = get_configuration(args)
+    if args.score and args.train and args.predict:
+        log.info("Mode score->train->predict")
 
-    if args.train:
-        log.info("Fitting...")
+        x, y = io.load_data(args.train)
 
-        articles, categories = io.load_data(args.train)
+        # Create a training/validation and a test set for model selection (hyper-parameter search) and evaluation
+        x_train, x_test, y_train, y_test = train_test_split(x, y,
+                                                            test_size=args.test_size,
+                                                            random_state=cfg.split_random_state)
 
-        # Find the best hyper-parameter configuration or use the defined one.
-        if args.grid:
-            log.info("Using grid search to find the best hyper parameter configuration...")
-            best_pipeline_parameters = get_best_parameters_grid(pipeline_parameters_grid, articles, categories)
-            pipeline.set_params(**best_pipeline_parameters)
-        else:
-            log.info("Using the defined hyper parameter configuration...")
-            pipeline.set_params(**pipeline_parameters)
+        log.info("Created training set ({}) and test set ({})".format(len(y_train), len(y_test)))
 
-        X_train, X_test, Y_train, Y_test = train_test_split(articles, categories, test_size=args.test_size, random_state=0)
+        data_set = io.get_data_set(args.predict)
+        pipeline = select_model(args, data_set, x_train, y_train)
 
-        t0 = datetime.now()
-        pipeline.fit(X_train, Y_train)
-        dtFit = datetime.now() - t0
+        # Score part
+        pipeline = mode_score(pipeline, x_train, y_train, x_test, y_test)
 
-        # Cross validation
-        t0 = datetime.now()
-        cv_scores = cross_val_score(pipeline, articles, categories, cv=5) if args.cv else np.array([])
-        dtCV = datetime.now() - t0
+        # Train part
+        mode_train(pipeline, x, y)
 
-        t0 = datetime.now()
-        categories_true, categories_predicted = Y_test, pipeline.predict(X_test)
-        dtValid = datetime.now() - t0
+        # Predict part
+        x, _ = io.load_data(args.predict)
 
-        filename = 'model_{}.pkl'.format(datetime.now().strftime('%Y-%m-%d--%H-%M-%S'))
-        io.save_model(pipeline, filename)
+        mode_predict(pipeline, x)
 
-        rp.print_training_report(pipeline, cv_scores, dtFit, dtValid, articles, categories_true, categories_predicted)
+    elif args.score and args.train:
+        log.info("Mode score->train")
 
-    if args.predict:
-        log.info("Predicting...")
+        x, y = io.load_data(args.train)
 
-        articles, _ = io.load_data(args.predict)
+        # Create a training/validation and a test set for model selection (hyper-parameter search) and evaluation
+        x_train, x_test, y_train, y_test = train_test_split(x, y,
+                                                            test_size=args.test_size,
+                                                            random_state=cfg.split_random_state)
 
-        if args.train:
-            log.info("Using hyper parameter as of the fitting phase...")
-            # The hyper-parameter configuration was already set.
-        else:
-            log.info("Using the defined hyper parameter configuration...")
-            pipeline.set_params(**pipeline_parameters)
+        log.info("Created training set ({}) and test set ({})".format(len(y_train), len(y_test)))
 
-        t0 = datetime.now()
-        categories = pipeline.predict(articles)
-        dtPredict = datetime.now() - t0
+        data_set = io.get_data_set(args.train)
+        pipeline = select_model(args, data_set, x_train, y_train)
 
-        prediction = articles.assign(Category=pd.Series(categories).values)
+        # Score part
+        pipeline = mode_score(pipeline, x_train, y_train, x_test, y_test)
 
-        rp.print_prediction_report(pipeline, dtPredict, prediction)
+        # Train part
+        mode_train(pipeline, x, y)
 
-        filename = 'prediction_{}.csv'.format(datetime.now().strftime('%Y-%m-%d--%H-%M-%S'))
-        io.save_prediction(prediction.loc[:, ['Id', 'Category']], filename)
+    elif args.train and args.predict:
+        log.info("Mode train->predict")
 
+        x, y = io.load_data(args.train)
+
+        # Create a training/validation and a test set for model selection (hyper-parameter search) and evaluation
+        x_train, x_test, y_train, y_test = train_test_split(x, y,
+                                                            test_size=args.test_size,
+                                                            random_state=cfg.split_random_state)
+
+        log.info("Created training set ({}) and test set ({})".format(len(y_train), len(y_test)))
+
+        data_set = io.get_data_set(args.predict)
+        pipeline = select_model(args, data_set, x_train, y_train)
+
+        # Train part
+        mode_train(pipeline, x, y)
+
+        # Predict part
+        x, _ = io.load_data(args.predict)
+
+        mode_predict(pipeline, x)
+
+    elif args.model and args.predict:
+        log.info("Mode model->predict")
+
+        # Load model
+        pipeline = io.load_model(args.model)
+
+        # Predict part
+        x, _ = io.load_data(args.predict)
+
+        mode_predict(pipeline, x)

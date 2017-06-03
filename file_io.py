@@ -26,6 +26,27 @@ def load_data(data_file):
     return df.loc[:, article_columns], df.loc[:, 'Category'] if 'Category' in df else None
 
 
+def get_data_set(data_set_file):
+    """Returns the data-set identification string. One of 'binary', 'multi-class' or, in case of an invalid datas-et,
+    'unknown_data_set'"""
+
+    data_set_file.seek(0)
+    first_line = next(data_set_file)
+    data_set_file.seek(0)
+
+    if 'Title' in first_line and 'Abstract' in first_line:
+        log.info("Recognised data-set: binary")
+        return 'binary'
+
+    elif 'Text' in first_line:
+        log.info("Recognised data-set: multi-class")
+        return 'multi-class'
+
+    else:
+        log.error("Invalid data-set!")
+        exit(1)
+
+
 def load_model(model_file):
     """Loads and returns the pipeline model from model_file."""
 
@@ -37,11 +58,11 @@ def save_model(pipeline, model_filename):
     """Saves the pipeline model to model_filename."""
 
     joblib.dump(pipeline, model_filename)
-    print("Model saved as {}\n".format(model_filename))
+    print("Model saved as {}".format(model_filename))
 
 
 def save_prediction(prediction, prediction_filename):
     """Saves the prediction to prediction_filename."""
 
     prediction.to_csv(prediction_filename, sep=',', index=False, encoding='utf-8')
-    print("Prediction saved as {}\n".format(prediction_filename))
+    print("Prediction saved as {}".format(prediction_filename))
