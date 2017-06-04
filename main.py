@@ -211,12 +211,13 @@ def select_model(args, data_set, x_train, y_train):
     elif args.hp == 'grid':
         best_params = get_optimized_parameters_grid(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_grid)
         pipeline.set_params(**best_params)
+        
+        # Reset the estimator to the state be for fitting
+        pipeline = clone(pipeline)
 
     elif args.hp == 'randomized':
         best_params = get_optimized_parameters_randomized(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_randomized)
         pipeline.set_params(**best_params)
-
-        # Reset the estimator to the state be for fitting
         pipeline = clone(pipeline)
 
     return pipeline
