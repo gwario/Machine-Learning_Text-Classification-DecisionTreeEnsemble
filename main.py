@@ -187,7 +187,7 @@ def select_model(args, data_set, x_train, y_train):
         pipeline.set_params(**pipeline_parameters)
 
     else:
-        best_params = get_optimized_parameters(pipeline, pipeline_parameters_grid, x_train, y_train)
+        best_params = get_optimized_parameters(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_grid)
         pipeline.set_params(**best_params)
 
         # Reset the estimator to the state be for fitting
