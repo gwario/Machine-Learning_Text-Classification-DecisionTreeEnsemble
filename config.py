@@ -14,6 +14,7 @@ def identity(arg):
 '''Contains the configuration for binary and multiclass data.'''
 
 split_random_state = 123456
+n_iter_search = 2
 
 # ### Binary ####################################################
 # This parameters grid is used to find the best parameter configuration for the
@@ -26,6 +27,16 @@ binary_pipeline_parameters_grid = {
     # 'vect__ngram_range': ((1, 1), (1, 2)),  # unigrams or bigrams
     # 'clf__alpha': (0.00001, 0.000001),
     # 'clf__n_iter': (10, 50, 80),
+    'clf__max_depth': (2, 5),
+    'clf__n_estimators': (10, 80),
+}
+
+binary_pipeline_parameters_randomized = {
+  # "max_features": sp_randint(1, 11),
+  # "min_samples_split": sp_randint(1, 11),
+  # "min_samples_leaf": sp_randint(1, 11),
+  # "bootstrap": [True, False],
+  # "criterion": ["gini", "entropy"]
     'clf__max_depth': (2, 5),
     'clf__n_estimators': (10, 80),
 }
