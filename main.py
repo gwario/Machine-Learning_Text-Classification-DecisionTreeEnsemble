@@ -10,6 +10,7 @@ from datetime import datetime
 import pandas as pd
 
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import RandomizedSearchCV
 from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 
@@ -69,7 +70,22 @@ def get_grid_result(pipeline, parameter_grid, hp_metric, x, y):
 
     best_parameters = grid_search.best_estimator_.get_params()
 
-    rp.print_hyper_parameter_search_report(pipeline, dt_grid, parameter_grid, grid_search.best_score_, best_parameters)
+    rp.print_hyper_parameter_search_report_grid(pipeline, dt_grid, parameter_grid, grid_search.best_score_, best_parameters)
+
+    return best_parameters
+
+def get_randomized_result(pipeline, parameter_randomized, hp_metric, x, y):
+    
+    log.debug("Performing randomized search, optimizing {} score...".format(hp_metric))
+    randomized_search = RandomizedSearchCV(pipeline, parameter_randomized, scoring=hp_metric, 
+            n_iter = n_iter_search, n_jobs=-1, verbose=1)
+
+    t0 = datetime.now()
+    randomized_search.fit(x, y)
+    dt_randomized = datetime.now() - t0
+
+    best_parameters = randomized_search.best_estimator_.get_params()
+    rp.print_hyper_parameter_search_report_randomized(pipeline, dt_randomized, parameter_randomized, randomized_search.best_score_, best_parameters)
 
     return best_parameters
 
@@ -122,20 +138,26 @@ def get_configuration(data_set):
     """Returns the right pipeline and parameters for the given data-set."""
 
     if data_set == 'binary':
-        return cfg.binary_pipeline, cfg.binary_pipeline_parameters, cfg.binary_pipeline_parameters_grid
+        return cfg.binary_pipeline, cfg.binary_pipeline_parameters, cfg.binary_pipeline_parameters_grid, cfg.binary_pipeline_parameters_randomized
 
     elif data_set == 'multi-class':
-        return cfg.multiclass_pipeline, cfg.multiclass_pipeline_parameters, cfg.multiclass_pipeline_parameters_grid
+        return cfg.multiclass_pipeline, cfg.multiclass_pipeline_parameters, cfg.multiclass_pipeline_parameters_grid, cfg.multiclass_pipeline_parameters_randomized
 
-
-def get_optimized_parameters(pipeline, x_train, y_train, hp_metric, pipeline_parameters_grid):
+def get_optimized_parameters_grid(pipeline, x_train, y_train, hp_metric, pipeline_parameters_grid):
 
     # Find the best hyper-parameter configuration or use the defined one.
     if args.hp == 'grid':
         log.info("Using grid search on the training set to select the best model (hyper-parameters)...")
+
         return get_grid_result(pipeline, pipeline_parameters_grid, hp_metric, x_train, y_train)
 
-    # TODO add randomized...
+def get_optimized_parameters_randomized(pipeline, x_train, y_train, hp_metric, pipeline_parameters_randomized):
+    
+    # Find the best hyper-parameter configuration or use the defined one.
+    if args.hp == 'randomized':
+        log.info("Using randomized search on the training set to select the best model (hyper-parameters)...")
+
+        return get_randomized_result(pipeline, pipeline_parameters_randomized, hp_metric, x_train, y_train)
 
 
 def mode_score(pipeline, x_train, y_train, x_test, y_test):
@@ -180,14 +202,18 @@ def select_model(args, data_set, x_train, y_train):
     pipeline: The parametrized pipeline.
     """
 
-    pipeline, pipeline_parameters, pipeline_parameters_grid = get_configuration(data_set)
+    pipeline, pipeline_parameters, pipeline_parameters_grid, pipeline_parameters_randomized = get_configuration(data_set)
 
     if args.hp == 'config':
         log.info("Using the pre-selected model (hyper-parameters)...")
         pipeline.set_params(**pipeline_parameters)
 
-    else:
-        best_params = get_optimized_parameters(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_grid)
+    elif args.hp == 'grid':
+        best_params = get_optimized_parameters_grid(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_grid)
+        pipeline.set_params(**best_params)
+
+    elif args.hp == 'randomized':
+        best_params = get_optimized_parameters_randomized(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_randomized)
         pipeline.set_params(**best_params)
 
         # Reset the estimator to the state be for fitting
