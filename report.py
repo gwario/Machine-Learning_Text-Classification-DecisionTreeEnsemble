@@ -59,7 +59,7 @@ def print_prediction_report(pipeline, dt_predict, data):
     log.debug("Prediction done in {}".format(dt_predict))
 
 
-def print_hyper_parameter_search_report(pipeline, dt_search, parameter_grid, best_score, best_parameters):
+def print_hyper_parameter_search_report_grid(pipeline, dt_search, parameter_grid, best_score, best_parameters):
     """Prints the i.e. grid search report."""
 
     print("Hyper parameter search report:")
@@ -69,6 +69,17 @@ def print_hyper_parameter_search_report(pipeline, dt_search, parameter_grid, bes
     for param_name in sorted(parameter_grid.keys()):
         print("\t%s: %r" % (param_name, best_parameters[param_name]))
     log.debug("Grid search done in {}".format(dt_search))
+
+def print_hyper_parameter_search_report_randomized(pipeline, dt_search, parameter_randomized, best_score, best_parameters):
+    """Prints the i.e. randomized search report."""
+
+    print("Hyper parameter search report:")
+    print("Parameter grid: {}".format(parameter_randomized))
+    print("Best score: %0.3f" % best_score)
+    print("Best parameters set:")
+    for param_name in sorted(parameter_randomized.keys()):
+        print("\t%s: %r" % (param_name, best_parameters[param_name]))
+    log.debug("Randomized search done in {}".format(dt_search))
 
 
 def print_hyper_parameters(pipeline):
