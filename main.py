@@ -281,7 +281,7 @@ if __name__ == '__main__':
         # Create a training/validation and a test set for model selection (hyper-parameter search) and evaluation
         x_train, x_test, y_train, y_test = train_test_split(x, y,
                                                             test_size=args.test_size,
-                                                            random_state=cfg.split_random_state)
+                                                            random_state=cfg.split_random_state, stratify=y)
 
         log.info("Created training set ({}) and test set ({})".format(len(y_train), len(y_test)))
 
