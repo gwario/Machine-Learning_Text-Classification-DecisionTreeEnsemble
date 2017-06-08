@@ -7,7 +7,7 @@ from sklearn.metrics import classification_report
 
 from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer
 
-"""
+__doc__ = """
 Contains code to print results of fitting, predicting or cross-validation phases.
 """
 __author__ = "Mario Gastegger, Alex Heemann, Desislava Velinova"

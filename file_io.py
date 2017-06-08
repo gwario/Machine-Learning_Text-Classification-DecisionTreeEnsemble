@@ -2,7 +2,7 @@ import logging as log
 import pandas as pd
 from sklearn.externals import joblib
 
-"""
+__doc__ = """
 Contains code to load and save data.
 """
 __author__ = "Mario Gastegger, Alex Heemann, Desislava Velinova"

@@ -9,14 +9,13 @@ import argparse
 from datetime import datetime
 import pandas as pd
 
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import RandomizedSearchCV
 from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 
 import config as cfg
 import report as rp
 import file_io as io
+import hyper_parameter_search as hp
 
 __doc__ = """
 Classifies, train and saves the model.
@@ -57,39 +56,6 @@ class Range(object):
         return self.start <= other <= self.end
 
 
-def get_grid_result(pipeline, parameter_grid, hp_metric, x, y):
-    """ Finds and returns the best parameters for both the feature extraction and the classification.
-    Changing the grid increases processing time in a combinatorial way."""
-
-    log.debug("Performing grid search, optimizing {} score...".format(hp_metric))
-    grid_search = GridSearchCV(pipeline, parameter_grid, scoring=hp_metric, n_jobs=-1, verbose=1)
-
-    t0 = datetime.now()
-    grid_search.fit(x, y)
-    dt_grid = datetime.now() - t0
-
-    best_parameters = grid_search.best_estimator_.get_params()
-
-    rp.print_hyper_parameter_search_report_grid(pipeline, dt_grid, parameter_grid, grid_search.best_score_, best_parameters)
-
-    return best_parameters
-
-def get_randomized_result(pipeline, parameter_randomized, hp_metric, x, y):
-    
-    log.debug("Performing randomized search, optimizing {} score...".format(hp_metric))
-    randomized_search = RandomizedSearchCV(pipeline, parameter_randomized, scoring=hp_metric, 
-            n_iter = n_iter_search, n_jobs=-1, verbose=1)
-
-    t0 = datetime.now()
-    randomized_search.fit(x, y)
-    dt_randomized = datetime.now() - t0
-
-    best_parameters = randomized_search.best_estimator_.get_params()
-    rp.print_hyper_parameter_search_report_randomized(pipeline, dt_randomized, parameter_randomized, randomized_search.best_score_, best_parameters)
-
-    return best_parameters
-
-
 def get_args(args_parser):
     """Parses and returns the command line arguments."""
 
@@ -97,17 +63,21 @@ def get_args(args_parser):
                              help='''The training data to be used to create a model. The created model <timestamp>.model
                               is saved to disk.''')
     args_parser.add_argument('--hp', metavar='METHOD', nargs='?', const='config', default='config',
-                             choices=['config', 'grid'],
+                             choices=['config', 'grid', 'randomized'],
                              help='''The method to get the hyper-parameters. One of 'config' (use the pre-defined
-                             configuration in config.py) or 'grid' (GridSearchCV). (default: '%(default)s' ''')
+                             configuration in config.py), 'randomized' (RandomizedSearchCV) or 'grid' (GridSearchCV).
+                             (default: '%(default)s' ''')
     args_parser.add_argument('--hp_metric', metavar='METRIC', nargs='?', const='f1_macro', default='f1_macro',
                              choices=['accuracy', 'average_precision', 'f1', 'precision', 'recall',
                                       'f1_micro', 'f1_macro', 'f1_weighted', 'f1_samples',
                                       'precision_micro', 'precision_macro', 'precision_weighted', 'precision_samples',
                                       'recall_micro', 'recall_macro', 'recall_weighted', 'recall_samples',
                                       'roc_auc'],
-                             help='''The metric to use for the hyper-parameter optimization. Used with 'grid'.
-                             (default: '%(default)s' ''')
+                             help='''The metric to use for the hyper-parameter optimization. Used with 'grid' and
+                             'randomized'. (default: '%(default)s' 
+                             F1 = 2 * (precision * recall) / (precision + recall)
+                             In the multi-class and multi-label case, this is the weighted average of the F1 score of
+                             each class.''')
     args_parser.add_argument('--score', action='store_true',
                              help='''Whether or not to evaluate the estimator performance.''')
     args_parser.add_argument('--test_size', metavar='FRACTION', type=float, choices=[Range(0.0, 1.0)], default=0.25,
@@ -142,22 +112,6 @@ def get_configuration(data_set):
 
     elif data_set == 'multi-class':
         return cfg.multiclass_pipeline, cfg.multiclass_pipeline_parameters, cfg.multiclass_pipeline_parameters_grid, cfg.multiclass_pipeline_parameters_randomized
-
-def get_optimized_parameters_grid(pipeline, x_train, y_train, hp_metric, pipeline_parameters_grid):
-
-    # Find the best hyper-parameter configuration or use the defined one.
-    if args.hp == 'grid':
-        log.info("Using grid search on the training set to select the best model (hyper-parameters)...")
-
-        return get_grid_result(pipeline, pipeline_parameters_grid, hp_metric, x_train, y_train)
-
-def get_optimized_parameters_randomized(pipeline, x_train, y_train, hp_metric, pipeline_parameters_randomized):
-    
-    # Find the best hyper-parameter configuration or use the defined one.
-    if args.hp == 'randomized':
-        log.info("Using randomized search on the training set to select the best model (hyper-parameters)...")
-
-        return get_randomized_result(pipeline, pipeline_parameters_randomized, hp_metric, x_train, y_train)
 
 
 def mode_score(pipeline, x_train, y_train, x_test, y_test):
@@ -209,14 +163,14 @@ def select_model(args, data_set, x_train, y_train):
         pipeline.set_params(**pipeline_parameters)
 
     elif args.hp == 'grid':
-        best_params = get_optimized_parameters_grid(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_grid)
+        best_params = hp.get_optimized_parameters_grid(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_grid)
         pipeline.set_params(**best_params)
         
         # Reset the estimator to the state be for fitting
         pipeline = clone(pipeline)
 
     elif args.hp == 'randomized':
-        best_params = get_optimized_parameters_randomized(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_randomized)
+        best_params = hp.get_optimized_parameters_randomized(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_randomized)
         pipeline.set_params(**best_params)
         pipeline = clone(pipeline)
 
