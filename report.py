@@ -70,6 +70,7 @@ def print_hyper_parameter_search_report_grid(pipeline, dt_search, parameter_grid
         print("\t%s: %r" % (param_name, best_parameters[param_name]))
     log.debug("Grid search done in {}".format(dt_search))
 
+
 def print_hyper_parameter_search_report_randomized(pipeline, dt_search, parameter_randomized, best_score, best_parameters):
     """Prints the i.e. randomized search report."""
 

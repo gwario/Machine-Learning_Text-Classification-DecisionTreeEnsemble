@@ -109,6 +109,18 @@ multiclass_pipeline_parameters_grid = {
     'union__tokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Text')),
 }
 
+
+multiclass_pipeline_parameters_randomized = {
+    # 'vect__max_df': (0.5, 0.75, 1.0),
+    # 'vect__max_features': (None, 5000, 10000, 50000),
+    # 'vect__ngram_range': ((1, 1), (1, 2)),  # unigrams or bigrams
+    # 'clf__alpha': (0.00001, 0.000001),
+    # 'clf__n_iter': (10, 50, 80),
+    'clf__max_depth': (2, 5),
+    'clf__n_estimators': (10, 80),
+    'union__tokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Text')),
+}
+
 # This custom set of parameters is used when --grid was NOT specified.
 # TODO add all the default parameters here
 multiclass_pipeline_parameters = {
