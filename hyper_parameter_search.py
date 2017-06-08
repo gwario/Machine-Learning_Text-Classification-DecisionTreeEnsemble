@@ -41,6 +41,7 @@ def get_randomized_result(pipeline, parameter_randomized, hp_metric, x, y):
     randomized_search = RandomizedSearchCV(pipeline, parameter_randomized, scoring=hp_metric,
                                            random_state=cfg.pipeline_parameters_randomized_random_state,
                                            n_iter=cfg.pipeline_parameters_randomized_n_iter,
+                                           refit=False,
                                            n_jobs=-1, verbose=1)
 
     t0 = datetime.now()
