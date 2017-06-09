@@ -15,7 +15,7 @@ from nltk import pos_tag
 from sklearn.base import BaseEstimator, TransformerMixin
 import logging as log
 
-import sys  
+import sys
 
 reload(sys)  
 sys.setdefaultencoding('utf8')

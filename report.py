@@ -123,7 +123,7 @@ def print_best_parameters(search, search_space):
 def print_folds_results(search):
     """Prints the configuration and statistics of each fold."""
 
-    print("Detailed folds result:")
+    print("Detailed folds results:")
     print(DataFrame(search.cv_results_))
 
 

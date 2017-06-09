@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Python 2/3 compatibility
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 
 import logging as log
 from sys import exit
@@ -67,7 +67,7 @@ def get_args(args_parser):
                              help='''The method to get the hyper-parameters. One of 'config' (use the pre-defined
                              configuration in config.py), 'randomized' (RandomizedSearchCV) or 'grid' (GridSearchCV).
                              (default: '%(default)s' ''')
-    args_parser.add_argument('--hp_metric', metavar='METRIC', nargs='?', const='f1_macro', default='f1_macro',
+    args_parser.add_argument('--hp_metric', metavar='METRIC', nargs='?', const='accuracy', default='accuracy',
                              choices=['accuracy', 'average_precision', 'f1', 'precision', 'recall',
                                       'f1_micro', 'f1_macro', 'f1_weighted', 'f1_samples',
                                       'precision_micro', 'precision_macro', 'precision_weighted', 'precision_samples',
