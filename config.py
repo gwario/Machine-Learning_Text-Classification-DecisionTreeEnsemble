@@ -42,7 +42,7 @@ def word_count_pipeline(selector_key):
         ])
 
 
-def tokenized_and_lemmatized_pipeline(selector_key): 
+def tokenized_and_lemmatized_pipeline(selector_key):
     return Pipeline([
             ('selector', ItemSelector(key=selector_key)),
             ('preprocessor', NLTKPreprocessor()),
@@ -57,7 +57,7 @@ binary_pipeline = Pipeline([
         # Pipeline for pulling features from the articles's title
         ('titleWordCount', word_count_pipeline('Title')),
         ('abstractWordCount', word_count_pipeline('Abstract')),
-        ('tokenizedAndLemmatized', tokenized_and_lemmatized_pipeline('Abstract')),
+        ('abstractTokenizedAndLemmatized', tokenized_and_lemmatized_pipeline('Abstract')),
 
         #('title', Pipeline([
         # ('selector', ItemSelector(key='Title')),
@@ -84,7 +84,7 @@ multiclass_pipeline = Pipeline([
 
         # Pipeline for pulling features from the articles's title
         ('textWordCount', word_count_pipeline('Text')),
-        ('tokenizedAndLemmatized', tokenized_and_lemmatized_pipeline('Text')),
+        ('textTokenizedAndLemmatized', tokenized_and_lemmatized_pipeline('Text')),
         #TODO add your feature vectors here
         # Pipeline for pulling features from the articles's abstract
         #('myfeature', Pipeline([
@@ -130,12 +130,12 @@ binary_pipeline_parameters_randomized = {
     'clf__max_depth': (2, 5, 10, 20),
     'clf__n_estimators': (10, 20, 50, 80, 300),
     'union__abstractWordCount': (None, word_count_pipeline('Abstract')),
-    'union__tokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Abstract')),
+    'union__abstractTokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Abstract')),
 }
 multiclass_pipeline_parameters_randomized = {
     'clf__max_depth': (2, 5, 10, 20),
     'clf__n_estimators': (10, 20, 50, 80, 300),
-    'union__tokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Text')),
+    'union__textTokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Text'))
 }
 
 
@@ -147,10 +147,10 @@ binary_pipeline_parameters_grid = {
     'clf__max_depth': (2, 5),
     'clf__n_estimators': (10, 80),
     'union__abstractWordCount': (None, word_count_pipeline('Abstract')),
-    'union__tokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Abstract')),
+    'union__abstractTokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Abstract')),
 }
 multiclass_pipeline_parameters_grid = {
     'clf__max_depth': (2, 5),
     'clf__n_estimators': (10, 80),
-    'union__tokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Text')),
+    'union__textTokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Text')),
 }

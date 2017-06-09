@@ -8,8 +8,7 @@ from pandas import DataFrame
 
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report
-
+from sklearn.metrics import classification_report, accuracy_score
 from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer
 
 from preprocessor import NLTKPreprocessor, WordNetLemmatizer
@@ -45,6 +44,43 @@ def filtered(params):
     return filtered_params
 
 
+def filtered_best_params(params):
+    """Returns a new parameter dictionary with Pipeline values replaced by 'Pipeline'."""
+
+    filtered_params = {key: value for key, value in params.items()
+                       if not isinstance(value, FeatureUnion)
+                       and not isinstance(value, HashingVectorizer)
+                       and not isinstance(value, CountVectorizer)
+                       and not isinstance(value, RandomForestClassifier)
+                       and not isinstance(value, NLTKPreprocessor)
+                       and not isinstance(value, WordNetLemmatizer)
+                       and not key.endswith('steps')
+                       and not key.endswith('transformer_list')}
+
+    filtered_params = {key: (value if not isinstance(value, Pipeline) else 'Pipeline')
+                       for key, value in filtered_params.items()}
+
+    return filtered_params
+
+
+def filtered_search_space(param_search_space):
+    """Returns a new parameter dictionary with Pipeline values replaced by 'Pipeline'."""
+
+    tuple_pipeline_string = lambda tpl: tuple(('Pipeline'
+                                             if isinstance(value, Pipeline)
+                                             else value
+                                             for value in tpl))
+
+    contains_pipeline = lambda value: isinstance(value, tuple) and any(isinstance(val, Pipeline) for val in value)
+
+    filtered_params = {key: (tuple_pipeline_string(value)
+                             if contains_pipeline(value)
+                             else value)
+                       for key, value in param_search_space.items()}
+
+    return filtered_params
+
+
 def print_fitting_report(pipeline, dt_fitting, x_train, y_train):
     """Prints the training report."""
 
@@ -57,9 +93,8 @@ def print_evaluation_report(pipeline, dt_evaluation, y_pred, y_true):
 
     print("Evaluation report:")
     print(classification_report(y_true, y_pred))
+    print("Accuracy: {}".format(accuracy_score(y_true, y_pred)))
     log.debug("Evaluation done in {}".format(dt_evaluation))
-
-    # TODO Improve visualization of the validation report i.e. add useful metrics from http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics
 
 
 def print_prediction_report(pipeline, dt_predict, data):
@@ -72,54 +107,18 @@ def print_prediction_report(pipeline, dt_predict, data):
     log.debug("Prediction done in {}".format(dt_predict))
 
 
-def reduce_object(string, object, ellipsis="(...)"):
-    """Replaces there object parameters with ellipsis."""
-
-    matches = re.compile(object).finditer(string)
-
-    for match in reversed(list(matches)):
-        i = match.end()
-        cnt = 0
-        while cnt != 0 or i == match.end():
-            assert i < len(string)
-
-            if string[i] == '(':
-                cnt += 1
-            elif string[i] == ')':
-                cnt -= 1
-            i += 1
-        # i is pos after closing bracket
-        string = string[:match.end()] + ellipsis + string[i:]
-
-    return string
-
-
-def reduce_objects(string, objects, ellipsis="(...)"):
-
-    for object in objects:
-        string = reduce_object(string, object, ellipsis)
-
-    return string
-
-
 def print_search_space(parameter_search_space):
     """Prints the parameter search space."""
 
-    string = pformat(parameter_search_space)
-    string = reduce_objects(string, ['NLTKPreprocessor', 'CountVectorizer'])
-
     print("Parameter search space:")
-    print(string)
+    pprint(filtered_search_space(parameter_search_space))
 
 
 def print_best_parameters(search, search_space):
     """Prints the best parameters."""
 
     print("Best parameters set:")
-    for param_name in sorted(search_space.keys()):
-        param_value = pformat(search.best_params_[param_name])
-        param_value = reduce_objects(param_value, ['NLTKPreprocessor', 'CountVectorizer'])
-        print("\t%s: %s" % (param_name, param_value))
+    pprint(filtered_best_params(search.best_params_))
 
 
 def print_folds_results(search):
