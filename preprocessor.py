@@ -49,7 +49,7 @@ class NLTKPreprocessor(BaseEstimator, TransformerMixin):
         return [" ".join(doc) for doc in X]
 
     def transform(self, X):
-        log.info("Tokenizing documents (this may take a while...)")
+        log.debug("Tokenizing documents (this may take a while...)")
         return [
             list(self.tokenize(doc)) for doc in X
         ]
