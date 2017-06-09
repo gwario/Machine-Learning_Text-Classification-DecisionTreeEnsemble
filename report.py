@@ -1,4 +1,6 @@
 import logging as log
+from numpy.ma import MaskedArray
+from copy import deepcopy
 import re
 from pprint import pprint
 from pprint import pformat
@@ -123,8 +125,19 @@ def print_best_parameters(search, search_space):
 def print_folds_results(search):
     """Prints the configuration and statistics of each fold."""
 
+    cv_results = deepcopy(search.cv_results_)
+
     print("Detailed folds results:")
-    print(DataFrame(search.cv_results_))
+    # Remove the redundant params list
+    cv_results.pop('params', None)
+    # Replace pipelines
+    for param_key in cv_results:
+        if isinstance(cv_results[param_key], MaskedArray):
+            for index, value in enumerate(cv_results[param_key].data):
+                if isinstance(value, Pipeline):
+                    cv_results[param_key].data[index] = 'Pipeline'
+
+    print(DataFrame(cv_results))
 
 
 def print_hyper_parameter_search_report_grid(pipeline, dt_search, parameter_grid, grid_search):
