@@ -22,15 +22,18 @@ def get_grid_result(pipeline, parameter_grid, hp_metric, x, y):
     Changing the grid increases processing time in a combinatorial way."""
 
     log.debug("Performing grid search, optimizing {} score...".format(hp_metric))
-    grid_search = GridSearchCV(pipeline, parameter_grid, scoring=hp_metric, n_jobs=-1, verbose=1)
+    grid_search = GridSearchCV(pipeline, parameter_grid, scoring=hp_metric,
+                               cv=cfg.pipeline_parameters_grid_n_splits,
+                               refit=False,
+                               n_jobs=-1, verbose=1)
 
     t0 = datetime.now()
     grid_search.fit(x, y)
     dt_grid = datetime.now() - t0
 
-    best_parameters = grid_search.best_estimator_.get_params()
+    best_parameters = grid_search.best_params_
 
-    rp.print_hyper_parameter_search_report_grid(pipeline, dt_grid, parameter_grid, grid_search.best_score_, best_parameters)
+    rp.print_hyper_parameter_search_report_grid(pipeline, dt_grid, parameter_grid, grid_search)
 
     return best_parameters
 
@@ -41,6 +44,7 @@ def get_randomized_result(pipeline, parameter_randomized, hp_metric, x, y):
     randomized_search = RandomizedSearchCV(pipeline, parameter_randomized, scoring=hp_metric,
                                            random_state=cfg.pipeline_parameters_randomized_random_state,
                                            n_iter=cfg.pipeline_parameters_randomized_n_iter,
+                                           cv=cfg.pipeline_parameters_randomized_n_splits,
                                            refit=False,
                                            n_jobs=-1, verbose=1)
 
@@ -48,8 +52,8 @@ def get_randomized_result(pipeline, parameter_randomized, hp_metric, x, y):
     randomized_search.fit(x, y)
     dt_randomized = datetime.now() - t0
 
-    best_parameters = randomized_search.best_estimator_.get_params()
-    rp.print_hyper_parameter_search_report_randomized(pipeline, dt_randomized, parameter_randomized, randomized_search.best_score_, best_parameters)
+    best_parameters = randomized_search.best_params_
+    rp.print_hyper_parameter_search_report_randomized(pipeline, dt_randomized, parameter_randomized, randomized_search)
 
     return best_parameters
 

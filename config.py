@@ -1,5 +1,6 @@
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.dummy import DummyClassifier
 
 from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer, TfidfVectorizer
 from extractor import Printer, ItemSelector
@@ -63,6 +64,7 @@ binary_pipeline = Pipeline([
     )),
     # ('printer', Printer()),
     ('clf', RandomForestClassifier()),
+    # ('clf', DummyClassifier()),
 ])
 
 # ### Multiclass ####################################################
@@ -83,6 +85,7 @@ multiclass_pipeline = Pipeline([
     )),
     # ('printer', Printer()),
     ('clf', RandomForestClassifier()),
+    # ('clf', DummyClassifier()),
 ])
 
 
@@ -106,7 +109,11 @@ multiclass_pipeline_parameters = {
 
 
 # This set of parameters is used when --hp randomized was specified.
-pipeline_parameters_randomized_n_iter = 15  # The parameter space must be larger than or equal to n_iter
+# The parameter space must be larger than or equal to n_iter
+pipeline_parameters_randomized_n_iter = 2
+# The default is to cross-validate with 3 folds, this takes a considerable amount of time
+pipeline_parameters_randomized_n_splits = 2
+# To ensure some reproducibility
 pipeline_parameters_randomized_random_state = 654321
 binary_pipeline_parameters_randomized = {
     'clf__max_depth': (2, 5, 10, 20),
@@ -123,6 +130,8 @@ multiclass_pipeline_parameters_randomized = {
 
 # This parameters grid is used to find the best parameter configuration for the pipeline when --hp grid was specified.
 # http://scikit-learn.org/stable/modules/grid_search.html#grid-search
+# The default is to cross-validate with 3 folds, this takes a considerable amount of time
+pipeline_parameters_grid_n_splits = 2
 binary_pipeline_parameters_grid = {
     'clf__max_depth': (2, 5),
     'clf__n_estimators': (10, 80),

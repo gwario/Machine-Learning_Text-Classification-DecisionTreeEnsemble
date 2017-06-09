@@ -123,8 +123,6 @@ def mode_score(pipeline, x_train, y_train, x_test, y_test):
     """
 
     log.info("Evaluating the selected model on the test set...")
-    # The pipeline parameters
-    rp.print_hyper_parameters(pipeline)
 
     tFit = datetime.now()
     pipeline.fit(x_train, y_train)
