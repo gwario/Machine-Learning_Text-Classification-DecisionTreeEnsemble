@@ -21,6 +21,12 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
+# Fix Python 2.x.
+try:
+    UNICODE_EXISTS = bool(type(unicode))
+except NameError:
+    unicode = lambda s: str(s)
+
 # Source: http://bbengfort.github.io/tutorials/2016/05/19/text-classification-nltk-sckit-learn.html
 class NLTKPreprocessor(BaseEstimator, TransformerMixin):
 
