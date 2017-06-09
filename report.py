@@ -1,4 +1,5 @@
 import logging as log
+from copy import deepcopy
 import re
 from pprint import pprint
 from pprint import pformat
@@ -124,7 +125,10 @@ def print_folds_results(search):
     """Prints the configuration and statistics of each fold."""
 
     print("Detailed folds results:")
-    print(DataFrame(search.cv_results_))
+    # Remove the redundant params list
+    cv_results = deepcopy(search.cv_results_)
+    cv_results.pop('params', None)
+    print(DataFrame(cv_results))
 
 
 def print_hyper_parameter_search_report_grid(pipeline, dt_search, parameter_grid, grid_search):
