@@ -21,6 +21,13 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
 # Fix Python 2.x.
 try:
     UNICODE_EXISTS = bool(type(unicode))
@@ -65,6 +72,10 @@ class NLTKPreprocessor(BaseEstimator, TransformerMixin):
 	            # If stopword, ignore token and continue
 	            if token in self.stopwords:
 	                continue
+
+	            # If digit, continue
+	            if is_number(token):
+	            	continue
 
 	            # If punctuation, ignore token and continue
 	            if all(char in self.punct for char in token):
