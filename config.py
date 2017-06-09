@@ -1,3 +1,4 @@
+import pandas as pd
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.dummy import DummyClassifier
@@ -16,6 +17,12 @@ __version__ = "1.1"
 __status__ = "Production"
 
 
+pd.set_option('display.height', 1000)
+pd.set_option('display.width', 200)
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 200)
+
+
 def identity(arg):
     """
     Simple identity function works as a passthrough.
@@ -31,6 +38,7 @@ def word_count_pipeline(selector_key):
             ('selector', ItemSelector(key=selector_key)),        # ('printer', Printer()),
             ('count', CountVectorizer()),                   # ('printer', Printer()),
         ])
+
 
 def tokenized_and_lemmatized_pipeline(selector_key): 
     return Pipeline([
@@ -112,6 +120,7 @@ multiclass_pipeline_parameters = {
 # The parameter space must be larger than or equal to n_iter
 pipeline_parameters_randomized_n_iter = 2
 # The default is to cross-validate with 3 folds, this takes a considerable amount of time
+# Must be greater or equal to 2
 pipeline_parameters_randomized_n_splits = 2
 # To ensure some reproducibility
 pipeline_parameters_randomized_random_state = 654321
