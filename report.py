@@ -1,9 +1,7 @@
 import logging as log
 from numpy.ma import MaskedArray
 from copy import deepcopy
-import re
 from pprint import pprint
-from pprint import pformat
 from pandas import DataFrame
 
 from sklearn.pipeline import FeatureUnion, Pipeline
