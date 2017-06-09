@@ -30,6 +30,8 @@ def identity(arg):
     return arg
 
 
+classifier_random_state = RandomState(162534)
+
 #########################################
 # Pipelines
 ###########
@@ -71,7 +73,7 @@ binary_pipeline = Pipeline([
     ],
     )),
     # ('printer', Printer()),
-    ('clf', RandomForestClassifier()),
+    ('clf', RandomForestClassifier(random_state=classifier_random_state, n_jobs=-1)),
     # ('clf', DummyClassifier()),
 ])
 
@@ -92,7 +94,7 @@ multiclass_pipeline = Pipeline([
     ],
     )),
     # ('printer', Printer()),
-    ('clf', RandomForestClassifier()),
+    ('clf', RandomForestClassifier(random_state=classifier_random_state, n_jobs=-1)),
     # ('clf', DummyClassifier()),
 ])
 
