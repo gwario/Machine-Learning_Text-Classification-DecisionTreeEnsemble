@@ -5,7 +5,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
 from evolutionary_search import EvolutionaryAlgorithmSearchCV
 
-import config as cfg
+from config import PipelineConfiguration
 import report as rp
 
 __doc__ = """
@@ -17,89 +17,60 @@ __license__ = "FreeBSD License"
 __version__ = "1.1"
 __status__ = "Production"
 
+def get_search(type, pipeline_configuration, hp_metric):
+    if type == 'grid':
+      return GridSearchCV(pipeline_configuration.pipeline(), 
+                          pipeline_configuration.parameter('grid'), 
+                          scoring=hp_metric,
+                          cv=pipeline_configuration.pipeline_parameters_grid_n_splits,
+                          refit=False,
+                          n_jobs=-1, 
+                          verbose=1)
+    elif type == 'randomized':
+      return RandomizedSearchCV(pipeline, 
+                                pipeline_configuration.parameters('randomized'),
+                                scoring=hp_metric,
+                                random_state=pipeline_configuration.pipeline_parameters_randomized_random_state,
+                                n_iter=pipeline_configuration.pipeline_parameters_randomized_n_iter,
+                                cv=pipeline_configuration.pipeline_parameters_randomized_n_splits,
+                                refit=False,
+                                n_jobs=-1, 
+                                verbose=1)
+    elif type == 'evolutionary':
+      from random import seed
+      seed(pipeline_configuration.pipeline_parameters_evolutionary_random_seed)
+      return EvolutionaryAlgorithmSearchCV(pipeline, 
+                                           pipeline_configuration.parameters('evolutionary'), 
+                                           scoring=hp_metric,
+                                           cv=pipeline_configuration.pipeline_parameters_evolutionary_n_splits,
+                                           population_size=pipeline_configuration.pipeline_parameters_evolutionary_population_size,
+                                           gene_mutation_prob=pipeline_configuration.pipeline_parameters_evolutionary_gene_mutation_prob,
+                                           gene_crossover_prob=pipeline_configuration.pipeline_parameters_evolutionary_gene_crossover_prob,
+                                           tournament_size=pipeline_configuration.pipeline_parameters_evolutionary_tournament_size,
+                                           generations_number=pipeline_configuration.pipeline_parameters_evolutionary_generations_number,
+                                           refit=False,
+                                           n_jobs=-1, 
+                                           verbose=1)
 
-def get_grid_result(pipeline, parameter_grid, hp_metric, x, y):
+
+def get_result(type, pipeline_configuration, hp_metric, x, y):
     """ Finds and returns the best parameters for both the feature extraction and the classification.
     Changing the grid increases processing time in a combinatorial way."""
 
-    log.debug("Performing grid search, optimizing {} score...".format(hp_metric))
-    grid_search = GridSearchCV(pipeline, parameter_grid, scoring=hp_metric,
-                               cv=cfg.pipeline_parameters_grid_n_splits,
-                               refit=False,
-                               n_jobs=-1, verbose=1)
+    log.debug("Performing {} search, optimizing {} score...".format(type, hp_metric))
+    search = get_search(type, pipeline_configuration, hp_metric)
 
     t0 = datetime.now()
-    grid_search.fit(x, y)
-    dt_grid = datetime.now() - t0
+    search.fit(x, y)
+    dt = datetime.now() - t0
 
-    best_parameters = grid_search.best_params_
+    best_parameters = search.best_params_
 
-    rp.print_hyper_parameter_search_report_grid(pipeline, dt_grid, parameter_grid, grid_search)
+    rp.print_hyper_parameter_search_report(type, pipeline_configuration, dt, search)
 
     return best_parameters
 
+def get_optimized_parameters(type, pipeline_configuration, x_train, y_train, hp_metric):
+    log.info("Using {} search on the training set to select the best model (hyper-parameters)...").format(type)
 
-def get_randomized_result(pipeline, parameter_randomized, hp_metric, x, y):
-
-    log.debug("Performing randomized search, optimizing {} score...".format(hp_metric))
-    randomized_search = RandomizedSearchCV(pipeline, parameter_randomized, scoring=hp_metric,
-                                           random_state=cfg.pipeline_parameters_randomized_random_state,
-                                           n_iter=cfg.pipeline_parameters_randomized_n_iter,
-                                           cv=cfg.pipeline_parameters_randomized_n_splits,
-                                           refit=False,
-                                           n_jobs=-1, verbose=1)
-
-    t0 = datetime.now()
-    randomized_search.fit(x, y)
-    dt_randomized = datetime.now() - t0
-
-    best_parameters = randomized_search.best_params_
-    rp.print_hyper_parameter_search_report_randomized(pipeline, dt_randomized, parameter_randomized, randomized_search)
-
-    return best_parameters
-
-def get_optimized_parameters(type, pipeline, x_train, y_train, hp_metric, pipeline_parameters):
-    if type == 'grid':
-      return get_optimized_parameters_grid(pipeline, x_train, y_train, hp_metric, pipeline_parameters)
-    elif type == 'randomized':
-      return get_optimized_parameters_randomized(pipeline, x_train, y_train, hp_metric, pipeline_parameters)
-
-def get_optimized_parameters_grid(pipeline, x_train, y_train, hp_metric, pipeline_parameters_grid):
-
-    log.info("Using grid search on the training set to select the best model (hyper-parameters)...")
-
-    return get_grid_result(pipeline, pipeline_parameters_grid, hp_metric, x_train, y_train)
-
-
-def get_optimized_parameters_randomized(pipeline, x_train, y_train, hp_metric, pipeline_parameters_randomized):
-
-    log.info("Using randomized search on the training set to select the best model (hyper-parameters)...")
-
-    return get_randomized_result(pipeline, pipeline_parameters_randomized, hp_metric, x_train, y_train)
-
-
-def get_optimized_parameters_evolutionary(pipeline, x_train, y_train, hp_metric, pipeline_parameters_evolutionary):
-
-
-    log.debug("Performing randomized search, optimizing {} score...".format(hp_metric))
-    from random import seed
-    seed(cfg.pipeline_parameters_evolutionary_random_seed)
-
-    evo_search = EvolutionaryAlgorithmSearchCV(pipeline, pipeline_parameters_evolutionary, scoring=hp_metric,
-                                               cv=cfg.pipeline_parameters_evolutionary_n_splits,
-                                               population_size=cfg.pipeline_parameters_evolutionary_population_size,
-                                               gene_mutation_prob=cfg.pipeline_parameters_evolutionary_gene_mutation_prob,
-                                               gene_crossover_prob=cfg.pipeline_parameters_evolutionary_gene_crossover_prob,
-                                               tournament_size=cfg.pipeline_parameters_evolutionary_tournament_size,
-                                               generations_number=cfg.pipeline_parameters_evolutionary_generations_number,
-                                               refit=False,
-                                               n_jobs=-1, verbose=1)
-
-    t0 = datetime.now()
-    evo_search.fit(x_train, y_train)
-    dt_evolutionary = datetime.now() - t0
-
-    best_parameters = evo_search.best_params_
-    rp.print_hyper_parameter_search_report_evolutionary(pipeline, dt_evolutionary, pipeline_parameters_evolutionary, evo_search)
-
-    return best_parameters
+    return get_result(type, pipeline_configuration, hp_metric, x_train, y_train)
