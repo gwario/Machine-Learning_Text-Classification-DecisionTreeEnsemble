@@ -25,12 +25,14 @@ else:
     reload(sys)
     sys.setdefaultencoding('utf8')
 
+
 def is_number(s):
     try:
         float(s)
         return True
     except ValueError:
         return False
+
 
 # Fix Python 2.x.
 try:
@@ -41,7 +43,6 @@ except NameError:
 
 # Source: http://bbengfort.github.io/tutorials/2016/05/19/text-classification-nltk-sckit-learn.html
 class NLTKPreprocessor(BaseEstimator, TransformerMixin):
-
     def __init__(self, stopwords=None, punct=None,
                  lower=True, strip=True):
         self.lower = lower
@@ -79,8 +80,8 @@ class NLTKPreprocessor(BaseEstimator, TransformerMixin):
                     continue
 
                 # If digit, continue
-	            if is_number(token):
-	            	continue
+                if is_number(token):
+                    continue
 
                 # If punctuation, ignore token and continue
                 if all(char in self.punct for char in token):
