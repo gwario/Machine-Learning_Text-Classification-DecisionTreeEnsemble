@@ -20,7 +20,7 @@ __status__ = "Production"
 def get_search(type, pipeline_configuration, hp_metric):
     if type == 'grid':
       return GridSearchCV(pipeline_configuration.pipeline(), 
-                          pipeline_configuration.parameter('grid'), 
+                          pipeline_configuration.parameters('grid'), 
                           scoring=hp_metric,
                           cv=pipeline_configuration.pipeline_parameters_grid_n_splits,
                           refit=False,
@@ -71,6 +71,6 @@ def get_result(type, pipeline_configuration, hp_metric, x, y):
     return best_parameters
 
 def get_optimized_parameters(type, pipeline_configuration, x_train, y_train, hp_metric):
-    log.info("Using {} search on the training set to select the best model (hyper-parameters)...").format(type)
+    log.info("Using {} search on the training set to select the best model (hyper-parameters)...".format(type))
 
     return get_result(type, pipeline_configuration, hp_metric, x_train, y_train)
