@@ -28,6 +28,8 @@ def identity(arg):
     """
     return arg
 
+split_random_state = RandomState(123456)
+
 class PipelineConfiguration:
 
     def __init__(self, dataset):
