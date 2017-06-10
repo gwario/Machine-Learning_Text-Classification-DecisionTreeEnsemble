@@ -12,7 +12,7 @@ import pandas as pd
 from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 
-import config as cfg
+from config import PipelineConfiguration
 import report as rp
 import file_io as io
 import hyper_parameter_search as hp
@@ -103,17 +103,6 @@ def check_mode_of_operation(arguments):
         parser.print_help()
         exit(1)
 
-
-def get_configuration(data_set):
-    """Returns the right pipeline and parameters for the given data-set."""
-
-    if data_set == 'binary':
-        return cfg.binary_pipeline, cfg.binary_pipeline_parameters, cfg.binary_pipeline_parameters_grid, cfg.binary_pipeline_parameters_randomized
-
-    elif data_set == 'multi-class':
-        return cfg.multiclass_pipeline, cfg.multiclass_pipeline_parameters, cfg.multiclass_pipeline_parameters_grid, cfg.multiclass_pipeline_parameters_randomized
-
-
 def mode_score(pipeline, x_train, y_train, x_test, y_test):
     """Evaluates the estimator.
 
@@ -153,23 +142,18 @@ def select_model(args, data_set, x_train, y_train):
     -------
     pipeline: The parametrized pipeline.
     """
-
-    pipeline, pipeline_parameters, pipeline_parameters_grid, pipeline_parameters_randomized = get_configuration(data_set)
+    configuration = PipelineConfiguration(data_set)
+    pipeline = configuration.getPipeline()
 
     if args.hp == 'config':
         log.info("Using the pre-selected model (hyper-parameters)...")
-        pipeline.set_params(**pipeline_parameters)
+        pipeline.set_params(**configuration.getParameters())
 
-    elif args.hp == 'grid':
-        best_params = hp.get_optimized_parameters_grid(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_grid)
+    elif args.hp == 'grid' or args.hp == 'randomized':
+        best_params = hp.get_optimized_parameters(args.hp, pipeline, x_train, y_train, args.hp_metric, configuration.getParameters(args.hp))
         pipeline.set_params(**best_params)
         
         # Reset the estimator to the state be for fitting
-        pipeline = clone(pipeline)
-
-    elif args.hp == 'randomized':
-        best_params = hp.get_optimized_parameters_randomized(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_randomized)
-        pipeline.set_params(**best_params)
         pipeline = clone(pipeline)
 
     return pipeline
