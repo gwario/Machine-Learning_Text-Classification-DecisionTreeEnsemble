@@ -44,7 +44,6 @@ class PipelineConfiguration:
                 ('count', CountVectorizer()),                   # ('printer', Printer()),
             ])
 
-
     def tokenized_and_lemmatized_pipeline(self, selector_key): 
         return Pipeline([
                 ('selector', ItemSelector(key=selector_key)),
@@ -68,7 +67,7 @@ class PipelineConfiguration:
             return multiOption
 
     def pipeline(self):
-        return getBinaryOrMulti(self.getBinaryPipeline(), self.getMulticlassPipeline())
+        return self.binary_or_multi(self.binary_pipeline(), self.multiclass_pipeline())
 
     def parameters(self, type='config'):
         if type == 'config':
@@ -83,7 +82,7 @@ class PipelineConfiguration:
 
     # ### Binary ####################################################
     def binary_pipeline(self):
-        return union_pipeline([
+        return self.union_pipeline([
             # Pipeline for pulling features from the articles's title
             ('titleWordCount', self.word_count_pipeline('Title')),
             ('abstractWordCount', self.word_count_pipeline('Abstract')),
@@ -104,10 +103,10 @@ class PipelineConfiguration:
 
     # ### Multiclass ####################################################
     def multiclass_pipeline(self):
-        return union_pipeline([
+        return self.union_pipeline([
             # Pipeline for pulling features from the articles's title
-            ('textWordCount', word_count_pipeline('Text')),
-            ('textTokenizedAndLemmatized', tokenized_and_lemmatized_pipeline('Text')),
+            ('textWordCount', self.word_count_pipeline('Text')),
+            ('textTokenizedAndLemmatized', self.tokenized_and_lemmatized_pipeline('Text')),
             #TODO add your feature vectors here
             # Pipeline for pulling features from the articles's abstract
             #('myfeature', Pipeline([
@@ -116,13 +115,12 @@ class PipelineConfiguration:
             #])),
         ])
 
+    classifier_random_state = RandomState(162534)
 
 
     ##########################################
     # Hyper-parameter search configuration
     ######################################
-
-    split_random_state = RandomState(123456)
 
     # This custom set of parameters is used when --hp config was specified.
     binary_pipeline_parameters = {
@@ -171,15 +169,15 @@ class PipelineConfiguration:
         return {
             'clf__max_depth': (2, 5, 10, 20),
             'clf__n_estimators': (10, 20, 50, 80, 300),
-            'union__abstractWordCount': (None, word_count_pipeline('Abstract')),
-            'union__abstractTokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Abstract')),
+            'union__abstractWordCount': (None, self.word_count_pipeline('Abstract')),
+            'union__abstractTokenizedAndLemmatized': (None, self.tokenized_and_lemmatized_pipeline('Abstract')),
         }
 
     def multiclass_pipeline_parameters_randomized(self): 
         return {
             'clf__max_depth': (2, 5, 10, 20),
             'clf__n_estimators': (10, 20, 50, 80, 300),
-            'union__textTokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Text'))
+            'union__textTokenizedAndLemmatized': (None, self.tokenized_and_lemmatized_pipeline('Text'))
         }
 
 
