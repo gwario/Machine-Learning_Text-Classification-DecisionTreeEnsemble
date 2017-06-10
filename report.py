@@ -165,6 +165,21 @@ def print_hyper_parameter_search_report_randomized(pipeline, dt_search, paramete
     log.debug("Randomized search done in {}".format(dt_search))
 
 
+def print_hyper_parameter_search_report_evolutionary(pipeline, dt_search, parameters_evolutionary, evolutionary_search):
+    """Prints the i.e. evolutionary search report."""
+
+    print("Hyper parameter search report:")
+    print_search_space(parameters_evolutionary)
+
+    print("Best score: %0.3f" % evolutionary_search.best_score_)
+
+    print_best_parameters(evolutionary_search, parameters_evolutionary)
+    print_folds_results(evolutionary_search)
+
+    log.debug("Evolutionary search done in {}".format(dt_search))
+
+
+
 def print_hyper_parameters(pipeline):
     """Prints the i.e. grid search report."""
 

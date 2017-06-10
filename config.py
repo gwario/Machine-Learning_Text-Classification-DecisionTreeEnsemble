@@ -117,6 +117,28 @@ multiclass_pipeline_parameters = {
     'clf__n_estimators': 10,
 }
 
+# This set of parameters is used when --hp evolutionary was specified.
+pipeline_parameters_evolutionary_random_seed = 32135
+pipeline_parameters_evolutionary_n_splits = 2
+pipeline_parameters_evolutionary_population_size = 50
+pipeline_parameters_evolutionary_gene_mutation_prob = 0.10
+pipeline_parameters_evolutionary_gene_crossover_prob = 0.5
+pipeline_parameters_evolutionary_tournament_size = 3,
+pipeline_parameters_evolutionary_generations_number = 5
+binary_pipeline_parameters_evolutionary = {
+    'clf__max_depth': (2, 10, 40),
+    'clf__n_estimators': (10, 80, 300),
+    'union__abstractWordCount': (None, word_count_pipeline('Abstract')),
+    'union__abstractTokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Abstract')),
+}
+multiclass_pipeline_parameters_evolutionary = {
+    'clf__max_depth': (2, 10, 40),
+    'clf__n_estimators': (10, 80, 300),
+    'union__textTokenizedAndLemmatized': (None, tokenized_and_lemmatized_pipeline('Text'))
+}
+
+
+
 
 # This set of parameters is used when --hp randomized was specified.
 # The parameter space must be larger than or equal to n_iter

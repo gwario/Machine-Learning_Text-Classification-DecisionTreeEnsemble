@@ -63,9 +63,9 @@ def get_args(args_parser):
                              help='''The training data to be used to create a model. The created model <timestamp>.model
                               is saved to disk.''')
     args_parser.add_argument('--hp', metavar='METHOD', nargs='?', const='config', default='config',
-                             choices=['config', 'grid', 'randomized'],
+                             choices=['config', 'grid', 'randomized', 'evolutionary'],
                              help='''The method to get the hyper-parameters. One of 'config' (use the pre-defined
-                             configuration in config.py), 'randomized' (RandomizedSearchCV) or 'grid' (GridSearchCV).
+                             configuration in config.py), 'evolutionary' (EvolutionaryAlgorithmSearchCV), 'randomized' (RandomizedSearchCV) or 'grid' (GridSearchCV).
                              (default: '%(default)s' ''')
     args_parser.add_argument('--hp_metric', metavar='METRIC', nargs='?', const='accuracy', default='accuracy',
                              choices=['accuracy', 'average_precision', 'f1', 'precision', 'recall',
@@ -73,8 +73,8 @@ def get_args(args_parser):
                                       'precision_micro', 'precision_macro', 'precision_weighted', 'precision_samples',
                                       'recall_micro', 'recall_macro', 'recall_weighted', 'recall_samples',
                                       'roc_auc'],
-                             help='''The metric to use for the hyper-parameter optimization. Used with 'grid' and
-                             'randomized'. (default: '%(default)s' 
+                             help='''The metric to use for the hyper-parameter optimization. Used with 'grid',
+                             'randomized' and 'evolutionary'. (default: '%(default)s' 
                              F1 = 2 * (precision * recall) / (precision + recall)
                              In the multi-class and multi-label case, this is the weighted average of the F1 score of
                              each class.''')
@@ -108,10 +108,17 @@ def get_configuration(data_set):
     """Returns the right pipeline and parameters for the given data-set."""
 
     if data_set == 'binary':
-        return cfg.binary_pipeline, cfg.binary_pipeline_parameters, cfg.binary_pipeline_parameters_grid, cfg.binary_pipeline_parameters_randomized
+        return cfg.binary_pipeline,\
+               cfg.binary_pipeline_parameters, cfg.binary_pipeline_parameters_grid,\
+               cfg.binary_pipeline_parameters_randomized,\
+               cfg.binary_pipeline_parameters_evolutionary
 
     elif data_set == 'multi-class':
-        return cfg.multiclass_pipeline, cfg.multiclass_pipeline_parameters, cfg.multiclass_pipeline_parameters_grid, cfg.multiclass_pipeline_parameters_randomized
+        return cfg.multiclass_pipeline,\
+               cfg.multiclass_pipeline_parameters,\
+               cfg.multiclass_pipeline_parameters_grid,\
+               cfg.multiclass_pipeline_parameters_randomized, \
+               cfg.multiclass_pipeline_parameters_evolutionary
 
 
 def mode_score(pipeline, x_train, y_train, x_test, y_test):
@@ -154,7 +161,7 @@ def select_model(args, data_set, x_train, y_train):
     pipeline: The parametrized pipeline.
     """
 
-    pipeline, pipeline_parameters, pipeline_parameters_grid, pipeline_parameters_randomized = get_configuration(data_set)
+    pipeline, pipeline_parameters, pipeline_parameters_grid, pipeline_parameters_randomized, pipeline_parameters_evolutionary = get_configuration(data_set)
 
     if args.hp == 'config':
         log.info("Using the pre-selected model (hyper-parameters)...")
@@ -169,6 +176,11 @@ def select_model(args, data_set, x_train, y_train):
 
     elif args.hp == 'randomized':
         best_params = hp.get_optimized_parameters_randomized(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_randomized)
+        pipeline.set_params(**best_params)
+        pipeline = clone(pipeline)
+
+    elif args.hp == 'evolutionary':
+        best_params = hp.get_optimized_parameters_evolutionary(pipeline, x_train, y_train, args.hp_metric, pipeline_parameters_evolutionary)
         pipeline.set_params(**best_params)
         pipeline = clone(pipeline)
 
