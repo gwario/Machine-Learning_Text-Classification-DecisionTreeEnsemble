@@ -57,6 +57,11 @@ def get_randomized_result(pipeline, parameter_randomized, hp_metric, x, y):
 
     return best_parameters
 
+def get_optimized_parameters(type, pipeline, x_train, y_train, hp_metric, pipeline_parameters):
+    if type == 'grid':
+      return get_optimized_parameters_grid(pipeline, x_train, y_train, hp_metric, pipeline_parameters)
+    elif type == 'randomized':
+      return get_optimized_parameters_randomized(pipeline, x_train, y_train, hp_metric, pipeline_parameters)
 
 def get_optimized_parameters_grid(pipeline, x_train, y_train, hp_metric, pipeline_parameters_grid):
 
