@@ -137,47 +137,18 @@ def print_folds_results(search):
     print(DataFrame(cv_results))
 
 
-def print_hyper_parameter_search_report_grid(pipeline, dt_search, parameter_grid, grid_search):
-    """Prints the i.e. grid search report."""
+def print_hyper_parameter_search_report(type, pipeline_configuration, dt_search, search):
+    """Prints the search report for `type`."""
 
     print("Hyper parameter search report:")
-    print_search_space(parameter_grid)
+    print_search_space(pipeline_configuration.parameters(type))
 
-    print("Best score: %0.3f" % grid_search.best_score_)
+    print("Best score: %0.3f" % search.best_score_)
 
-    print_best_parameters(grid_search, parameter_grid)
-    print_folds_results(grid_search)
+    print_best_parameters(search, pipeline_configuration.parameters(type))
+    print_folds_results(search)
 
-    log.debug("Grid search done in {}".format(dt_search))
-
-
-def print_hyper_parameter_search_report_randomized(pipeline, dt_search, parameter_randomized, randomized_search):
-    """Prints the i.e. randomized search report."""
-
-    print("Hyper parameter search report:")
-    print_search_space(parameter_randomized)
-
-    print("Best score: %0.3f" % randomized_search.best_score_)
-
-    print_best_parameters(randomized_search, parameter_randomized)
-    print_folds_results(randomized_search)
-
-    log.debug("Randomized search done in {}".format(dt_search))
-
-
-def print_hyper_parameter_search_report_evolutionary(pipeline, dt_search, parameters_evolutionary, evolutionary_search):
-    """Prints the i.e. evolutionary search report."""
-
-    print("Hyper parameter search report:")
-    print_search_space(parameters_evolutionary)
-
-    print("Best score: %0.3f" % evolutionary_search.best_score_)
-
-    print_best_parameters(evolutionary_search, parameters_evolutionary)
-    print_folds_results(evolutionary_search)
-
-    log.debug("Evolutionary search done in {}".format(dt_search))
-
+    log.debug(type + " search done in {}".format(dt_search))
 
 
 def print_hyper_parameters(pipeline):
