@@ -13,6 +13,7 @@ from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 
 from config import PipelineConfiguration
+import config as cfg
 import report as rp
 import file_io as io
 import hyper_parameter_search as hp
@@ -44,7 +45,6 @@ __status__ = "Production"
 
 # Display progress logs on stdout
 log.basicConfig(level=log.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
-
 
 # For passing in floating point ranges as cl arguments
 class Range(object):
@@ -143,11 +143,11 @@ def select_model(args, data_set, x_train, y_train):
     pipeline: The parametrized pipeline.
     """
     configuration = PipelineConfiguration(data_set)
-    pipeline = configuration.getPipeline()
+    pipeline = configuration.pipeline()
 
     if args.hp == 'config':
         log.info("Using the pre-selected model (hyper-parameters)...")
-        pipeline.set_params(**configuration.getParameters())
+        pipeline.set_params(**configuration.parameters())
 
     elif args.hp == 'grid' or args.hp == 'randomized' or args.hp == 'evolutionary':
         best_params = hp.get_optimized_parameters(args.hp, configuration, x_train, y_train, args.hp_metric)
