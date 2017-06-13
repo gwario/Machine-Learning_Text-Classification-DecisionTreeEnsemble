@@ -27,7 +27,7 @@ def get_search(type, pipeline_configuration, hp_metric):
                           n_jobs=-1, 
                           verbose=1)
     elif type == 'randomized':
-      return RandomizedSearchCV(pipeline, 
+      return RandomizedSearchCV(pipeline_configuration.pipeline(), 
                                 pipeline_configuration.parameters('randomized'),
                                 scoring=hp_metric,
                                 random_state=pipeline_configuration.pipeline_parameters_randomized_random_state,
@@ -39,7 +39,7 @@ def get_search(type, pipeline_configuration, hp_metric):
     elif type == 'evolutionary':
       from random import seed
       seed(pipeline_configuration.pipeline_parameters_evolutionary_random_seed)
-      return EvolutionaryAlgorithmSearchCV(pipeline, 
+      return EvolutionaryAlgorithmSearchCV(pipeline_configuration.pipeline(), 
                                            pipeline_configuration.parameters('evolutionary'), 
                                            scoring=hp_metric,
                                            cv=pipeline_configuration.pipeline_parameters_evolutionary_n_splits,
