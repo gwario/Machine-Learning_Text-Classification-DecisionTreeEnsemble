@@ -1,4 +1,6 @@
 import logging as log
+import os.path
+
 import pandas as pd
 from sklearn.externals import joblib
 
@@ -21,7 +23,12 @@ def load_data(data_file):
     # df is DataFrame. If errors, do `list(tp)` instead of `tp`
     df = pd.concat(tp, ignore_index=True)
 
-    article_columns = [column for column in df if column in ['Id', 'Title', 'Abstract', 'Text']]
+    if os.path.exists(data_file.name + ".add"):
+        additional_data = load_additional_data(data_file.name)
+        additional_data = additional_data.fillna('')
+        df = pd.merge(df, additional_data, how='inner', on='Id')
+
+    article_columns = [column for column in df if column in ['Id', 'Title', 'Abstract', 'Text', 'Keywords', 'Terms']]
 
     return df.loc[:, article_columns], df.loc[:, 'Category'] if 'Category' in df else None
 
@@ -66,3 +73,29 @@ def save_prediction(prediction, prediction_filename):
 
     prediction.to_csv(prediction_filename, sep=',', index=False, encoding='utf-8')
     print("Prediction saved as {}".format(prediction_filename))
+
+
+def load_additional_data(data_file):
+    """Loads the keywords data from <data_file>.add."""
+
+    log.debug("Loading data...")
+    tp = pd.read_csv(data_file + ".add", iterator=True, chunksize=1000)
+    df = pd.concat(tp, ignore_index=True)
+
+    return df
+
+
+def save_additional_data(data, filename):
+    """Saves the data to <filename>.add."""
+    data.to_csv(filename + ".add", sep=',', index=False, encoding='utf-8')
+    print("Prediction saved as {}".format(filename))
+
+
+def store_oob_error_data(params, oob_errors):
+    """Stores the oob error data in to a oob.csv"""
+    filename = "oob.csv"
+    data = pd.DataFrame(oob_errors)
+    print(data)
+
+    data.to_csv(filename, sep=',', index=False, encoding='utf-8')
+    print("OOB error saved as {}".format(filename))
