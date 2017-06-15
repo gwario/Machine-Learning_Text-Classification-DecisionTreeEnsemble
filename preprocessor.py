@@ -1,21 +1,14 @@
-import nltk
-from nltk import word_tokenize
-import numpy as np
-import csv
-import argparse
+import logging as log
 import string
-from sklearn.ensemble import RandomForestClassifier
+import sys
 
+from nltk import WordNetLemmatizer
+from nltk import pos_tag
+from nltk import sent_tokenize
+from nltk import wordpunct_tokenize
 from nltk.corpus import stopwords as sw
 from nltk.corpus import wordnet as wn
-from nltk import wordpunct_tokenize
-from nltk import WordNetLemmatizer
-from nltk import sent_tokenize
-from nltk import pos_tag
 from sklearn.base import BaseEstimator, TransformerMixin
-import logging as log
-
-import sys
 
 if sys.version_info >= (3, 0):
     import importlib
@@ -100,3 +93,11 @@ class NLTKPreprocessor(BaseEstimator, TransformerMixin):
         }.get(tag[0], wn.NOUN)
 
         return self.lemmatizer.lemmatize(token, tag)
+
+
+def additional_data_tokenizer(value):
+    """Returns the separated keywords/terms."""
+    if isinstance(value, str):
+        return value.split(';')
+    else:
+        return []

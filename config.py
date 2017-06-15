@@ -1,12 +1,13 @@
 import pandas as pd
 from numpy.random import RandomState
 from sklearn.pipeline import FeatureUnion, Pipeline
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.dummy import DummyClassifier
 
 from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer, TfidfVectorizer
 from extractor import Printer, ItemSelector
 from preprocessor import NLTKPreprocessor
+from preprocessor import additional_data_tokenizer
 
 __doc__ = """
 Contains the configuration for binary and multiclass data.
@@ -22,6 +23,7 @@ pd.set_option('display.width', 200)
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 200)
 
+
 def identity(arg):
     """
     Simple identity function works as a passthrough.
@@ -29,6 +31,7 @@ def identity(arg):
     return arg
 
 split_random_state = RandomState(123456)
+
 
 class PipelineConfiguration:
 
@@ -49,6 +52,13 @@ class PipelineConfiguration:
                 ('selector', ItemSelector(key=selector_key)),
                 ('preprocessor', NLTKPreprocessor()),
                 ('vectorizer', TfidfVectorizer(tokenizer=identity, preprocessor=None, lowercase=False)),
+        ])
+
+    def additional_data_vectorizer_pipeline(self, key):
+        return Pipeline([
+            ('selector', ItemSelector(key=key)),
+            ('vectorizer', TfidfVectorizer(tokenizer=additional_data_tokenizer, preprocessor=None, lowercase=False)),
+            #('printer1', Printer()),
         ])
 
     def union_pipeline(self, subpipelines):
@@ -88,10 +98,8 @@ class PipelineConfiguration:
             ('abstractWordCount', self.word_count_pipeline('Abstract')),
             ('abstractTokenizedAndLemmatized', self.tokenized_and_lemmatized_pipeline('Abstract')),
 
-            #('title', Pipeline([
-            # ('selector', ItemSelector(key='Title')),
-            # ('tfidf', TfidfVectorizer()),
-            #])),
+            ('title_keyword_vector', self.additional_data_vectorizer_pipeline('Keywords')),
+            ('title_term_vector', self.additional_data_vectorizer_pipeline('Terms')),
 
             #TODO add your feature vectors here
             # Pipeline for pulling features from the articles's abstract
@@ -124,8 +132,16 @@ class PipelineConfiguration:
 
     # This custom set of parameters is used when --hp config was specified.
     binary_pipeline_parameters = {
-        'clf__max_depth': 8,
-        'clf__n_estimators': 10,
+        'clf__class_weight': None,
+        'clf__criterion': 'gini',
+        'clf__max_depth': 20,
+        'clf__max_features': 'auto',
+        'clf__max_leaf_nodes': 25,
+        'clf__min_impurity_split': 1e-07,
+        'clf__min_samples_leaf': 1,
+        'clf__min_samples_split': 5,
+        'clf__min_weight_fraction_leaf': 0.0,
+        'clf__n_estimators': 500,
     }
     multiclass_pipeline_parameters = {
         'clf__max_depth': 8,
@@ -158,17 +174,24 @@ class PipelineConfiguration:
 
     # This set of parameters is used when --hp randomized was specified.
     # The parameter space must be larger than or equal to n_iter
-    pipeline_parameters_randomized_n_iter = 2
+    pipeline_parameters_randomized_n_iter = 8
     # The default is to cross-validate with 3 folds, this takes a considerable amount of time
     # Must be greater or equal to 2
-    pipeline_parameters_randomized_n_splits = 2
+    pipeline_parameters_randomized_n_splits = 3
     # To ensure some reproducibility
     pipeline_parameters_randomized_random_state = RandomState(654321)
 
     def binary_pipeline_parameters_randomized(self): 
         return {
-            'clf__max_depth': (2, 5, 10, 20),
-            'clf__n_estimators': (10, 20, 50, 80, 300),
+            'clf__criterion': ['gini'],
+            'clf__max_depth': [None, 10, 20, 40],
+            'clf__max_features': ['auto'],
+            'clf__max_leaf_nodes': [5, 25, 50],
+            'clf__min_impurity_split': [1e-07],
+            'clf__min_samples_leaf': [1, 4],
+            'clf__min_samples_split': [2, 5],
+            'clf__min_weight_fraction_leaf': [0.0],
+            'clf__n_estimators': [300], #  Has to be > 25 for oob
             'union__abstractWordCount': (None, self.word_count_pipeline('Abstract')),
             'union__abstractTokenizedAndLemmatized': (None, self.tokenized_and_lemmatized_pipeline('Abstract')),
         }

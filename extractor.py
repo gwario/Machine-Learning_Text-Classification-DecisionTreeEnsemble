@@ -3,9 +3,6 @@ Contains feature extractors.
 
 """
 # TODO Put your own extractor class down below!
-import numpy as np
-import pandas as pd
-
 from sklearn.base import BaseEstimator, TransformerMixin
 
 
@@ -15,7 +12,7 @@ class Printer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, input):
-        print (input)
+        print(input)
         return input
 
 
@@ -55,5 +52,4 @@ class ItemSelector(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, data_dict):
-        # print(data_dict)
         return data_dict[self.key]
