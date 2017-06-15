@@ -99,7 +99,7 @@ class PipelineConfiguration:
 
     def parameters(self, type='config'):
         if type == 'config':
-            return self.binary_or_multi(self.binary_pipeline_parameters, self.multiclass_pipeline_parameters)
+            return self.binary_or_multi(self.binary_pipeline_parameters(), self.multiclass_pipeline_parameters())
         elif type == 'grid':
             return self.binary_or_multi(self.binary_pipeline_parameters_grid(), self.multiclass_pipeline_parameters_grid())
         elif type == 'randomized':
@@ -153,22 +153,29 @@ class PipelineConfiguration:
     ######################################
 
     # This custom set of parameters is used when --hp config was specified.
-    binary_pipeline_parameters = {
-        'clf__class_weight': None,
-        'clf__criterion': 'gini',
-        'clf__max_depth': 20,
-        'clf__max_features': 'auto',
-        'clf__max_leaf_nodes': 25,
-        'clf__min_impurity_split': 1e-07,
-        'clf__min_samples_leaf': 1,
-        'clf__min_samples_split': 5,
-        'clf__min_weight_fraction_leaf': 0.0,
-        'clf__n_estimators': 500,
-    }
-    multiclass_pipeline_parameters = {
-        'clf__max_depth': 8,
-        'clf__n_estimators': 10,
-    }
+    def binary_pipeline_parameters(self):
+        return {
+            'clf__max_depth': 40,
+            'clf__max_features': 'auto',
+            'clf__max_leaf_nodes': 5,
+            'clf__min_impurity_split': 1e-06,
+            'clf__min_samples_leaf': 4,
+            'clf__min_samples_split': 2,
+            'clf__min_weight_fraction_leaf': 0.0,
+            'clf__n_estimators': 800, #  Has to be > 25 for oob
+            'union__abstractWordCount':                 None,
+            'union__abstractTokenizedAndLemmatized':    self.tokenized_and_lemmatized_pipeline('Abstract'),
+            'union__titleWordCount':                    self.word_count_pipeline('Title'),
+            'union__word_ngrams':                       None,
+            'union__char_ngrams':                       None,
+            'union__title_keyword_vector':              self.additional_data_vectorizer_pipeline('Keywords'),
+            'union__title_term_vector':                 self.additional_data_vectorizer_pipeline('Terms'),
+        }
+    def multiclass_pipeline_parameters(self):
+        return {
+            'clf__max_depth': 8,
+            'clf__n_estimators': 10,
+        }
 
     # This set of parameters is used when --hp evolutionary was specified.
     pipeline_parameters_evolutionary_random_seed = 32135
@@ -194,7 +201,11 @@ class PipelineConfiguration:
             'union__textTokenizedAndLemmatized': (None, self.tokenized_and_lemmatized_pipeline('Text'))
         }
 
+    ###################################################################
+    # This search space takes about 15 minutes to search
+    #
     # This set of parameters is used when --hp randomized was specified.
+    ############
     # The parameter space must be larger than or equal to n_iter
     pipeline_parameters_randomized_n_iter = 8
     # The default is to cross-validate with 3 folds, this takes a considerable amount of time
@@ -203,7 +214,8 @@ class PipelineConfiguration:
     # To ensure some reproducibility
     pipeline_parameters_randomized_random_state = RandomState(654321)
 
-    def binary_pipeline_parameters_randomized(self): 
+    def binary_pipeline_parameters_randomized(self):
+
         return {
             'clf__criterion': ['gini'],
             'clf__max_depth': [5, 10, 20, 40, 50],
@@ -216,9 +228,11 @@ class PipelineConfiguration:
             'clf__n_estimators': [300], #  Has to be > 25 for oob
             'union__abstractWordCount':                 [None, self.word_count_pipeline('Abstract')],
             'union__abstractTokenizedAndLemmatized':    [None, self.tokenized_and_lemmatized_pipeline('Abstract')],
-            'union__titleWordCount':                    [None, self.word_count_pipeline('Title')],
+            'union__titleWordCount':                    [self.word_count_pipeline('Title')],
             'union__word_ngrams':                       [None, self.word_ngrams_pipeline('Abstract')],
             'union__char_ngrams':                       [None, self.char_ngrams_pipeline('Abstract')],
+            'union__title_keyword_vector':              [None, self.additional_data_vectorizer_pipeline('Keywords')],
+            'union__title_term_vector':                 [None, self.additional_data_vectorizer_pipeline('Terms')],
         }
 
     def multiclass_pipeline_parameters_randomized(self): 

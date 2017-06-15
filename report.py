@@ -65,12 +65,12 @@ def filtered_best_params(params):
 def filtered_search_space(param_search_space):
     """Returns a new parameter dictionary with Pipeline values replaced by 'Pipeline'."""
 
-    tuple_pipeline_string = lambda tpl: tuple(('Pipeline'
+    tuple_pipeline_string = lambda tpl: list(('Pipeline'
                                              if isinstance(value, Pipeline)
                                              else value
                                              for value in tpl))
 
-    contains_pipeline = lambda value: isinstance(value, tuple) and any(isinstance(val, Pipeline) for val in value)
+    contains_pipeline = lambda value: isinstance(value, tuple) or isinstance(value, list) and any(isinstance(val, Pipeline) for val in value)
 
     filtered_params = {key: (tuple_pipeline_string(value)
                              if contains_pipeline(value)
