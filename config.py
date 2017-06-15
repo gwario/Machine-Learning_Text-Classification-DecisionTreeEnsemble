@@ -112,9 +112,9 @@ class PipelineConfiguration:
     def binary_pipeline(self):
         return self.union_pipeline([
             # Pipeline for pulling features from the articles's title
-            # ('titleWordCount', self.word_count_pipeline('Title')),
-            # ('abstractWordCount', self.word_count_pipeline('Abstract')),
-            # ('abstractTokenizedAndLemmatized', self.tokenized_and_lemmatized_pipeline('Abstract')),
+            ('titleWordCount', self.word_count_pipeline('Title')),
+            ('abstractWordCount', self.word_count_pipeline('Abstract')),
+            ('abstractTokenizedAndLemmatized', self.tokenized_and_lemmatized_pipeline('Abstract')),
             ('word_ngrams', self.word_ngrams_pipeline('Abstract')),
             ('char_ngrams', self.char_ngrams_pipeline('Abstract')),
 
@@ -206,16 +206,19 @@ class PipelineConfiguration:
     def binary_pipeline_parameters_randomized(self): 
         return {
             'clf__criterion': ['gini'],
-            'clf__max_depth': [None, 10, 20, 40],
+            'clf__max_depth': [5, 10, 20, 40, 50],
             'clf__max_features': ['auto'],
             'clf__max_leaf_nodes': [5, 25, 50],
-            'clf__min_impurity_split': [1e-07],
+            'clf__min_impurity_split': [1e-06, 1e-07, 1e-08],
             'clf__min_samples_leaf': [1, 4],
             'clf__min_samples_split': [2, 5],
             'clf__min_weight_fraction_leaf': [0.0],
             'clf__n_estimators': [300], #  Has to be > 25 for oob
-            'union__abstractWordCount': (None, self.word_count_pipeline('Abstract')),
-            'union__abstractTokenizedAndLemmatized': (None, self.tokenized_and_lemmatized_pipeline('Abstract')),
+            'union__abstractWordCount':                 [None, self.word_count_pipeline('Abstract')],
+            'union__abstractTokenizedAndLemmatized':    [None, self.tokenized_and_lemmatized_pipeline('Abstract')],
+            'union__titleWordCount':                    [None, self.word_count_pipeline('Title')],
+            'union__word_ngrams':                       [None, self.word_ngrams_pipeline('Abstract')],
+            'union__char_ngrams':                       [None, self.char_ngrams_pipeline('Abstract')],
         }
 
     def multiclass_pipeline_parameters_randomized(self): 
