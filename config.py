@@ -51,6 +51,24 @@ class PipelineConfiguration:
                 ('vectorizer', TfidfVectorizer(tokenizer=identity, preprocessor=None, lowercase=False)),
         ])
 
+    def word_ngrams_pipeline(self, selector_key): 
+        return Pipeline([
+                ('selector', ItemSelector(key=selector_key)),
+                ('vectorizer', TfidfVectorizer(strip_accents='unicode', 
+                                                analyzer='word', 
+                                                ngram_range=(1, 2), 
+                                                stop_words='english')),
+        ])
+
+    def char_ngrams_pipeline(self, selector_key): 
+        return Pipeline([
+                ('selector', ItemSelector(key=selector_key)),
+                ('vectorizer', TfidfVectorizer(strip_accents='unicode', 
+                                                analyzer='char', 
+                                                ngram_range=(3, 7), 
+                                                stop_words='english')),
+        ])        
+
     def union_pipeline(self, subpipelines):
         # Use FeatureUnion to combine the features
         return Pipeline([
@@ -84,9 +102,11 @@ class PipelineConfiguration:
     def binary_pipeline(self):
         return self.union_pipeline([
             # Pipeline for pulling features from the articles's title
-            ('titleWordCount', self.word_count_pipeline('Title')),
-            ('abstractWordCount', self.word_count_pipeline('Abstract')),
-            ('abstractTokenizedAndLemmatized', self.tokenized_and_lemmatized_pipeline('Abstract')),
+            # ('titleWordCount', self.word_count_pipeline('Title')),
+            # ('abstractWordCount', self.word_count_pipeline('Abstract')),
+            # ('abstractTokenizedAndLemmatized', self.tokenized_and_lemmatized_pipeline('Abstract')),
+            ('word_ngrams', self.word_ngrams_pipeline('Abstract')),
+            ('char_ngrams', self.char_ngrams_pipeline('Abstract')),
 
             #('title', Pipeline([
             # ('selector', ItemSelector(key='Title')),
@@ -105,8 +125,10 @@ class PipelineConfiguration:
     def multiclass_pipeline(self):
         return self.union_pipeline([
             # Pipeline for pulling features from the articles's title
-            ('textWordCount', self.word_count_pipeline('Text')),
-            ('textTokenizedAndLemmatized', self.tokenized_and_lemmatized_pipeline('Text')),
+            # ('textWordCount', self.word_count_pipeline('Text')),
+            # ('textTokenizedAndLemmatized', self.tokenized_and_lemmatized_pipeline('Text')),
+            # ('word_ngrams', self.word_ngrams_pipeline('Text')),
+            ('char_ngrams', self.char_ngrams_pipeline('Text')),
             #TODO add your feature vectors here
             # Pipeline for pulling features from the articles's abstract
             #('myfeature', Pipeline([
