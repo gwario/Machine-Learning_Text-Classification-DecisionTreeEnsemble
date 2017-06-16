@@ -25,8 +25,9 @@ def load_data(data_file):
 
     if os.path.exists(data_file.name + ".add"):
         additional_data = load_additional_data(data_file.name)
-        additional_data = additional_data.fillna('')
         df = pd.merge(df, additional_data, how='inner', on='Id')
+
+    df = df.fillna('')
 
     article_columns = [column for column in df if column in ['Id', 'Title', 'Abstract', 'Text', 'Keywords', 'Terms', 'Tokens']]
 
