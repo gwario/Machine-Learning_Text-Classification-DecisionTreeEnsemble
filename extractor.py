@@ -2,7 +2,7 @@
 Contains feature extractors.
 
 """
-# TODO Put your own extractor class down below!
+from pprint import pprint
 from sklearn.base import BaseEstimator, TransformerMixin
 
 
@@ -13,6 +13,25 @@ class Printer(BaseEstimator, TransformerMixin):
 
     def transform(self, input):
         print(input)
+        return input
+
+class FeatureCountPrinter(BaseEstimator, TransformerMixin):
+    """Prints the input."""
+    def __init__(self, vector_name=None):
+        self.vector_name = vector_name
+
+    def fit(self, x, y=None):
+        return self
+
+    def transform(self, input):
+
+        (row_cnt, column_cnt) = input.shape
+
+        if self.vector_name:
+            print("Vector {} has {} features.".format(self.vector_name, column_cnt))
+        else:
+            print("Vector has {} features.".format(column_cnt))
+
         return input
 
 
