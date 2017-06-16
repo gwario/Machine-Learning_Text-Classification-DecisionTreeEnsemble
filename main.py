@@ -3,20 +3,20 @@
 # Python 2/3 compatibility
 from __future__ import print_function, absolute_import
 
-import logging as log
-from sys import exit
 import argparse
+import logging as log
 from datetime import datetime
-import pandas as pd
+from sys import exit
 
+import pandas as pd
 from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 
-from config import PipelineConfiguration
 import config as cfg
-import report as rp
 import file_io as io
 import hyper_parameter_search as hp
+import report as rp
+from config import PipelineConfiguration
 
 __doc__ = """
 Classifies, train and saves the model.
@@ -78,6 +78,9 @@ def get_args(args_parser):
                              F1 = 2 * (precision * recall) / (precision + recall)
                              In the multi-class and multi-label case, this is the weighted average of the F1 score of
                              each class.''')
+    args_parser.add_argument('--oob', action='store_true',
+                             help='''Whether or not to Calculate the out of bag score for the estimator.''')
+
     args_parser.add_argument('--score', action='store_true',
                              help='''Whether or not to evaluate the estimator performance.''')
     args_parser.add_argument('--test_size', metavar='FRACTION', type=float, choices=[Range(0.0, 1.0)], default=0.25,
@@ -103,7 +106,8 @@ def check_mode_of_operation(arguments):
         parser.print_help()
         exit(1)
 
-def mode_score(pipeline, x_train, y_train, x_test, y_test):
+
+def mode_score(args, pipeline, x_train, y_train, x_test, y_test):
     """Evaluates the estimator.
 
     Returns
@@ -114,11 +118,43 @@ def mode_score(pipeline, x_train, y_train, x_test, y_test):
     log.info("Evaluating the selected model on the test set...")
 
     tFit = datetime.now()
-    pipeline.fit(x_train, y_train)
+
+    if args.oob:
+        clf_n_min = 25
+        clf_n_max = pipeline.get_params()['clf__n_estimators']
+        oob_errors = []
+
+        pipeline.set_params(clf__oob_score=True)
+        pipeline.set_params(clf__warm_start=True)
+
+        log.debug("Calculating out-of-bag error over tree count (range {}-{})...".format(clf_n_min, clf_n_max))
+        for i in range(clf_n_min, clf_n_max + 1):
+            pipeline.set_params(clf__n_estimators=i)
+            pipeline.fit(x_train, y_train)
+            oob_error = 1 - pipeline.get_params()['clf'].oob_score_
+            oob_errors.append((i, oob_error))
+            if i % 10 == 0:
+                log.debug("Out-of-bag error for {} trees = {}".format(i, oob_error))
+
+        io.store_oob_error_data(pipeline.get_params(), oob_errors)
+
+        pipeline.set_params(clf__oob_score=False)
+        pipeline.set_params(clf__warm_start=False)
+        pipeline.set_params(clf__n_estimators=clf_n_max)
+
+    else:
+        clf_n_min = None
+        clf_n_max = None
+        oob_errors = None
+        pipeline.fit(x_train, y_train)
+
     rp.print_fitting_report(pipeline,
                             dt_fitting=datetime.now() - tFit,
                             x_train=x_train,
-                            y_train=y_train)
+                            y_train=y_train,
+                            min_estimators=clf_n_min,
+                            max_estimators=clf_n_max,
+                            error_rate=oob_errors)
 
     tPredict = datetime.now()
     categories_true, categories_predicted = y_test, pipeline.predict(x_test)
@@ -226,7 +262,7 @@ if __name__ == '__main__':
         pipeline = select_model(args, data_set, x_train, y_train)
 
         # Score part
-        pipeline = mode_score(pipeline, x_train, y_train, x_test, y_test)
+        pipeline = mode_score(args, pipeline, x_train, y_train, x_test, y_test)
 
         # Train part
         mode_train(pipeline, x, y)
@@ -253,7 +289,7 @@ if __name__ == '__main__':
         pipeline = select_model(args, data_set, x_train, y_train)
 
         # Score part
-        pipeline = mode_score(pipeline, x_train, y_train, x_test, y_test)
+        pipeline = mode_score(args, pipeline, x_train, y_train, x_test, y_test)
 
         # Train part
         mode_train(pipeline, x, y)

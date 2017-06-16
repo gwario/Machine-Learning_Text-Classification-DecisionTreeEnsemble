@@ -3,6 +3,7 @@ from numpy.ma import MaskedArray
 from copy import deepcopy
 from pprint import pprint
 from pandas import DataFrame
+import matplotlib.pyplot as plt
 
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.ensemble import RandomForestClassifier
@@ -64,12 +65,12 @@ def filtered_best_params(params):
 def filtered_search_space(param_search_space):
     """Returns a new parameter dictionary with Pipeline values replaced by 'Pipeline'."""
 
-    tuple_pipeline_string = lambda tpl: tuple(('Pipeline'
+    tuple_pipeline_string = lambda tpl: list(('Pipeline'
                                              if isinstance(value, Pipeline)
                                              else value
                                              for value in tpl))
 
-    contains_pipeline = lambda value: isinstance(value, tuple) and any(isinstance(val, Pipeline) for val in value)
+    contains_pipeline = lambda value: isinstance(value, tuple) or isinstance(value, list) and any(isinstance(val, Pipeline) for val in value)
 
     filtered_params = {key: (tuple_pipeline_string(value)
                              if contains_pipeline(value)
@@ -79,11 +80,28 @@ def filtered_search_space(param_search_space):
     return filtered_params
 
 
-def print_fitting_report(pipeline, dt_fitting, x_train, y_train):
+def print_fitting_report(pipeline, dt_fitting, x_train, y_train, min_estimators=None, max_estimators=None, error_rate=None):
     """Prints the training report."""
 
-    log.debug("Fitted {} data points.".format(len(y_train)))
-    log.debug("Fitting done in {}".format(dt_fitting))
+    if min_estimators and max_estimators and error_rate:
+
+        # Generate the "OOB error rate" vs. "n_estimators" plot.
+        xs, ys = zip(*error_rate)
+        plt.plot(xs, ys, label="Estimator")
+        plt.xlim(min_estimators, max_estimators)
+        plt.xlabel("n_estimators")
+        plt.ylabel("OOB error rate")
+        plt.legend(loc="upper right")
+
+        log.debug("Fitted {} data points.".format(len(y_train)))
+        log.debug("Fitting and oob calculation done in {}".format(dt_fitting))
+
+        plt.savefig('oob.png', transparent=True)
+        #plt.show()
+
+    else:
+        log.debug("Fitted {} data points.".format(len(y_train)))
+        log.debug("Fitting done in {}".format(dt_fitting))
 
 
 def print_evaluation_report(pipeline, dt_evaluation, y_pred, y_true):
