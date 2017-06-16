@@ -61,6 +61,12 @@ def save_model(pipeline, model_filename):
     print("Model saved as {}".format(model_filename))
 
 
+def save_data(dataset, dataset_filename):
+    """Saves the dataset to dataset_filename."""
+
+    dataset.to_csv(dataset_filename, sep=',', index=False, encoding='utf-8')
+    print("Dataset saved as {}".format(dataset_filename))
+
 def save_prediction(prediction, prediction_filename):
     """Saves the prediction to prediction_filename."""
 
