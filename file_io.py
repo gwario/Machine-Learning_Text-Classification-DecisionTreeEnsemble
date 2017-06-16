@@ -28,7 +28,7 @@ def load_data(data_file):
         additional_data = additional_data.fillna('')
         df = pd.merge(df, additional_data, how='inner', on='Id')
 
-    article_columns = [column for column in df if column in ['Id', 'Title', 'Abstract', 'Text', 'Keywords', 'Terms']]
+    article_columns = [column for column in df if column in ['Id', 'Title', 'Abstract', 'Text', 'Keywords', 'Terms', 'Tokens']]
 
     return df.loc[:, article_columns], df.loc[:, 'Category'] if 'Category' in df else None
 
