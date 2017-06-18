@@ -1,0 +1,377 @@
+python3 main.py --train ../wbi_binary/pre_train.csv --score --hp randomized --oob
+...
+2017-06-16 16:17:24,942 INFO Created training set (1616) and test set (539)
+2017-06-16 16:17:24,942 INFO Recognised data-set: binary
+2017-06-16 16:17:24,943 INFO Using randomized search on the training set to select the best model (hyper-parameters)...
+2017-06-16 16:17:24,943 DEBUG Performing randomized search, optimizing accuracy score...
+...
+Hyper parameter search report:
+Parameter search space:
+{'clf__criterion': ['gini'],
+ 'clf__max_depth': [5, 10, 20, 40],
+ 'clf__max_features': [None, 'sqrt', 'log2', 0.33],
+ 'clf__max_leaf_nodes': [2, 5, 10, 20, 50],
+ 'clf__min_impurity_split': [1e-06, 1e-07, 1e-08],
+ 'clf__min_samples_leaf': [2, 4, 8],
+ 'clf__min_samples_split': [2, 4, 8],
+ 'clf__min_weight_fraction_leaf': [0.0],
+ 'clf__n_estimators': [320],
+ 'union__abstractTokenizedAndLemmatized': [None, 'Pipeline'],
+ 'union__abstractWordCount': [None, 'Pipeline'],
+ 'union__char_ngrams': [None, 'Pipeline'],
+ 'union__titleWordCount': [None, 'Pipeline'],
+ 'union__title_keyword_vector': [None, 'Pipeline'],
+ 'union__title_term_vector': ['Pipeline'],
+ 'union__word_ngrams': [None, 'Pipeline']}
+Best score: 0.938
+Best parameters set:
+{'clf__criterion': 'gini',
+ 'clf__max_depth': 5,
+ 'clf__max_features': 0.33,
+ 'clf__max_leaf_nodes': 50,
+ 'clf__min_impurity_split': 1e-06,
+ 'clf__min_samples_leaf': 4,
+ 'clf__min_samples_split': 2,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 320,
+ 'union__abstractTokenizedAndLemmatized': 'Pipeline',
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__titleWordCount': 'Pipeline',
+ 'union__title_keyword_vector': 'Pipeline',
+ 'union__title_term_vector': 'Pipeline',
+ 'union__word_ngrams': 'Pipeline'}
+Detailed folds results:
+    mean_fit_time  mean_score_time  mean_test_score  mean_train_score param_clf__criterion param_clf__max_depth param_clf__max_features param_clf__max_leaf_nodes param_clf__min_impurity_split  \
+0       44.269645        10.661803         0.830446          0.830443                 gini                   20                    None                         2                         1e-07   
+1       28.328093        17.484811         0.920173          0.933165                 gini                   10                    log2                        10                         1e-08   
+2        4.967398         1.157951         0.929455          0.942449                 gini                   40                    sqrt                        10                         1e-06   
+3       20.375191         0.812067         0.925743          0.978345                 gini                   20                    None                        50                         1e-06   
+4        7.939186         0.585298         0.920792          0.953894                 gini                   10                    None                        20                         1e-07   
+5        2.707369         0.666936         0.918317          0.930691                 gini                   40                    sqrt                         5                         1e-08   
+6       31.844118        13.779731         0.904084          0.918001                 gini                   40                    log2                         2                         1e-06   
+7       38.766535        12.106843         0.933168          0.961944                 gini                   10                    0.33                        50                         1e-06   
+8       42.582380        11.492466         0.830446          0.830443                 gini                   10                    None                         2                         1e-06   
+9       79.520918        15.999772         0.932550          0.969992                 gini                   20                    None                        50                         1e-06   
+10      37.796434        10.148149         0.923267          0.969988                 gini                   10                    sqrt                        50                         1e-06   
+11      47.567536        10.212080         0.830446          0.830443                 gini                   20                    None                         2                         1e-06   
+12       9.572305         0.368426         0.925743          0.965037                 gini                    5                    None                        20                         1e-06   
+13       4.687071         1.381662         0.935644          0.974628                 gini                   20                    log2                        50                         1e-06   
+14       6.706803         0.347029         0.922649          0.943376                 gini                    5                    None                        10                         1e-06   
+15      42.001737        12.687254         0.933168          0.961634                 gini                   20                    0.33                        50                         1e-08   
+16       9.388714         0.911143         0.937500          0.971225                 gini                    5                    0.33                        50                         1e-06   
+17       2.291187         0.246324         0.858911          0.891705                 gini                    5                    0.33                        50                         1e-08   
+18       3.429021         0.876411         0.911510          0.925432                 gini                   20                    log2                         2                         1e-06   
+19       6.929115         0.740576         0.934406          0.978343                 gini                   40                    0.33                        50                         1e-07   
+20      61.095966         7.726211         0.904703          0.921401                 gini                   20                    log2                         2                         1e-08   
+21       2.956434         0.802513         0.934406          0.949256                 gini                   20                    sqrt                        10                         1e-07   
+22       9.377241         1.060523         0.928218          0.955443                 gini                   10                    0.33                        50                         1e-08   
+23       4.459951         1.170055         0.932550          0.951421                 gini                   20                    log2                        10                         1e-07   
+24       2.035218         0.544185         0.909035          0.917389                 gini                    5                    sqrt                         2                         1e-06   
+25      39.242959        10.882576         0.832921          0.840663                 gini                   10                    0.33                         2                         1e-07   
+26       9.487967         1.417615         0.933168          0.957611                 gini                   10                    0.33                        20                         1e-06   
+27      45.833088        21.867571         0.830446          0.830443                 gini                   40                    None                         2                         1e-06   
+28      45.397879         9.425426         0.917079          0.953900                 gini                   20                    sqrt                        50                         1e-08   
+29      69.809551        12.755169         0.934406          0.983912                 gini                   20                    None                        20                         1e-08   
+30       2.083725         0.312267         0.830446          0.830443                 gini                   20                    None                         2                         1e-08   
+31      10.742267         0.676171         0.915223          0.937188                 gini                   20                    None                        10                         1e-08   
+32      15.273691         0.846740         0.926361          0.956064                 gini                   10                    None                        20                         1e-07   
+33       4.440885         1.259273         0.932550          0.945230                 gini                   40                    sqrt                         5                         1e-07   
+34      27.985608         9.625818         0.922030          0.947090                 gini                    5                    log2                        20                         1e-07   
+35      39.573680        12.427086         0.904084          0.909033                 gini                   40                    sqrt                         2                         1e-07   
+36      34.214232         8.534988         0.926980          0.961323                 gini                    5                    sqrt                        50                         1e-06   
+37       4.128720         0.761741         0.918317          0.933790                 gini                   20                    log2                         2                         1e-07   
+38       2.550358         0.673134         0.935644          0.960086                 gini                   10                    log2                        50                         1e-08   
+39      44.975154        10.971494         0.924505          0.945544                 gini                    5                    0.33                        10                         1e-07   
+
+   param_clf__min_samples_leaf param_clf__min_samples_split param_clf__min_weight_fraction_leaf param_clf__n_estimators param_union__abstractTokenizedAndLemmatized param_union__abstractWordCount  \
+0                            8                            8                                   0                     320                                    Pipeline                       Pipeline   
+1                            2                            2                                   0                     320                                    Pipeline                           None   
+2                            8                            2                                   0                     320                                    Pipeline                       Pipeline   
+3                            4                            8                                   0                     320                                    Pipeline                       Pipeline   
+4                            8                            4                                   0                     320                                        None                       Pipeline   
+5                            8                            4                                   0                     320                                        None                       Pipeline   
+6                            2                            2                                   0                     320                                    Pipeline                       Pipeline   
+7                            8                            2                                   0                     320                                    Pipeline                           None   
+8                            2                            2                                   0                     320                                    Pipeline                       Pipeline   
+9                            8                            2                                   0                     320                                    Pipeline                       Pipeline   
+10                           4                            8                                   0                     320                                    Pipeline                       Pipeline   
+11                           2                            8                                   0                     320                                        None                       Pipeline   
+12                           4                            2                                   0                     320                                    Pipeline                           None   
+13                           2                            4                                   0                     320                                    Pipeline                           None   
+14                           2                            2                                   0                     320                                    Pipeline                           None   
+15                           8                            4                                   0                     320                                        None                           None   
+16                           4                            2                                   0                     320                                    Pipeline                           None   
+17                           2                            8                                   0                     320                                        None                           None   
+18                           8                            8                                   0                     320                                    Pipeline                       Pipeline   
+19                           4                            8                                   0                     320                                        None                       Pipeline   
+20                           4                            2                                   0                     320                                    Pipeline                       Pipeline   
+21                           4                            8                                   0                     320                                    Pipeline                       Pipeline   
+22                           8                            8                                   0                     320                                        None                       Pipeline   
+23                           4                            2                                   0                     320                                        None                       Pipeline   
+24                           4                            8                                   0                     320                                        None                       Pipeline   
+25                           4                            4                                   0                     320                                        None                           None   
+26                           8                            2                                   0                     320                                    Pipeline                       Pipeline   
+27                           4                            8                                   0                     320                                        None                           None   
+28                           8                            8                                   0                     320                                    Pipeline                           None   
+29                           4                            4                                   0                     320                                        None                           None   
+30                           4                            4                                   0                     320                                        None                           None   
+31                           2                            2                                   0                     320                                        None                       Pipeline   
+32                           8                            8                                   0                     320                                    Pipeline                       Pipeline   
+33                           2                            4                                   0                     320                                    Pipeline                           None   
+34                           2                            4                                   0                     320                                        None                           None   
+35                           4                            8                                   0                     320                                    Pipeline                       Pipeline   
+36                           2                            2                                   0                     320                                    Pipeline                       Pipeline   
+37                           4                            8                                   0                     320                                    Pipeline                       Pipeline   
+38                           8                            2                                   0                     320                                    Pipeline                       Pipeline   
+39                           8                            2                                   0                     320                                        None                           None   
+
+   param_union__char_ngrams param_union__titleWordCount param_union__title_keyword_vector param_union__title_term_vector param_union__word_ngrams  rank_test_score  split0_test_score  \
+0                  Pipeline                    Pipeline                          Pipeline                       Pipeline                 Pipeline               36           0.837037   
+1                  Pipeline                        None                          Pipeline                       Pipeline                 Pipeline               24           0.931481   
+2                      None                    Pipeline                              None                       Pipeline                 Pipeline               13           0.938889   
+3                      None                    Pipeline                          Pipeline                       Pipeline                     None               17           0.938889   
+4                      None                        None                              None                       Pipeline                     None               23           0.931481   
+5                      None                    Pipeline                              None                       Pipeline                     None               25           0.927778   
+6                  Pipeline                        None                          Pipeline                       Pipeline                 Pipeline               32           0.905556   
+7                  Pipeline                    Pipeline                          Pipeline                       Pipeline                 Pipeline                7           0.946296   
+8                  Pipeline                        None                          Pipeline                       Pipeline                     None               36           0.837037   
+9                  Pipeline                    Pipeline                          Pipeline                       Pipeline                 Pipeline               10           0.951852   
+10                 Pipeline                    Pipeline                              None                       Pipeline                 Pipeline               20           0.927778   
+11                 Pipeline                    Pipeline                          Pipeline                       Pipeline                     None               36           0.837037   
+12                     None                    Pipeline                          Pipeline                       Pipeline                     None               17           0.937037   
+13                     None                        None                              None                       Pipeline                 Pipeline                2           0.944444   
+14                     None                        None                              None                       Pipeline                     None               21           0.927778   
+15                 Pipeline                    Pipeline                          Pipeline                       Pipeline                     None                7           0.944444   
+16                     None                    Pipeline                          Pipeline                       Pipeline                 Pipeline                1           0.948148   
+17                     None                    Pipeline                              None                       Pipeline                     None               34           0.866667   
+18                     None                    Pipeline                              None                       Pipeline                 Pipeline               29           0.916667   
+19                     None                    Pipeline                              None                       Pipeline                     None                4           0.944444   
+20                 Pipeline                    Pipeline                              None                       Pipeline                 Pipeline               31           0.909259   
+21                     None                    Pipeline                              None                       Pipeline                     None                4           0.942593   
+22                     None                        None                          Pipeline                       Pipeline                 Pipeline               14           0.937037   
+23                     None                        None                              None                       Pipeline                 Pipeline               10           0.951852   
+24                     None                        None                              None                       Pipeline                     None               30           0.916667   
+25                 Pipeline                        None                              None                       Pipeline                 Pipeline               35           0.862963   
+26                     None                        None                          Pipeline                       Pipeline                 Pipeline                7           0.944444   
+27                 Pipeline                        None                              None                       Pipeline                 Pipeline               36           0.837037   
+28                 Pipeline                    Pipeline                              None                       Pipeline                 Pipeline               27           0.925926   
+29                 Pipeline                    Pipeline                          Pipeline                       Pipeline                     None                4           0.950000   
+30                     None                    Pipeline                              None                       Pipeline                     None               36           0.837037   
+31                     None                    Pipeline                          Pipeline                       Pipeline                     None               28           0.927778   
+32                     None                    Pipeline                          Pipeline                       Pipeline                     None               16           0.940741   
+33                     None                        None                              None                       Pipeline                 Pipeline               10           0.940741   
+34                 Pipeline                    Pipeline                          Pipeline                       Pipeline                     None               22           0.940741   
+35                 Pipeline                        None                          Pipeline                       Pipeline                 Pipeline               32           0.920370   
+36                 Pipeline                    Pipeline                          Pipeline                       Pipeline                     None               15           0.937037   
+37                     None                    Pipeline                              None                       Pipeline                     None               25           0.937037   
+38                     None                        None                          Pipeline                       Pipeline                     None                2           0.950000   
+39                 Pipeline                    Pipeline                          Pipeline                       Pipeline                 Pipeline               19           0.933333   
+
+    split0_train_score  split1_test_score  split1_train_score  split2_test_score  split2_train_score  std_fit_time  std_score_time  std_test_score  std_train_score  
+0             0.827138           0.823420            0.833952           0.830855            0.830241      0.896287        0.545188        0.005568         0.002786  
+1             0.928439           0.918216            0.933210           0.910781            0.937848      2.293849        5.364492        0.008566         0.003841  
+2             0.939591           0.929368            0.943414           0.920074            0.944341      0.281215        0.073221        0.007684         0.002056  
+3             0.983271           0.914498            0.974026           0.923792            0.977737      2.747947        0.190320        0.010055         0.003799  
+4             0.947026           0.908922            0.959184           0.921933            0.955473      1.461968        0.126895        0.009248         0.005087  
+5             0.926580           0.918216            0.928571           0.908922            0.936920      0.953646        0.146349        0.007701         0.004479  
+6             0.907063           0.914498            0.931354           0.892193            0.915584      0.218876        0.317667        0.009160         0.010063  
+7             0.963755           0.914498            0.958256           0.938662            0.963822      2.778344        1.778519        0.013553         0.002608  
+8             0.827138           0.823420            0.833952           0.830855            0.830241      4.520024        1.578676        0.005568         0.002786  
+9             0.977695           0.908922            0.961967           0.936803            0.970315      6.547052        4.758939        0.017787         0.006425  
+10            0.971190           0.933086            0.972171           0.908922            0.966605      3.471741        0.396728        0.010364         0.002426  
+11            0.827138           0.823420            0.833952           0.830855            0.830241      7.470933        0.847743        0.005568         0.002786  
+12            0.964684           0.914498            0.961967           0.925651            0.968460      0.918849        0.011592        0.009205         0.002663  
+13            0.973048           0.936803            0.974026           0.925651            0.976809      1.511104        0.121807        0.007719         0.001593  
+14            0.938662           0.912639            0.938776           0.927509            0.952690      0.725214        0.007888        0.007072         0.006586  
+15            0.962825           0.918216            0.958256           0.936803            0.963822      1.786266        2.566842        0.011015         0.002423  
+16            0.971190           0.929368            0.972171           0.934944            0.970315      2.565429        0.050453        0.007879         0.000758  
+17            0.887546           0.836431            0.881262           0.873606            0.906308      0.153496        0.002146        0.016132         0.010640  
+18            0.922862           0.901487            0.918367           0.916357            0.935065      0.899825        0.245683        0.007082         0.007055  
+19            0.980483           0.927509            0.980519           0.931227            0.974026      0.853871        0.185397        0.007271         0.003053  
+20            0.905204           0.903346            0.931354           0.901487            0.927644     12.258946        1.261695        0.003316         0.011552  
+21            0.947026           0.938662            0.949907           0.921933            0.950835      0.144974        0.093204        0.008956         0.001622  
+22            0.951673           0.921933            0.956401           0.925651            0.958256      2.267243        0.099173        0.006429         0.002772  
+23            0.947026           0.923792            0.952690           0.921933            0.954545      0.645197        0.093842        0.013695         0.003198  
+24            0.917286           0.905204            0.911874           0.905204            0.923006      0.081893        0.076910        0.005407         0.004545  
+25            0.852230           0.847584            0.862709           0.788104            0.807050      0.940598        0.877517        0.032278         0.024150  
+26            0.957249           0.931227            0.959184           0.923792            0.956401      0.864262        0.351078        0.008545         0.001165  
+27            0.827138           0.823420            0.833952           0.830855            0.830241      1.063187        6.304808        0.005568         0.002786  
+28            0.956320           0.929368            0.950835           0.895911            0.954545     12.767543        0.952608        0.015020         0.002285  
+29            0.986059           0.912639            0.979592           0.940520            0.986085      8.265427        3.399134        0.015857         0.003055  
+30            0.827138           0.823420            0.833952           0.830855            0.830241      0.447097        0.049730        0.005568         0.002786  
+31            0.933086           0.905204            0.931354           0.912639            0.947124      1.476162        0.102672        0.009397         0.007061  
+32            0.955390           0.910781            0.950835           0.927509            0.961967      0.914134        0.267207        0.012262         0.004569  
+33            0.936803           0.931227            0.948052           0.925651            0.950835      1.122672        0.506644        0.006233         0.006066  
+34            0.944238           0.907063            0.947124           0.918216            0.949907      0.867560        0.277375        0.014014         0.002315  
+35            0.906134           0.899628            0.908163           0.892193            0.912801      6.370378        3.774480        0.011930         0.002791  
+36            0.960037           0.934944            0.963822           0.908922            0.960111      6.344004        0.725482        0.012786         0.001767  
+37            0.937732           0.912639            0.935993           0.905204            0.927644      2.302454        0.172138        0.013604         0.004403  
+38            0.959108           0.929368            0.958256           0.927509            0.962894      0.038304        0.051372        0.010199         0.002016  
+39            0.944238           0.914498            0.943414           0.925651            0.948980      3.325982        1.580046        0.007734         0.002453  
+2017-06-16 16:53:07,328 DEBUG randomized search done in 0:26:33.543539
+2017-06-16 16:53:13,016 INFO Evaluating the selected model on the test set...
+2017-06-16 17:02:59,784 DEBUG Fitted 1616 data points.
+2017-06-16 17:02:59,784 DEBUG Fitting and oob calculation done in 0:09:46.125601
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.90      0.93      0.92       271
+  nonCancer       0.93      0.89      0.91       268
+
+avg / total       0.91      0.91      0.91       539
+
+Accuracy: 0.9128014842300557
+2017-06-16 17:03:00,491 DEBUG Evaluation done in 0:00:00.516888
+2017-06-16 17:03:00,512 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': True,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 5,
+ 'clf__max_features': 0.33,
+ 'clf__max_leaf_nodes': 50,
+ 'clf__min_impurity_split': 1e-06,
+ 'clf__min_samples_leaf': 4,
+ 'clf__min_samples_split': 2,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 320,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7f9ad813d798>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'union__abstractTokenizedAndLemmatized__select_chi2': SelectKBest(k=1000, score_func=<function chi2 at 0x7f9abfb4d0d0>),
+ 'union__abstractTokenizedAndLemmatized__select_chi2__k': 1000,
+ 'union__abstractTokenizedAndLemmatized__select_chi2__score_func': <function chi2 at 0x7f9abfb4d0d0>,
+ 'union__abstractTokenizedAndLemmatized__selector': ItemSelector(key='Tokens'),
+ 'union__abstractTokenizedAndLemmatized__selector__key': 'Tokens',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__analyzer': 'word',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__binary': False,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__decode_error': 'strict',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__encoding': 'utf-8',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__input': 'content',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__lowercase': False,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__max_df': 1.0,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__max_features': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__min_df': 1,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__ngram_range': (1, 1),
+ 'union__abstractTokenizedAndLemmatized__vectorizer__norm': 'l2',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__preprocessor': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__smooth_idf': True,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__stop_words': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__strip_accents': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__sublinear_tf': False,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7f9ab8b5a158>,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__use_idf': True,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__vocabulary': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__n_jobs': 1,
+ 'union__titleWordCount__count__analyzer': 'word',
+ 'union__titleWordCount__count__binary': False,
+ 'union__titleWordCount__count__decode_error': 'strict',
+ 'union__titleWordCount__count__dtype': <class 'numpy.int64'>,
+ 'union__titleWordCount__count__encoding': 'utf-8',
+ 'union__titleWordCount__count__input': 'content',
+ 'union__titleWordCount__count__lowercase': True,
+ 'union__titleWordCount__count__max_df': 1.0,
+ 'union__titleWordCount__count__max_features': None,
+ 'union__titleWordCount__count__min_df': 1,
+ 'union__titleWordCount__count__ngram_range': (1, 1),
+ 'union__titleWordCount__count__preprocessor': None,
+ 'union__titleWordCount__count__stop_words': None,
+ 'union__titleWordCount__count__strip_accents': None,
+ 'union__titleWordCount__count__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__titleWordCount__count__tokenizer': None,
+ 'union__titleWordCount__count__vocabulary': None,
+ 'union__titleWordCount__select_chi2': SelectKBest(k=1000, score_func=<function chi2 at 0x7f9abfb4d0d0>),
+ 'union__titleWordCount__select_chi2__k': 1000,
+ 'union__titleWordCount__select_chi2__score_func': <function chi2 at 0x7f9abfb4d0d0>,
+ 'union__titleWordCount__selector': ItemSelector(key='Title'),
+ 'union__titleWordCount__selector__key': 'Title',
+ 'union__title_keyword_vector__select_chi2': SelectKBest(k=1000, score_func=<function chi2 at 0x7f9abfb4d0d0>),
+ 'union__title_keyword_vector__select_chi2__k': 1000,
+ 'union__title_keyword_vector__select_chi2__score_func': <function chi2 at 0x7f9abfb4d0d0>,
+ 'union__title_keyword_vector__selector': ItemSelector(key='Keywords'),
+ 'union__title_keyword_vector__selector__key': 'Keywords',
+ 'union__title_keyword_vector__vectorizer__analyzer': 'word',
+ 'union__title_keyword_vector__vectorizer__binary': False,
+ 'union__title_keyword_vector__vectorizer__decode_error': 'strict',
+ 'union__title_keyword_vector__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__title_keyword_vector__vectorizer__encoding': 'utf-8',
+ 'union__title_keyword_vector__vectorizer__input': 'content',
+ 'union__title_keyword_vector__vectorizer__lowercase': False,
+ 'union__title_keyword_vector__vectorizer__max_df': 1.0,
+ 'union__title_keyword_vector__vectorizer__max_features': None,
+ 'union__title_keyword_vector__vectorizer__min_df': 1,
+ 'union__title_keyword_vector__vectorizer__ngram_range': (1, 1),
+ 'union__title_keyword_vector__vectorizer__norm': 'l2',
+ 'union__title_keyword_vector__vectorizer__preprocessor': None,
+ 'union__title_keyword_vector__vectorizer__smooth_idf': True,
+ 'union__title_keyword_vector__vectorizer__stop_words': None,
+ 'union__title_keyword_vector__vectorizer__strip_accents': None,
+ 'union__title_keyword_vector__vectorizer__sublinear_tf': False,
+ 'union__title_keyword_vector__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__title_keyword_vector__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7f9ab8b5a158>,
+ 'union__title_keyword_vector__vectorizer__use_idf': True,
+ 'union__title_keyword_vector__vectorizer__vocabulary': None,
+ 'union__title_term_vector__select_chi2': SelectKBest(k=1000, score_func=<function chi2 at 0x7f9abfb4d0d0>),
+ 'union__title_term_vector__select_chi2__k': 1000,
+ 'union__title_term_vector__select_chi2__score_func': <function chi2 at 0x7f9abfb4d0d0>,
+ 'union__title_term_vector__selector': ItemSelector(key='Terms'),
+ 'union__title_term_vector__selector__key': 'Terms',
+ 'union__title_term_vector__vectorizer__analyzer': 'word',
+ 'union__title_term_vector__vectorizer__binary': False,
+ 'union__title_term_vector__vectorizer__decode_error': 'strict',
+ 'union__title_term_vector__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__title_term_vector__vectorizer__encoding': 'utf-8',
+ 'union__title_term_vector__vectorizer__input': 'content',
+ 'union__title_term_vector__vectorizer__lowercase': False,
+ 'union__title_term_vector__vectorizer__max_df': 1.0,
+ 'union__title_term_vector__vectorizer__max_features': None,
+ 'union__title_term_vector__vectorizer__min_df': 1,
+ 'union__title_term_vector__vectorizer__ngram_range': (1, 1),
+ 'union__title_term_vector__vectorizer__norm': 'l2',
+ 'union__title_term_vector__vectorizer__preprocessor': None,
+ 'union__title_term_vector__vectorizer__smooth_idf': True,
+ 'union__title_term_vector__vectorizer__stop_words': None,
+ 'union__title_term_vector__vectorizer__strip_accents': None,
+ 'union__title_term_vector__vectorizer__sublinear_tf': False,
+ 'union__title_term_vector__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__title_term_vector__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7f9ab8b5a158>,
+ 'union__title_term_vector__vectorizer__use_idf': True,
+ 'union__title_term_vector__vectorizer__vocabulary': None,
+ 'union__transformer_weights': None,
+ 'union__word_ngrams__select_chi2': SelectKBest(k=1000, score_func=<function chi2 at 0x7f9abfb4d0d0>),
+ 'union__word_ngrams__select_chi2__k': 1000,
+ 'union__word_ngrams__select_chi2__score_func': <function chi2 at 0x7f9abfb4d0d0>,
+ 'union__word_ngrams__selector': ItemSelector(key='Abstract'),
+ 'union__word_ngrams__selector__key': 'Abstract',
+ 'union__word_ngrams__vectorizer__analyzer': 'word',
+ 'union__word_ngrams__vectorizer__binary': False,
+ 'union__word_ngrams__vectorizer__decode_error': 'strict',
+ 'union__word_ngrams__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__word_ngrams__vectorizer__encoding': 'utf-8',
+ 'union__word_ngrams__vectorizer__input': 'content',
+ 'union__word_ngrams__vectorizer__lowercase': True,
+ 'union__word_ngrams__vectorizer__max_df': 1.0,
+ 'union__word_ngrams__vectorizer__max_features': None,
+ 'union__word_ngrams__vectorizer__min_df': 1,
+ 'union__word_ngrams__vectorizer__ngram_range': (1, 2),
+ 'union__word_ngrams__vectorizer__norm': 'l2',
+ 'union__word_ngrams__vectorizer__preprocessor': None,
+ 'union__word_ngrams__vectorizer__smooth_idf': True,
+ 'union__word_ngrams__vectorizer__stop_words': 'english',
+ 'union__word_ngrams__vectorizer__strip_accents': 'unicode',
+ 'union__word_ngrams__vectorizer__sublinear_tf': False,
+ 'union__word_ngrams__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__word_ngrams__vectorizer__tokenizer': None,
+ 'union__word_ngrams__vectorizer__use_idf': True,
+ 'union__word_ngrams__vectorizer__vocabulary': None}
+2017-06-16 17:03:06,698 DEBUG Fitted 2155 data points.
+2017-06-16 17:03:06,698 DEBUG Fitting done in 0:00:06.178513
+Model saved as model_2017-06-16--17-03-00.pkl
+

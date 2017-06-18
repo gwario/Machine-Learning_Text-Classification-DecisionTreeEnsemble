@@ -83,10 +83,8 @@ Detailed folds results:
 7            0.969331           0.923792            0.965677           0.914498            0.969388      5.714632        4.931742        0.006232         0.001736  
 2017-06-15 23:09:20,743 DEBUG randomized search done in 0:45:11.930099
 2017-06-15 23:09:21,159 INFO Evaluating the selected model on the test set...
-2017-06-15 23:09:21,216 DEBUG Tokenizing documents (this may take a while...)
 2017-06-15 23:09:59,440 DEBUG Fitted 1616 data points.
 2017-06-15 23:09:59,440 DEBUG Fitting done in 0:00:38.280956
-2017-06-15 23:09:59,452 DEBUG Tokenizing documents (this may take a while...)
 Evaluation report:
              precision    recall  f1-score   support
 

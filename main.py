@@ -124,6 +124,8 @@ def mode_score(args, pipeline, x_train, y_train, x_test, y_test):
         clf_n_max = pipeline.get_params()['clf__n_estimators']
         oob_errors = []
 
+        bs = pipeline.get_params()['clf__bootstrap']
+        pipeline.set_params(clf__bootstrap=True)
         pipeline.set_params(clf__oob_score=True)
         pipeline.set_params(clf__warm_start=True)
 
@@ -138,6 +140,7 @@ def mode_score(args, pipeline, x_train, y_train, x_test, y_test):
 
         io.store_oob_error_data(pipeline.get_params(), oob_errors)
 
+        pipeline.set_params(clf__bootstrap=bs)
         pipeline.set_params(clf__oob_score=False)
         pipeline.set_params(clf__warm_start=False)
         pipeline.set_params(clf__n_estimators=clf_n_max)

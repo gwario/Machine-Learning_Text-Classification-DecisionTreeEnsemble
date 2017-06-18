@@ -1,0 +1,705 @@
+python3 main.py --train ../wbi_binary/pre_train.csv --score --hp randomized --oob
+2017-06-17 13:22:30,142 DEBUG Commandline arguments: Namespace(hp='randomized', hp_metric='accuracy', model=None, oob=True, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre_train.csv' mode='r' encoding='UTF-8'>)
+2017-06-17 13:22:30,142 DEBUG Valid mode of operation
+2017-06-17 13:22:30,142 INFO Mode score->train
+2017-06-17 13:22:30,142 DEBUG Loading data...
+2017-06-17 13:22:30,226 INFO Created training set (1616) and test set (539)
+2017-06-17 13:22:30,226 INFO Recognised data-set: binary
+2017-06-17 13:22:30,227 INFO Using randomized search on the training set to select the best model (hyper-parameters)...
+2017-06-17 13:22:30,227 DEBUG Performing randomized search, optimizing accuracy score...
+Fitting 3 folds for each of 120 candidates, totalling 360 fits
+[Parallel(n_jobs=-1)]: Done  42 tasks      | elapsed: 28.8min
+[Parallel(n_jobs=-1)]: Done 192 tasks      | elapsed: 132.0min
+[Parallel(n_jobs=-1)]: Done 360 out of 360 | elapsed: 249.0min finished
+Hyper parameter search report:
+Parameter search space:
+{'clf__criterion': ['gini'],
+ 'clf__max_depth': [11, 12, 13, 14, 15],
+ 'clf__max_features': [None, 'sqrt', 'log2', 0.33],
+ 'clf__max_leaf_nodes': [40, 50, 60, 70],
+ 'clf__min_impurity_split': [1e-05, 1e-06, 1e-08, 1e-09],
+ 'clf__min_samples_leaf': [2, 3],
+ 'clf__min_samples_split': [2, 3, 4, 5],
+ 'clf__min_weight_fraction_leaf': [0.0],
+ 'clf__n_estimators': [1200],
+ 'union__abstractTokenizedAndLemmatized': ['Pipeline'],
+ 'union__abstractWordCount': ['Pipeline'],
+ 'union__char_ngrams': [None],
+ 'union__titleWordCount': ['Pipeline'],
+ 'union__title_keyword_vector': ['Pipeline'],
+ 'union__title_term_vector': ['Pipeline'],
+ 'union__word_ngrams': [None]}
+Best score: 0.957
+Best parameters set:
+{'clf__criterion': 'gini',
+ 'clf__max_depth': 12,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 40,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 3,
+ 'clf__min_samples_split': 5,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1200,
+ 'union__abstractTokenizedAndLemmatized': 'Pipeline',
+ 'union__abstractWordCount': 'Pipeline',
+ 'union__char_ngrams': None,
+ 'union__titleWordCount': 'Pipeline',
+ 'union__title_keyword_vector': 'Pipeline',
+ 'union__title_term_vector': 'Pipeline',
+ 'union__word_ngrams': None}
+Detailed folds results:
+     mean_fit_time  mean_score_time  mean_test_score  mean_train_score param_clf__criterion param_clf__max_depth param_clf__max_features param_clf__max_leaf_nodes param_clf__min_impurity_split  \
+0         3.982703         1.714257         0.956064          0.979890                 gini                   11                    log2                        70                         1e-05   
+1         7.019454         2.405595         0.950495          0.975559                 gini                   13                    sqrt                        60                         1e-05   
+2       184.187699         2.786299         0.941213          1.000000                 gini                   11                    0.33                        60                         1e-05   
+3       459.079652         3.371858         0.939975          1.000000                 gini                   12                    None                        50                         1e-06   
+4        16.321339         2.920235         0.951114          0.982056                 gini                   13                    sqrt                        70                         1e-08   
+5       167.958474         2.601812         0.939975          0.994123                 gini                   11                    0.33                        40                         1e-06   
+6       213.620760         2.539976         0.940594          0.999381                 gini                   12                    0.33                        70                         1e-06   
+7       437.216180         2.687397         0.939356          0.999071                 gini                   11                    None                        70                         1e-06   
+8       165.354760         2.958182         0.940594          0.994123                 gini                   13                    0.33                        40                         1e-08   
+9       175.120066         2.860548         0.941213          0.999381                 gini                   15                    0.33                        70                         1e-05   
+10       11.744148         2.701550         0.956683          0.979580                 gini                   12                    log2                        40                         1e-05   
+11      173.426843         2.760916         0.940594          0.999381                 gini                   12                    0.33                        60                         1e-06   
+12       17.220568         2.728540         0.950495          0.984840                 gini                   14                    sqrt                        70                         1e-06   
+13      181.370819         2.986228         0.940594          0.998452                 gini                   12                    0.33                        50                         1e-06   
+14       13.331427         2.933901         0.956064          0.979890                 gini                   11                    log2                        50                         1e-05   
+15      609.314318         3.073507         0.939975          1.000000                 gini                   15                    None                        50                         1e-09   
+16       14.490489         3.287863         0.956683          0.982363                 gini                   11                    log2                        70                         1e-06   
+17      250.457880         3.467725         0.941213          0.999381                 gini                   14                    0.33                        70                         1e-06   
+18      201.237759         2.997521         0.941213          0.994123                 gini                   14                    0.33                        40                         1e-06   
+19      529.446475         2.913480         0.938738          0.999071                 gini                   13                    None                        70                         1e-09   
+20       19.755260         3.475165         0.950495          0.975559                 gini                   13                    sqrt                        60                         1e-09   
+21       22.961553         3.574157         0.951114          0.983912                 gini                   14                    sqrt                        60                         1e-09   
+22      500.330247         3.327873         0.938119          0.999071                 gini                   12                    None                        70                         1e-06   
+23       17.679735         3.178008         0.946782          0.973391                 gini                   11                    sqrt                        70                         1e-05   
+24       20.137401         3.351943         0.950495          0.975248                 gini                   13                    sqrt                        50                         1e-09   
+25       15.444935         3.389564         0.956683          0.979580                 gini                   12                    log2                        50                         1e-05   
+26       20.004522         3.106435         0.952351          0.986078                 gini                   15                    sqrt                        70                         1e-06   
+27       17.796195         3.236666         0.947401          0.972772                 gini                   11                    sqrt                        40                         1e-08   
+28       15.065941         3.183105         0.954208          0.982674                 gini                   13                    log2                        70                         1e-06   
+29       14.238558         2.896054         0.956683          0.982363                 gini                   11                    log2                        40                         1e-08   
+30      244.173844         4.091914         0.940594          0.998452                 gini                   12                    0.33                        50                         1e-08   
+31      245.277534         3.192421         0.941832          1.000000                 gini                   12                    0.33                        60                         1e-05   
+32      228.677860         3.295494         0.941213          0.998452                 gini                   14                    0.33                        50                         1e-09   
+33      204.094940         2.750311         0.940594          0.996597                 gini                   11                    0.33                        40                         1e-09   
+34       15.114894         2.529580         0.948020          0.978034                 gini                   11                    sqrt                        50                         1e-05   
+35       12.945371         2.838309         0.946782          0.973391                 gini                   11                    sqrt                        70                         1e-06   
+36      212.390415         3.028057         0.941832          1.000000                 gini                   11                    0.33                        50                         1e-09   
+37       20.496526         3.800805         0.949876          0.976488                 gini                   14                    sqrt                        70                         1e-08   
+38      186.194464         2.586268         0.939975          0.996597                 gini                   13                    0.33                        40                         1e-05   
+39       18.028136         3.150507         0.947401          0.976178                 gini                   11                    sqrt                        40                         1e-06   
+40       19.635843         2.817511         0.950495          0.984840                 gini                   14                    sqrt                        70                         1e-05   
+41       13.432236         2.680305         0.956683          0.979580                 gini                   12                    log2                        60                         1e-05   
+42        8.984983         2.233748         0.954827          0.979580                 gini                   15                    log2                        50                         1e-09   
+43       12.611023         2.079055         0.949257          0.976797                 gini                   14                    sqrt                        60                         1e-08   
+44       10.674529         1.829093         0.948639          0.976796                 gini                   12                    sqrt                        40                         1e-09   
+45      465.212164         2.771306         0.939356          0.998762                 gini                   15                    None                        50                         1e-09   
+46       17.485613         3.138035         0.948639          0.979581                 gini                   12                    sqrt                        60                         1e-05   
+47       17.710451         3.287045         0.950495          0.975559                 gini                   13                    sqrt                        60                         1e-08   
+48       13.656381         2.898909         0.956683          0.979580                 gini                   12                    log2                        60                         1e-09   
+49      209.175554         2.731516         0.941213          0.998452                 gini                   15                    0.33                        50                         1e-09   
+50       10.366694         2.887163         0.953589          0.982674                 gini                   13                    log2                        60                         1e-06   
+51      218.759386         3.228839         0.941213          0.999381                 gini                   14                    0.33                        70                         1e-09   
+52      214.995371         2.475000         0.942450          0.999690                 gini                   15                    0.33                        50                         1e-09   
+53       15.831150         2.595713         0.946782          0.973081                 gini                   11                    sqrt                        50                         1e-08   
+54       11.506256         2.341455         0.956683          0.979580                 gini                   12                    log2                        50                         1e-05   
+55      569.959886         2.588707         0.938738          0.999071                 gini                   15                    None                        70                         1e-08   
+56      244.878637         3.248886         0.941213          0.999381                 gini                   15                    0.33                        70                         1e-09   
+57      520.182465         2.494231         0.939975          1.000000                 gini                   13                    None                        70                         1e-05   
+58      495.559847         2.862697         0.940594          1.000000                 gini                   12                    None                        60                         1e-09   
+59       13.425619         2.938976         0.956683          0.982363                 gini                   11                    log2                        50                         1e-09   
+60       18.513823         2.682088         0.950495          0.984840                 gini                   14                    sqrt                        70                         1e-08   
+61        9.924517         2.615811         0.956064          0.982055                 gini                   14                    log2                        50                         1e-05   
+62      538.060552         3.024448         0.939975          1.000000                 gini                   11                    None                        50                         1e-05   
+63      513.497315         2.802107         0.939975          1.000000                 gini                   12                    None                        50                         1e-06   
+64       12.023428         2.844754         0.954827          0.979580                 gini                   15                    log2                        60                         1e-05   
+65       15.243307         2.528763         0.946782          0.973081                 gini                   11                    sqrt                        60                         1e-08   
+66      562.649307         3.316648         0.939975          1.000000                 gini                   14                    None                        50                         1e-06   
+67       19.757476         3.805869         0.946782          0.973081                 gini                   11                    sqrt                        60                         1e-06   
+68       15.751869         3.636242         0.954208          0.982674                 gini                   13                    log2                        40                         1e-09   
+69       17.065987         3.235004         0.956683          0.982363                 gini                   11                    log2                        70                         1e-09   
+70      491.352542         3.157458         0.939356          0.998762                 gini                   15                    None                        50                         1e-08   
+71       13.072611         3.057615         0.956683          0.982363                 gini                   11                    log2                        50                         1e-05   
+72       12.046376         2.987247         0.954827          0.981747                 gini                   14                    log2                        60                         1e-08   
+73      444.904364         2.788582         0.938119          0.996906                 gini                   14                    None                        40                         1e-08   
+74      189.496901         2.601601         0.941213          1.000000                 gini                   11                    0.33                        60                         1e-05   
+75      185.498388         2.484444         0.941832          0.999381                 gini                   13                    0.33                        60                         1e-05   
+76       18.545670         3.598604         0.946782          0.973081                 gini                   11                    sqrt                        50                         1e-06   
+77       17.211315         2.894054         0.952970          0.983294                 gini                   15                    sqrt                        50                         1e-09   
+78      200.285817         3.085771         0.941832          1.000000                 gini                   13                    0.33                        60                         1e-05   
+79      517.598995         2.766614         0.939975          1.000000                 gini                   11                    None                        70                         1e-08   
+80      446.990480         3.125767         0.939356          0.999071                 gini                   11                    None                        60                         1e-09   
+81      185.599261         2.679156         0.941213          1.000000                 gini                   11                    0.33                        60                         1e-05   
+82      412.421189         2.317384         0.938738          0.998762                 gini                   13                    None                        50                         1e-08   
+83      153.666207         2.333726         0.941213          0.994123                 gini                   15                    0.33                        40                         1e-05   
+84       11.486581         2.637952         0.956064          0.979890                 gini                   11                    log2                        70                         1e-09   
+85       12.356441         2.409559         0.948639          0.976796                 gini                   12                    sqrt                        40                         1e-05   
+86        9.051780         1.959188         0.952970          0.980817                 gini                   15                    sqrt                        40                         1e-08   
+87        8.787532         2.168305         0.951114          0.978033                 gini                   15                    sqrt                        50                         1e-05   
+88      177.889936         2.237490         0.940594          1.000000                 gini                   15                    0.33                        60                         1e-05   
+89       16.059305         2.682474         0.948639          0.976796                 gini                   12                    sqrt                        40                         1e-06   
+90      156.996944         2.472463         0.940594          0.996597                 gini                   15                    0.33                        40                         1e-06   
+91      137.313069         1.986782         0.939975          0.996597                 gini                   12                    0.33                        40                         1e-06   
+92       13.470265         2.320708         0.950495          0.975248                 gini                   13                    sqrt                        50                         1e-09   
+93       11.977662         2.000853         0.947401          0.976178                 gini                   11                    sqrt                        40                         1e-05   
+94        8.425683         2.049475         0.956683          0.982363                 gini                   11                    log2                        60                         1e-09   
+95       11.346884         2.102589         0.949876          0.982675                 gini                   13                    sqrt                        70                         1e-05   
+96        8.038453         2.140600         0.954827          0.979580                 gini                   15                    log2                        50                         1e-06   
+97        5.840432         1.665633         0.956064          0.979890                 gini                   11                    log2                        50                         1e-09   
+98        8.432492         1.968567         0.949876          0.974629                 gini                   12                    sqrt                        60                         1e-05   
+99      173.118461         2.327959         0.940594          0.999381                 gini                   12                    0.33                        70                         1e-08   
+100     443.505469         2.521794         0.939975          1.000000                 gini                   13                    None                        60                         1e-08   
+101      11.882519         2.668456         0.953589          0.982674                 gini                   13                    log2                        50                         1e-09   
+102     185.715310         2.483153         0.942450          0.999690                 gini                   15                    0.33                        50                         1e-05   
+103     454.218311         2.336239         0.939975          1.000000                 gini                   15                    None                        70                         1e-05   
+104     162.048842         2.808427         0.941213          0.994123                 gini                   15                    0.33                        40                         1e-05   
+105     189.156044         2.341810         0.942450          1.000000                 gini                   14                    0.33                        60                         1e-06   
+106     169.379558         2.607496         0.941213          0.998452                 gini                   15                    0.33                        50                         1e-08   
+107     410.605162         2.740876         0.938738          0.996906                 gini                   11                    None                        40                         1e-05   
+108     423.913673         2.708917         0.939356          0.998762                 gini                   15                    None                        50                         1e-06   
+109     460.549630         2.510333         0.939975          1.000000                 gini                   15                    None                        50                         1e-08   
+110     189.081409         1.892708         0.942450          0.999690                 gini                   14                    0.33                        50                         1e-05   
+111     138.785818         2.234549         0.939975          0.996597                 gini                   12                    0.33                        40                         1e-05   
+112      10.286731         2.470363         0.956683          0.982363                 gini                   11                    log2                        50                         1e-08   
+113      12.924091         2.245398         0.946782          0.973391                 gini                   11                    sqrt                        70                         1e-06   
+114      13.677338         2.293843         0.948020          0.979272                 gini                   11                    sqrt                        70                         1e-08   
+115       9.191993         2.229501         0.954827          0.979580                 gini                   15                    log2                        50                         1e-09   
+116       8.072004         1.915303         0.949876          0.974629                 gini                   12                    sqrt                        70                         1e-06   
+117     182.841515         2.367167         0.942450          0.999690                 gini                   13                    0.33                        50                         1e-09   
+118     414.870864         2.338080         0.938119          0.999071                 gini                   12                    None                        60                         1e-06   
+119     181.021396         2.058271         0.941213          0.999381                 gini                   15                    0.33                        70                         1e-05   
+
+    param_clf__min_samples_leaf param_clf__min_samples_split param_clf__min_weight_fraction_leaf param_clf__n_estimators param_union__abstractTokenizedAndLemmatized param_union__abstractWordCount  \
+0                             3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+1                             3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+2                             2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+3                             2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+4                             2                            5                                   0                    1200                                    Pipeline                       Pipeline   
+5                             3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+6                             3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+7                             3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+8                             3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+9                             3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+10                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+11                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+12                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+13                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+14                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+15                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+16                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+17                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+18                            3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+19                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+20                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+21                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+22                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+23                            3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+24                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+25                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+26                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+27                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+28                            2                            5                                   0                    1200                                    Pipeline                       Pipeline   
+29                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+30                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+31                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+32                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+33                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+34                            2                            5                                   0                    1200                                    Pipeline                       Pipeline   
+35                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+36                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+37                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+38                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+39                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+40                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+41                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+42                            3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+43                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+44                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+45                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+46                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+47                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+48                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+49                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+50                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+51                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+52                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+53                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+54                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+55                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+56                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+57                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+58                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+59                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+60                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+61                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+62                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+63                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+64                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+65                            3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+66                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+67                            3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+68                            2                            5                                   0                    1200                                    Pipeline                       Pipeline   
+69                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+70                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+71                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+72                            2                            5                                   0                    1200                                    Pipeline                       Pipeline   
+73                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+74                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+75                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+76                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+77                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+78                            2                            5                                   0                    1200                                    Pipeline                       Pipeline   
+79                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+80                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+81                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+82                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+83                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+84                            3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+85                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+86                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+87                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+88                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+89                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+90                            2                            5                                   0                    1200                                    Pipeline                       Pipeline   
+91                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+92                            3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+93                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+94                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+95                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+96                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+97                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+98                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+99                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+100                           2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+101                           2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+102                           2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+103                           2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+104                           3                            2                                   0                    1200                                    Pipeline                       Pipeline   
+105                           2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+106                           3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+107                           3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+108                           3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+109                           2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+110                           2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+111                           2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+112                           2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+113                           3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+114                           2                            5                                   0                    1200                                    Pipeline                       Pipeline   
+115                           3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+116                           3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+117                           2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+118                           3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+119                           3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+
+    param_union__char_ngrams param_union__titleWordCount param_union__title_keyword_vector param_union__title_term_vector param_union__word_ngrams  rank_test_score  split0_test_score  \
+0                       None                    Pipeline                          Pipeline                       Pipeline                     None               13           0.961111   
+1                       None                    Pipeline                          Pipeline                       Pipeline                     None               33           0.961111   
+2                       None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.944444   
+3                       None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.940741   
+4                       None                    Pipeline                          Pipeline                       Pipeline                     None               30           0.962963   
+5                       None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.944444   
+6                       None                    Pipeline                          Pipeline                       Pipeline                     None               85           0.944444   
+7                       None                    Pipeline                          Pipeline                       Pipeline                     None              109           0.942593   
+8                       None                    Pipeline                          Pipeline                       Pipeline                     None               85           0.944444   
+9                       None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.946296   
+10                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.962963   
+11                      None                    Pipeline                          Pipeline                       Pipeline                     None               85           0.944444   
+12                      None                    Pipeline                          Pipeline                       Pipeline                     None               33           0.962963   
+13                      None                    Pipeline                          Pipeline                       Pipeline                     None               85           0.944444   
+14                      None                    Pipeline                          Pipeline                       Pipeline                     None               13           0.961111   
+15                      None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.940741   
+16                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+17                      None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.946296   
+18                      None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.944444   
+19                      None                    Pipeline                          Pipeline                       Pipeline                     None              114           0.940741   
+20                      None                    Pipeline                          Pipeline                       Pipeline                     None               33           0.961111   
+21                      None                    Pipeline                          Pipeline                       Pipeline                     None               30           0.962963   
+22                      None                    Pipeline                          Pipeline                       Pipeline                     None              118           0.940741   
+23                      None                    Pipeline                          Pipeline                       Pipeline                     None               55           0.961111   
+24                      None                    Pipeline                          Pipeline                       Pipeline                     None               33           0.961111   
+25                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.962963   
+26                      None                    Pipeline                          Pipeline                       Pipeline                     None               29           0.962963   
+27                      None                    Pipeline                          Pipeline                       Pipeline                     None               52           0.959259   
+28                      None                    Pipeline                          Pipeline                       Pipeline                     None               23           0.966667   
+29                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+30                      None                    Pipeline                          Pipeline                       Pipeline                     None               85           0.944444   
+31                      None                    Pipeline                          Pipeline                       Pipeline                     None               67           0.944444   
+32                      None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.946296   
+33                      None                    Pipeline                          Pipeline                       Pipeline                     None               85           0.944444   
+34                      None                    Pipeline                          Pipeline                       Pipeline                     None               50           0.959259   
+35                      None                    Pipeline                          Pipeline                       Pipeline                     None               55           0.961111   
+36                      None                    Pipeline                          Pipeline                       Pipeline                     None               67           0.946296   
+37                      None                    Pipeline                          Pipeline                       Pipeline                     None               41           0.962963   
+38                      None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.944444   
+39                      None                    Pipeline                          Pipeline                       Pipeline                     None               52           0.959259   
+40                      None                    Pipeline                          Pipeline                       Pipeline                     None               33           0.962963   
+41                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.962963   
+42                      None                    Pipeline                          Pipeline                       Pipeline                     None               18           0.962963   
+43                      None                    Pipeline                          Pipeline                       Pipeline                     None               45           0.961111   
+44                      None                    Pipeline                          Pipeline                       Pipeline                     None               46           0.961111   
+45                      None                    Pipeline                          Pipeline                       Pipeline                     None              109           0.942593   
+46                      None                    Pipeline                          Pipeline                       Pipeline                     None               46           0.961111   
+47                      None                    Pipeline                          Pipeline                       Pipeline                     None               33           0.961111   
+48                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.962963   
+49                      None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.946296   
+50                      None                    Pipeline                          Pipeline                       Pipeline                     None               25           0.966667   
+51                      None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.946296   
+52                      None                    Pipeline                          Pipeline                       Pipeline                     None               62           0.948148   
+53                      None                    Pipeline                          Pipeline                       Pipeline                     None               55           0.961111   
+54                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.962963   
+55                      None                    Pipeline                          Pipeline                       Pipeline                     None              114           0.940741   
+56                      None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.946296   
+57                      None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.940741   
+58                      None                    Pipeline                          Pipeline                       Pipeline                     None               85           0.942593   
+59                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+60                      None                    Pipeline                          Pipeline                       Pipeline                     None               33           0.962963   
+61                      None                    Pipeline                          Pipeline                       Pipeline                     None               13           0.964815   
+62                      None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.940741   
+63                      None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.940741   
+64                      None                    Pipeline                          Pipeline                       Pipeline                     None               18           0.962963   
+65                      None                    Pipeline                          Pipeline                       Pipeline                     None               55           0.961111   
+66                      None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.940741   
+67                      None                    Pipeline                          Pipeline                       Pipeline                     None               55           0.961111   
+68                      None                    Pipeline                          Pipeline                       Pipeline                     None               23           0.966667   
+69                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+70                      None                    Pipeline                          Pipeline                       Pipeline                     None              109           0.942593   
+71                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+72                      None                    Pipeline                          Pipeline                       Pipeline                     None               18           0.964815   
+73                      None                    Pipeline                          Pipeline                       Pipeline                     None              118           0.942593   
+74                      None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.944444   
+75                      None                    Pipeline                          Pipeline                       Pipeline                     None               67           0.948148   
+76                      None                    Pipeline                          Pipeline                       Pipeline                     None               55           0.961111   
+77                      None                    Pipeline                          Pipeline                       Pipeline                     None               27           0.962963   
+78                      None                    Pipeline                          Pipeline                       Pipeline                     None               67           0.946296   
+79                      None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.940741   
+80                      None                    Pipeline                          Pipeline                       Pipeline                     None              109           0.942593   
+81                      None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.944444   
+82                      None                    Pipeline                          Pipeline                       Pipeline                     None              114           0.940741   
+83                      None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.946296   
+84                      None                    Pipeline                          Pipeline                       Pipeline                     None               13           0.961111   
+85                      None                    Pipeline                          Pipeline                       Pipeline                     None               46           0.961111   
+86                      None                    Pipeline                          Pipeline                       Pipeline                     None               27           0.962963   
+87                      None                    Pipeline                          Pipeline                       Pipeline                     None               30           0.962963   
+88                      None                    Pipeline                          Pipeline                       Pipeline                     None               85           0.944444   
+89                      None                    Pipeline                          Pipeline                       Pipeline                     None               46           0.961111   
+90                      None                    Pipeline                          Pipeline                       Pipeline                     None               85           0.944444   
+91                      None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.942593   
+92                      None                    Pipeline                          Pipeline                       Pipeline                     None               33           0.961111   
+93                      None                    Pipeline                          Pipeline                       Pipeline                     None               52           0.959259   
+94                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+95                      None                    Pipeline                          Pipeline                       Pipeline                     None               41           0.962963   
+96                      None                    Pipeline                          Pipeline                       Pipeline                     None               18           0.962963   
+97                      None                    Pipeline                          Pipeline                       Pipeline                     None               13           0.961111   
+98                      None                    Pipeline                          Pipeline                       Pipeline                     None               41           0.961111   
+99                      None                    Pipeline                          Pipeline                       Pipeline                     None               85           0.944444   
+100                     None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.940741   
+101                     None                    Pipeline                          Pipeline                       Pipeline                     None               25           0.966667   
+102                     None                    Pipeline                          Pipeline                       Pipeline                     None               62           0.948148   
+103                     None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.940741   
+104                     None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.946296   
+105                     None                    Pipeline                          Pipeline                       Pipeline                     None               62           0.946296   
+106                     None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.946296   
+107                     None                    Pipeline                          Pipeline                       Pipeline                     None              114           0.942593   
+108                     None                    Pipeline                          Pipeline                       Pipeline                     None              109           0.942593   
+109                     None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.940741   
+110                     None                    Pipeline                          Pipeline                       Pipeline                     None               62           0.946296   
+111                     None                    Pipeline                          Pipeline                       Pipeline                     None               95           0.942593   
+112                     None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+113                     None                    Pipeline                          Pipeline                       Pipeline                     None               55           0.961111   
+114                     None                    Pipeline                          Pipeline                       Pipeline                     None               50           0.959259   
+115                     None                    Pipeline                          Pipeline                       Pipeline                     None               18           0.962963   
+116                     None                    Pipeline                          Pipeline                       Pipeline                     None               41           0.961111   
+117                     None                    Pipeline                          Pipeline                       Pipeline                     None               62           0.946296   
+118                     None                    Pipeline                          Pipeline                       Pipeline                     None              118           0.940741   
+119                     None                    Pipeline                          Pipeline                       Pipeline                     None               71           0.946296   
+
+     split0_train_score  split1_test_score  split1_train_score  split2_test_score  split2_train_score  std_fit_time  std_score_time  std_test_score  std_train_score  
+0              0.981413           0.946097            0.979592           0.960967            0.978664      0.099201        0.103443        0.007042         0.001142  
+1              0.978625           0.944238            0.975881           0.946097            0.972171      0.339688        0.124817        0.007559         0.002645  
+2              1.000000           0.936803            1.000000           0.942379            1.000000      0.567275        0.233937        0.003228         0.000000  
+3              1.000000           0.934944            1.000000           0.944238            1.000000      3.665075        0.702765        0.003830         0.000000  
+4              0.984201           0.944238            0.982375           0.946097            0.979592      0.352589        0.120070        0.008428         0.001895  
+5              0.996283           0.933086            0.993506           0.942379            0.992579      6.923894        0.474561        0.004940         0.001574  
+6              0.999071           0.934944            1.000000           0.942379            0.999072      3.911395        0.129685        0.004079         0.000438  
+7              0.998141           0.933086            0.999072           0.942379            1.000000     18.588194        0.322026        0.004431         0.000759  
+8              0.996283           0.933086            0.993506           0.944238            0.992579      1.857580        0.162583        0.005305         0.001574  
+9              0.999071           0.934944            1.000000           0.942379            0.999072      2.156080        0.273373        0.004709         0.000438  
+10             0.981413           0.947955            0.978664           0.959108            0.978664      0.432227        0.006158        0.006364         0.001296  
+11             0.999071           0.934944            1.000000           0.942379            0.999072      4.900042        0.089875        0.004079         0.000438  
+12             0.986059           0.942379            0.985158           0.946097            0.983302      0.967195        0.032176        0.008962         0.001148  
+13             0.997212           0.934944            0.999072           0.942379            0.999072      4.052044        0.278119        0.004079         0.000877  
+14             0.981413           0.946097            0.979592           0.960967            0.978664      1.722660        0.204768        0.007042         0.001142  
+15             1.000000           0.934944            1.000000           0.944238            1.000000      6.144471        0.324184        0.003830         0.000000  
+16             0.980483           0.947955            0.984230           0.955390            0.982375      0.331247        0.053573        0.007696         0.001530  
+17             0.999071           0.934944            1.000000           0.942379            0.999072     24.413257        0.617435        0.004709         0.000438  
+18             0.996283           0.934944            0.993506           0.944238            0.992579      9.130469        0.543819        0.004429         0.001574  
+19             0.998141           0.933086            0.999072           0.942379            1.000000     11.945254        0.138615        0.004049         0.000759  
+20             0.978625           0.944238            0.975881           0.946097            0.972171      0.229018        0.237130        0.007559         0.002645  
+21             0.986059           0.942379            0.984230           0.947955            0.981447      1.744883        0.068878        0.008697         0.001896  
+22             0.998141           0.933086            0.999072           0.940520            1.000000     40.848803        0.223213        0.003557         0.000759  
+23             0.973048           0.940520            0.974954           0.938662            0.972171      0.358128        0.056624        0.010179         0.001162  
+24             0.976766           0.944238            0.976809           0.946097            0.972171      0.196024        0.140750        0.007559         0.002176  
+25             0.981413           0.947955            0.978664           0.959108            0.978664      2.967048        0.521111        0.006364         0.001296  
+26             0.988848           0.944238            0.984230           0.949814            0.985158      2.371455        0.095388        0.007854         0.001994  
+27             0.972119           0.944238            0.974026           0.938662            0.972171      3.033939        0.613328        0.008703         0.000887  
+28             0.984201           0.942379            0.981447           0.953532            0.982375      1.240587        0.137663        0.009930         0.001144  
+29             0.980483           0.947955            0.984230           0.955390            0.982375      0.903866        0.200362        0.007696         0.001530  
+30             0.997212           0.934944            0.999072           0.942379            0.999072      8.326144        0.539555        0.004079         0.000877  
+31             1.000000           0.936803            1.000000           0.944238            1.000000     11.683486        0.320784        0.003554         0.000000  
+32             0.997212           0.934944            0.999072           0.942379            0.999072     10.585236        0.441230        0.004709         0.000877  
+33             0.997212           0.934944            0.996289           0.942379            0.996289      8.327224        0.285426        0.004079         0.000435  
+34             0.981413           0.944238            0.975881           0.940520            0.976809      2.054970        0.361294        0.008105         0.002419  
+35             0.973048           0.940520            0.974954           0.938662            0.972171      2.440222        0.671995        0.010179         0.001162  
+36             1.000000           0.936803            1.000000           0.942379            1.000000      7.195782        0.174670        0.003896         0.000000  
+37             0.980483           0.944238            0.976809           0.942379            0.972171      0.970225        0.393319        0.009302         0.003401  
+38             0.997212           0.933086            0.996289           0.942379            0.996289     15.539410        0.051504        0.004940         0.000435  
+39             0.979554           0.944238            0.974954           0.938662            0.974026      1.921685        0.094328        0.008703         0.002417  
+40             0.986059           0.942379            0.985158           0.946097            0.983302      0.803365        0.213946        0.008962         0.001148  
+41             0.981413           0.947955            0.978664           0.959108            0.978664      1.009717        0.430081        0.006364         0.001296  
+42             0.981413           0.947955            0.979592           0.953532            0.977737      0.946894        0.224852        0.006197         0.001501  
+43             0.980483           0.944238            0.977737           0.942379            0.972171      0.236889        0.128887        0.008432         0.003458  
+44             0.979554           0.942379            0.976809           0.942379            0.974026      1.117657        0.262004        0.008836         0.002257  
+45             0.998141           0.933086            0.999072           0.942379            0.999072      9.062777        0.476054        0.004431         0.000439  
+46             0.982342           0.942379            0.978664           0.942379            0.977737      0.611319        0.510457        0.008836         0.001989  
+47             0.978625           0.944238            0.975881           0.946097            0.972171      0.867781        0.541748        0.007559         0.002645  
+48             0.981413           0.947955            0.978664           0.959108            0.978664      1.472448        0.074806        0.006364         0.001296  
+49             0.997212           0.934944            0.999072           0.942379            0.999072     10.182111        0.524940        0.004709         0.000877  
+50             0.984201           0.942379            0.981447           0.951673            0.982375      1.610091        0.585929        0.010010         0.001144  
+51             0.999071           0.934944            1.000000           0.942379            0.999072      3.753640        0.386942        0.004709         0.000438  
+52             0.999071           0.934944            1.000000           0.944238            1.000000     11.968858        0.246822        0.005538         0.000438  
+53             0.972119           0.940520            0.974954           0.938662            0.972171      1.366824        0.402824        0.010179         0.001324  
+54             0.981413           0.947955            0.978664           0.959108            0.978664      0.775682        0.518898        0.006364         0.001296  
+55             0.998141           0.933086            0.999072           0.942379            1.000000     11.727446        0.485808        0.004049         0.000759  
+56             0.999071           0.934944            1.000000           0.942379            0.999072     33.537400        0.259838        0.004709         0.000438  
+57             1.000000           0.934944            1.000000           0.944238            1.000000      5.344695        0.319136        0.003830         0.000000  
+58             1.000000           0.934944            1.000000           0.944238            1.000000     10.479484        0.286934        0.004047         0.000000  
+59             0.980483           0.947955            0.984230           0.955390            0.982375      1.347316        0.188428        0.007696         0.001530  
+60             0.986059           0.942379            0.985158           0.946097            0.983302      2.151048        0.209746        0.008962         0.001148  
+61             0.983271           0.944238            0.980519           0.959108            0.982375      0.351552        0.213844        0.008674         0.001146  
+62             1.000000           0.934944            1.000000           0.944238            1.000000     17.102675        0.165460        0.003830         0.000000  
+63             1.000000           0.934944            1.000000           0.944238            1.000000     11.660805        0.085870        0.003830         0.000000  
+64             0.981413           0.947955            0.979592           0.953532            0.977737      1.278786        0.275542        0.006197         0.001501  
+65             0.972119           0.940520            0.974954           0.938662            0.972171      0.522548        0.071251        0.010179         0.001324  
+66             1.000000           0.934944            1.000000           0.944238            1.000000      5.669589        0.035503        0.003830         0.000000  
+67             0.972119           0.940520            0.974954           0.938662            0.972171      0.598176        0.288289        0.010179         0.001324  
+68             0.984201           0.942379            0.981447           0.953532            0.982375      1.284071        0.108103        0.009930         0.001144  
+69             0.980483           0.947955            0.984230           0.955390            0.982375      4.910988        0.303033        0.007696         0.001530  
+70             0.998141           0.933086            0.999072           0.942379            0.999072     10.395608        0.575073        0.004431         0.000439  
+71             0.980483           0.947955            0.984230           0.955390            0.982375      0.648504        0.204738        0.007696         0.001530  
+72             0.984201           0.942379            0.980519           0.957249            0.980519      0.428670        0.089977        0.009321         0.001735  
+73             0.997212           0.931227            0.996289           0.940520            0.997217     20.690906        0.137574        0.004942         0.000436  
+74             1.000000           0.936803            1.000000           0.942379            1.000000     12.343493        0.176450        0.003228         0.000000  
+75             0.999071           0.934944            1.000000           0.942379            0.999072      4.338933        0.056922        0.005406         0.000438  
+76             0.972119           0.940520            0.974954           0.938662            0.972171      1.826960        0.683352        0.010179         0.001324  
+77             0.986059           0.946097            0.982375           0.949814            0.981447      1.115569        0.008181        0.007240         0.001992  
+78             1.000000           0.936803            1.000000           0.942379            1.000000      6.018691        0.480572        0.003896         0.000000  
+79             1.000000           0.934944            1.000000           0.944238            1.000000      4.361638        0.530381        0.003830         0.000000  
+80             0.998141           0.933086            0.999072           0.942379            1.000000     33.085832        0.409996        0.004431         0.000759  
+81             1.000000           0.936803            1.000000           0.942379            1.000000      4.327852        0.078266        0.003228         0.000000  
+82             0.998141           0.933086            0.999072           0.942379            0.999072     13.314182        0.426809        0.004049         0.000439  
+83             0.996283           0.933086            0.993506           0.944238            0.992579     10.058685        0.445012        0.005803         0.001574  
+84             0.981413           0.946097            0.979592           0.960967            0.978664      0.056394        0.032894        0.007042         0.001142  
+85             0.979554           0.942379            0.976809           0.942379            0.974026      0.565762        0.172752        0.008836         0.002257  
+86             0.981413           0.946097            0.982375           0.949814            0.978664      1.485943        0.301770        0.007240         0.001572  
+87             0.978625           0.944238            0.980519           0.946097            0.974954      0.729381        0.373814        0.008428         0.002310  
+88             1.000000           0.933086            1.000000           0.944238            1.000000      3.104811        0.327482        0.005305         0.000000  
+89             0.979554           0.942379            0.976809           0.942379            0.974026      0.419228        0.135562        0.008836         0.002257  
+90             0.997212           0.934944            0.996289           0.942379            0.996289      0.488453        0.109333        0.004079         0.000435  
+91             0.997212           0.934944            0.996289           0.942379            0.996289     23.228436        0.421862        0.003555         0.000435  
+92             0.976766           0.944238            0.976809           0.946097            0.972171      0.784454        0.008145        0.007559         0.002176  
+93             0.979554           0.944238            0.974954           0.938662            0.974026      1.310643        0.122433        0.008703         0.002417  
+94             0.980483           0.947955            0.984230           0.955390            0.982375      0.491978        0.299750        0.007696         0.001530  
+95             0.985130           0.942379            0.982375           0.944238            0.980519      0.751513        0.177612        0.009302         0.001894  
+96             0.981413           0.947955            0.979592           0.953532            0.977737      0.688141        0.372530        0.006197         0.001501  
+97             0.981413           0.946097            0.979592           0.960967            0.978664      0.054605        0.096025        0.007042         0.001142  
+98             0.975836           0.944238            0.974954           0.944238            0.973098      0.252868        0.303778        0.007959         0.001141  
+99             0.999071           0.934944            1.000000           0.942379            0.999072      2.860649        0.506484        0.004079         0.000438  
+100            1.000000           0.934944            1.000000           0.944238            1.000000      4.370337        0.257762        0.003830         0.000000  
+101            0.984201           0.942379            0.981447           0.951673            0.982375      0.895043        0.010605        0.010010         0.001144  
+102            0.999071           0.934944            1.000000           0.944238            1.000000      9.738687        0.235458        0.005538         0.000438  
+103            1.000000           0.934944            1.000000           0.944238            1.000000      1.497637        0.460965        0.003830         0.000000  
+104            0.996283           0.933086            0.993506           0.944238            0.992579      6.941317        0.136074        0.005803         0.001574  
+105            1.000000           0.936803            1.000000           0.944238            1.000000      0.640834        0.251105        0.004077         0.000000  
+106            0.997212           0.934944            0.999072           0.942379            0.999072      1.189972        0.181767        0.004709         0.000877  
+107            0.997212           0.933086            0.996289           0.940520            0.997217      5.086416        0.093273        0.004082         0.000436  
+108            0.998141           0.933086            0.999072           0.942379            0.999072      3.573630        0.287525        0.004431         0.000439  
+109            1.000000           0.934944            1.000000           0.944238            1.000000     15.440623        0.335577        0.003830         0.000000  
+110            0.999071           0.936803            1.000000           0.944238            1.000000      2.781283        0.211564        0.004077         0.000438  
+111            0.997212           0.934944            0.996289           0.942379            0.996289     22.186214        0.421713        0.003555         0.000435  
+112            0.980483           0.947955            0.984230           0.955390            0.982375      0.900496        0.139238        0.007696         0.001530  
+113            0.973048           0.940520            0.974954           0.938662            0.972171      0.114066        0.026684        0.010179         0.001162  
+114            0.982342           0.944238            0.976809           0.940520            0.978664      0.727296        0.167386        0.008105         0.002299  
+115            0.981413           0.947955            0.979592           0.953532            0.977737      0.865235        0.294024        0.006197         0.001501  
+116            0.975836           0.944238            0.974954           0.944238            0.973098      0.392530        0.191110        0.007959         0.001141  
+117            0.999071           0.936803            1.000000           0.944238            1.000000      0.440024        0.379575        0.004077         0.000438  
+118            0.998141           0.933086            0.999072           0.940520            1.000000      6.474801        0.259222        0.003557         0.000759  
+119            0.999071           0.934944            1.000000           0.942379            0.999072      9.205727        0.971030        0.004709         0.000438  
+2017-06-17 17:31:47,316 DEBUG randomized search done in 4:09:02.847529
+2017-06-17 17:31:47,668 INFO Evaluating the selected model on the test set...
+2017-06-17 18:14:42,236 DEBUG Fitted 1616 data points.
+2017-06-17 18:14:42,237 DEBUG Fitting and oob calculation done in 0:42:54.320753
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.96      0.96      0.96       271
+  nonCancer       0.96      0.96      0.96       268
+
+avg / total       0.96      0.96      0.96       539
+
+Accuracy: 0.9573283858998145
+2017-06-17 18:14:43,280 DEBUG Evaluation done in 0:00:00.839010
+2017-06-17 18:14:43,293 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf': ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='gini',
+           max_depth=12, max_features='log2', max_leaf_nodes=40,
+           min_impurity_split=1e-05, min_samples_leaf=3,
+           min_samples_split=5, min_weight_fraction_leaf=0.0,
+           n_estimators=1200, n_jobs=-1, oob_score=False,
+           random_state=<mtrand.RandomState object at 0x7fc4a97caa20>,
+           verbose=0, warm_start=False),
+ 'clf__bootstrap': False,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 12,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 40,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 3,
+ 'clf__min_samples_split': 5,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1200,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7fc4a97caa20>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'union__abstractTokenizedAndLemmatized__select_chi2': SelectKBest(k='all', score_func=<function chi2 at 0x7fc4c3e620d0>),
+ 'union__abstractTokenizedAndLemmatized__select_chi2__k': 'all',
+ 'union__abstractTokenizedAndLemmatized__select_chi2__score_func': <function chi2 at 0x7fc4c3e620d0>,
+ 'union__abstractTokenizedAndLemmatized__selector': ItemSelector(key='Tokens'),
+ 'union__abstractTokenizedAndLemmatized__selector__key': 'Tokens',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__analyzer': 'word',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__binary': False,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__decode_error': 'strict',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__encoding': 'utf-8',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__input': 'content',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__lowercase': False,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__max_df': 1.0,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__max_features': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__min_df': 1,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__ngram_range': (1, 1),
+ 'union__abstractTokenizedAndLemmatized__vectorizer__norm': 'l2',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__preprocessor': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__smooth_idf': True,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__stop_words': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__strip_accents': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__sublinear_tf': False,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7fc4bce6e158>,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__use_idf': True,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__vocabulary': None,
+ 'union__abstractWordCount__count__analyzer': 'word',
+ 'union__abstractWordCount__count__binary': False,
+ 'union__abstractWordCount__count__decode_error': 'strict',
+ 'union__abstractWordCount__count__dtype': <class 'numpy.int64'>,
+ 'union__abstractWordCount__count__encoding': 'utf-8',
+ 'union__abstractWordCount__count__input': 'content',
+ 'union__abstractWordCount__count__lowercase': True,
+ 'union__abstractWordCount__count__max_df': 1.0,
+ 'union__abstractWordCount__count__max_features': None,
+ 'union__abstractWordCount__count__min_df': 1,
+ 'union__abstractWordCount__count__ngram_range': (1, 1),
+ 'union__abstractWordCount__count__preprocessor': None,
+ 'union__abstractWordCount__count__stop_words': None,
+ 'union__abstractWordCount__count__strip_accents': None,
+ 'union__abstractWordCount__count__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__abstractWordCount__count__tokenizer': None,
+ 'union__abstractWordCount__count__vocabulary': None,
+ 'union__abstractWordCount__select_chi2': SelectKBest(k=4000, score_func=<function chi2 at 0x7fc4c3e620d0>),
+ 'union__abstractWordCount__select_chi2__k': 4000,
+ 'union__abstractWordCount__select_chi2__score_func': <function chi2 at 0x7fc4c3e620d0>,
+ 'union__abstractWordCount__selector': ItemSelector(key='Abstract'),
+ 'union__abstractWordCount__selector__key': 'Abstract',
+ 'union__char_ngrams': None,
+ 'union__n_jobs': 1,
+ 'union__titleWordCount__count__analyzer': 'word',
+ 'union__titleWordCount__count__binary': False,
+ 'union__titleWordCount__count__decode_error': 'strict',
+ 'union__titleWordCount__count__dtype': <class 'numpy.int64'>,
+ 'union__titleWordCount__count__encoding': 'utf-8',
+ 'union__titleWordCount__count__input': 'content',
+ 'union__titleWordCount__count__lowercase': True,
+ 'union__titleWordCount__count__max_df': 1.0,
+ 'union__titleWordCount__count__max_features': None,
+ 'union__titleWordCount__count__min_df': 1,
+ 'union__titleWordCount__count__ngram_range': (1, 1),
+ 'union__titleWordCount__count__preprocessor': None,
+ 'union__titleWordCount__count__stop_words': None,
+ 'union__titleWordCount__count__strip_accents': None,
+ 'union__titleWordCount__count__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__titleWordCount__count__tokenizer': None,
+ 'union__titleWordCount__count__vocabulary': None,
+ 'union__titleWordCount__select_chi2': SelectKBest(k=4000, score_func=<function chi2 at 0x7fc4c3e620d0>),
+ 'union__titleWordCount__select_chi2__k': 4000,
+ 'union__titleWordCount__select_chi2__score_func': <function chi2 at 0x7fc4c3e620d0>,
+ 'union__titleWordCount__selector': ItemSelector(key='Title'),
+ 'union__titleWordCount__selector__key': 'Title',
+ 'union__title_keyword_vector__select_chi2': SelectKBest(k='all', score_func=<function chi2 at 0x7fc4c3e620d0>),
+ 'union__title_keyword_vector__select_chi2__k': 'all',
+ 'union__title_keyword_vector__select_chi2__score_func': <function chi2 at 0x7fc4c3e620d0>,
+ 'union__title_keyword_vector__selector': ItemSelector(key='Keywords'),
+ 'union__title_keyword_vector__selector__key': 'Keywords',
+ 'union__title_keyword_vector__vectorizer__analyzer': 'word',
+ 'union__title_keyword_vector__vectorizer__binary': False,
+ 'union__title_keyword_vector__vectorizer__decode_error': 'strict',
+ 'union__title_keyword_vector__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__title_keyword_vector__vectorizer__encoding': 'utf-8',
+ 'union__title_keyword_vector__vectorizer__input': 'content',
+ 'union__title_keyword_vector__vectorizer__lowercase': False,
+ 'union__title_keyword_vector__vectorizer__max_df': 1.0,
+ 'union__title_keyword_vector__vectorizer__max_features': None,
+ 'union__title_keyword_vector__vectorizer__min_df': 1,
+ 'union__title_keyword_vector__vectorizer__ngram_range': (1, 1),
+ 'union__title_keyword_vector__vectorizer__norm': 'l2',
+ 'union__title_keyword_vector__vectorizer__preprocessor': None,
+ 'union__title_keyword_vector__vectorizer__smooth_idf': True,
+ 'union__title_keyword_vector__vectorizer__stop_words': None,
+ 'union__title_keyword_vector__vectorizer__strip_accents': None,
+ 'union__title_keyword_vector__vectorizer__sublinear_tf': False,
+ 'union__title_keyword_vector__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__title_keyword_vector__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7fc4bce6e158>,
+ 'union__title_keyword_vector__vectorizer__use_idf': True,
+ 'union__title_keyword_vector__vectorizer__vocabulary': None,
+ 'union__title_term_vector__select_chi2': SelectKBest(k='all', score_func=<function chi2 at 0x7fc4c3e620d0>),
+ 'union__title_term_vector__select_chi2__k': 'all',
+ 'union__title_term_vector__select_chi2__score_func': <function chi2 at 0x7fc4c3e620d0>,
+ 'union__title_term_vector__selector': ItemSelector(key='Terms'),
+ 'union__title_term_vector__selector__key': 'Terms',
+ 'union__title_term_vector__vectorizer__analyzer': 'word',
+ 'union__title_term_vector__vectorizer__binary': False,
+ 'union__title_term_vector__vectorizer__decode_error': 'strict',
+ 'union__title_term_vector__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__title_term_vector__vectorizer__encoding': 'utf-8',
+ 'union__title_term_vector__vectorizer__input': 'content',
+ 'union__title_term_vector__vectorizer__lowercase': False,
+ 'union__title_term_vector__vectorizer__max_df': 1.0,
+ 'union__title_term_vector__vectorizer__max_features': None,
+ 'union__title_term_vector__vectorizer__min_df': 1,
+ 'union__title_term_vector__vectorizer__ngram_range': (1, 1),
+ 'union__title_term_vector__vectorizer__norm': 'l2',
+ 'union__title_term_vector__vectorizer__preprocessor': None,
+ 'union__title_term_vector__vectorizer__smooth_idf': True,
+ 'union__title_term_vector__vectorizer__stop_words': None,
+ 'union__title_term_vector__vectorizer__strip_accents': None,
+ 'union__title_term_vector__vectorizer__sublinear_tf': False,
+ 'union__title_term_vector__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__title_term_vector__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7fc4bce6e158>,
+ 'union__title_term_vector__vectorizer__use_idf': True,
+ 'union__title_term_vector__vectorizer__vocabulary': None,
+ 'union__transformer_weights': None,
+ 'union__word_ngrams': None}
+2017-06-17 18:14:46,774 DEBUG Fitted 2155 data points.
+2017-06-17 18:14:46,774 DEBUG Fitting done in 0:00:03.471855
+Model saved as model_2017-06-17--18-14-43.pkl

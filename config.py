@@ -45,7 +45,7 @@ class PipelineConfiguration:
         return Pipeline([
                 ('selector', ItemSelector(key=selector_key)),
                 ('count', CountVectorizer()),
-                ('select_chi2', SelectKBest(chi2, k=1000)),
+                ('select_chi2', SelectKBest(chi2, k=4000)),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_word_count_pipeline')),
             ])
 
@@ -56,7 +56,7 @@ class PipelineConfiguration:
                                                analyzer='word',
                                                ngram_range=(1, 2),
                                                stop_words='english')),
-                ('select_chi2', SelectKBest(chi2, k=1000)),
+                ('select_chi2', SelectKBest(chi2, k=4000)),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_word_ngrams_pipeline')),
         ])
 
@@ -67,7 +67,7 @@ class PipelineConfiguration:
                                                analyzer='char',
                                                ngram_range=(3, 7),
                                                stop_words='english')),
-                ('select_chi2', SelectKBest(chi2, k=1000)),
+                ('select_chi2', SelectKBest(chi2, k=4000)),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_char_ngrams_pipeline')),
         ])        
 
@@ -75,7 +75,7 @@ class PipelineConfiguration:
         return Pipeline([
             ('selector', ItemSelector(key=key)),
             ('vectorizer', TfidfVectorizer(tokenizer=additional_data_tokenizer, preprocessor=None, lowercase=False)),
-            ('select_chi2', SelectKBest(chi2, k=1000)),
+            ('select_chi2', SelectKBest(chi2, k='all')),
             #('feature_count_printer', FeatureCountPrinter(key+'_additional_data_vectorizer_pipeline')),
         ])
 
@@ -213,7 +213,7 @@ class PipelineConfiguration:
     # This set of parameters is used when --hp randomized was specified.
     ############
     # The parameter space must be larger than or equal to n_iter
-    pipeline_parameters_randomized_n_iter = 20
+    pipeline_parameters_randomized_n_iter = 120
     # The default is to cross-validate with 3 folds, this takes a considerable amount of time
     # Must be greater or equal to 2
     pipeline_parameters_randomized_n_splits = 3
@@ -224,20 +224,20 @@ class PipelineConfiguration:
 
         return {
             'clf__criterion': ['gini'],
-            'clf__max_depth': [5, 10, 20, 40],
+            'clf__max_depth': [11, 12, 13, 14, 15],
             'clf__max_features': [None, 'sqrt', 'log2', 0.33], # None=all
-            'clf__max_leaf_nodes': [2, 5, 10, 20, 50],
-            'clf__min_impurity_split': [1e-06, 1e-07, 1e-08],
-            'clf__min_samples_leaf': [2, 4, 8],
-            'clf__min_samples_split': [2, 4, 8],
+            'clf__max_leaf_nodes': [40, 50, 60, 70],
+            'clf__min_impurity_split': [1e-05, 1e-06, 1e-08, 1e-09],
+            'clf__min_samples_leaf': [2, 3],
+            'clf__min_samples_split': [2, 3, 4, 5],
             'clf__min_weight_fraction_leaf': [0.0],
-            'clf__n_estimators': [320],  # Has to be > 25 for oob
-            'union__abstractWordCount':                 [None, self.word_count_pipeline('Abstract')],
-            'union__abstractTokenizedAndLemmatized':    [None, self.additional_data_vectorizer_pipeline('Tokens')],
-            'union__titleWordCount':                    [None, self.word_count_pipeline('Title')],
-            'union__word_ngrams':                       [None, self.word_ngrams_pipeline('Abstract')],
-            'union__char_ngrams':                       [None, self.char_ngrams_pipeline('Abstract')],
-            'union__title_keyword_vector':              [None, self.additional_data_vectorizer_pipeline('Keywords')],
+            'clf__n_estimators': [1200],  # Has to be > 25 for oob
+            'union__abstractWordCount':                 [self.word_count_pipeline('Abstract')],
+            'union__abstractTokenizedAndLemmatized':    [self.additional_data_vectorizer_pipeline('Tokens')],
+            'union__titleWordCount':                    [self.word_count_pipeline('Title')],
+            'union__word_ngrams':                       [None],
+            'union__char_ngrams':                       [None],
+            'union__title_keyword_vector':              [self.additional_data_vectorizer_pipeline('Keywords')],
             'union__title_term_vector':                 [self.additional_data_vectorizer_pipeline('Terms')],
         }
 
