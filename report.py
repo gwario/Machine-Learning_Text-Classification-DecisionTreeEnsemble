@@ -6,7 +6,7 @@ from pandas import DataFrame
 import matplotlib.pyplot as plt
 
 from sklearn.pipeline import FeatureUnion, Pipeline
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer
 
@@ -35,6 +35,7 @@ def filtered(params):
                        and not isinstance(value, HashingVectorizer)
                        and not isinstance(value, CountVectorizer)
                        and not isinstance(value, RandomForestClassifier)
+                       and not isinstance(value, ExtraTreesClassifier)
                        and not isinstance(value, NLTKPreprocessor)
                        and not isinstance(value, WordNetLemmatizer)
                        and not key.endswith('steps')
@@ -51,6 +52,7 @@ def filtered_best_params(params):
                        and not isinstance(value, HashingVectorizer)
                        and not isinstance(value, CountVectorizer)
                        and not isinstance(value, RandomForestClassifier)
+                       and not isinstance(value, ExtraTreesClassifier)
                        and not isinstance(value, NLTKPreprocessor)
                        and not isinstance(value, WordNetLemmatizer)
                        and not key.endswith('steps')
