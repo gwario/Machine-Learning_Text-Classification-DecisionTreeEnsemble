@@ -20,6 +20,8 @@ from sklearn.metrics import classification_report as clsr
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cross_validation import train_test_split as tts
 
+import matplotlib.pyplot as plt
+
 import sys  
 
 reload(sys)  
@@ -131,7 +133,7 @@ if __name__ == '__main__':
             ('vectorizer', TfidfVectorizer(
                 tokenizer=identity, preprocessor=None, lowercase=False
             )),
-            ('classifier', RandomForestClassifier(max_depth=8, n_estimators=10)),
+            ('classifier', RandomForestClassifier(max_depth=8, n_estimators=10, random_state = 0)),
         ])
 
     training_size = 0.8
@@ -149,6 +151,29 @@ if __name__ == '__main__':
     # print("y after: " + str(y))
 
     model.fit(X, y)
+	
+    # ----- Feature importance diagram -----
+    importances = model.feature_importances_
+
+    std = np.std([tree.feature_importances_ for tree in forest.estimators_], axis=0) 
+    indices = np.argsort(importances)[::-1]
+
+    # Print the feature ranking
+    print("Feature ranking:")
+
+    for f in range(X.shape[1]):
+        print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
+
+    # Plot the feature importances of the forest
+    plt.figure()
+    plt.title("Feature importances")
+    plt.bar(range(X.shape[1]), importances[indices],
+            color="r", yerr=std[indices], align="center")
+    plt.xticks(range(X.shape[1]), indices)
+    plt.xlim([-1, X.shape[1]])
+    plt.show()
+
+    # ------ End ------
 
     test_data = training_data[-((1 - training_size) * training_data.shape[0]):, 2]
     test_data_ground_truth = training_data[-((1 - training_size) * training_data.shape[0]):, 3]
