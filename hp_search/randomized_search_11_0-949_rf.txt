@@ -7,10 +7,6 @@ python3 main.py --train ../wbi_binary/pre2_train.csv --score --hp randomized --o
 2017-06-18 09:58:10,241 INFO Recognised data-set: binary
 2017-06-18 09:58:10,242 INFO Using randomized search on the training set to select the best model (hyper-parameters)...
 2017-06-18 09:58:10,242 DEBUG Performing randomized search, optimizing accuracy score...
-Fitting 3 folds for each of 120 candidates, totalling 360 fits
-[Parallel(n_jobs=-1)]: Done  42 tasks      | elapsed: 24.5min
-[Parallel(n_jobs=-1)]: Done 192 tasks      | elapsed: 108.3min
-[Parallel(n_jobs=-1)]: Done 360 out of 360 | elapsed: 212.3min finished
 Hyper parameter search report:
 Parameter search space:
 {'clf__criterion': ['gini'],

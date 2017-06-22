@@ -102,7 +102,15 @@ def store_oob_error_data(params, oob_errors):
     """Stores the oob error data in to a oob.csv"""
     filename = "oob.csv"
     data = pd.DataFrame(oob_errors)
-    print(data)
+    #print(data)
 
     data.to_csv(filename, sep=',', index=False, encoding='utf-8')
     print("OOB error saved as {}".format(filename))
+
+
+def store_search_data(data):
+    """Stores the oob error data in to a oob.csv"""
+    filename = "search_results.csv"
+
+    data.to_csv(filename, sep=',', index=False, encoding='utf-8')
+    print("Search results saved as {}".format(filename))

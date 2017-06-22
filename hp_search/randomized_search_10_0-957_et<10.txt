@@ -1,0 +1,264 @@
+python3 main.py --train ../wbi_binary/pre_train.csv --score --hp randomized --oob
+2017-06-17 13:22:30,142 DEBUG Commandline arguments: Namespace(hp='randomized', hp_metric='accuracy', model=None, oob=True, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre_train.csv' mode='r' encoding='UTF-8'>)
+2017-06-17 13:22:30,142 DEBUG Valid mode of operation
+2017-06-17 13:22:30,142 INFO Mode score->train
+2017-06-17 13:22:30,142 DEBUG Loading data...
+2017-06-17 13:22:30,226 INFO Created training set (1616) and test set (539)
+2017-06-17 13:22:30,226 INFO Recognised data-set: binary
+2017-06-17 13:22:30,227 INFO Using randomized search on the training set to select the best model (hyper-parameters)...
+2017-06-17 13:22:30,227 DEBUG Performing randomized search, optimizing accuracy score...
+Hyper parameter search report:
+Parameter search space:
+{'clf__criterion': ['gini'],
+ 'clf__max_depth': [11, 12, 13, 14, 15],
+ 'clf__max_features': [None, 'sqrt', 'log2', 0.33],
+ 'clf__max_leaf_nodes': [40, 50, 60, 70],
+ 'clf__min_impurity_split': [1e-05, 1e-06, 1e-08, 1e-09],
+ 'clf__min_samples_leaf': [2, 3],
+ 'clf__min_samples_split': [2, 3, 4, 5],
+ 'clf__min_weight_fraction_leaf': [0.0],
+ 'clf__n_estimators': [1200],
+ 'union__abstractTokenizedAndLemmatized': ['Pipeline'],
+ 'union__abstractWordCount': ['Pipeline'],
+ 'union__char_ngrams': [None],
+ 'union__titleWordCount': ['Pipeline'],
+ 'union__title_keyword_vector': ['Pipeline'],
+ 'union__title_term_vector': ['Pipeline'],
+ 'union__word_ngrams': [None]}
+Best score: 0.957
+Best parameters set:
+{'clf__criterion': 'gini',
+ 'clf__max_depth': 12,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 40,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 3,
+ 'clf__min_samples_split': 5,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1200,
+ 'union__abstractTokenizedAndLemmatized': 'Pipeline',
+ 'union__abstractWordCount': 'Pipeline',
+ 'union__char_ngrams': None,
+ 'union__titleWordCount': 'Pipeline',
+ 'union__title_keyword_vector': 'Pipeline',
+ 'union__title_term_vector': 'Pipeline',
+ 'union__word_ngrams': None}
+Detailed folds results:
+     mean_fit_time  mean_score_time  mean_test_score  mean_train_score param_clf__criterion param_clf__max_depth param_clf__max_features param_clf__max_leaf_nodes param_clf__min_impurity_split  \
+10       11.744148         2.701550         0.956683          0.979580                 gini                   12                    log2                        40                         1e-05   
+16       14.490489         3.287863         0.956683          0.982363                 gini                   11                    log2                        70                         1e-06   
+25       15.444935         3.389564         0.956683          0.979580                 gini                   12                    log2                        50                         1e-05   
+29       14.238558         2.896054         0.956683          0.982363                 gini                   11                    log2                        40                         1e-08   
+41       13.432236         2.680305         0.956683          0.979580                 gini                   12                    log2                        60                         1e-05   
+48       13.656381         2.898909         0.956683          0.979580                 gini                   12                    log2                        60                         1e-09   
+54       11.506256         2.341455         0.956683          0.979580                 gini                   12                    log2                        50                         1e-05   
+59       13.425619         2.938976         0.956683          0.982363                 gini                   11                    log2                        50                         1e-09   
+69       17.065987         3.235004         0.956683          0.982363                 gini                   11                    log2                        70                         1e-09   
+71       13.072611         3.057615         0.956683          0.982363                 gini                   11                    log2                        50                         1e-05   
+94        8.425683         2.049475         0.956683          0.982363                 gini                   11                    log2                        60                         1e-09   
+112      10.286731         2.470363         0.956683          0.982363                 gini                   11                    log2                        50                         1e-08   
+113      12.924091         2.245398         0.946782          0.973391                 gini                   11                    sqrt                        70                         1e-06   
+114      13.677338         2.293843         0.948020          0.979272                 gini                   11                    sqrt                        70                         1e-08   
+
+    param_clf__min_samples_leaf param_clf__min_samples_split param_clf__min_weight_fraction_leaf param_clf__n_estimators param_union__abstractTokenizedAndLemmatized param_union__abstractWordCount  \
+10                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+16                            2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+25                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+29                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+41                            3                            5                                   0                    1200                                    Pipeline                       Pipeline   
+48                            3                            4                                   0                    1200                                    Pipeline                       Pipeline   
+54                            3                            3                                   0                    1200                                    Pipeline                       Pipeline   
+59                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+69                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+71                            2                            2                                   0                    1200                                    Pipeline                       Pipeline   
+94                            2                            4                                   0                    1200                                    Pipeline                       Pipeline   
+112                           2                            3                                   0                    1200                                    Pipeline                       Pipeline   
+
+    param_union__char_ngrams param_union__titleWordCount param_union__title_keyword_vector param_union__title_term_vector param_union__word_ngrams  rank_test_score  split0_test_score  \
+10                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.962963   
+16                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+25                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.962963   
+29                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+41                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.962963   
+48                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.962963   
+54                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.962963   
+59                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+69                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+71                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+94                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+112                     None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.966667   
+
+     split0_train_score  split1_test_score  split1_train_score  split2_test_score  split2_train_score  std_fit_time  std_score_time  std_test_score  std_train_score  
+10             0.981413           0.947955            0.978664           0.959108            0.978664      0.432227        0.006158        0.006364         0.001296  
+16             0.980483           0.947955            0.984230           0.955390            0.982375      0.331247        0.053573        0.007696         0.001530  
+25             0.981413           0.947955            0.978664           0.959108            0.978664      2.967048        0.521111        0.006364         0.001296  
+29             0.980483           0.947955            0.984230           0.955390            0.982375      0.903866        0.200362        0.007696         0.001530  
+41             0.981413           0.947955            0.978664           0.959108            0.978664      1.009717        0.430081        0.006364         0.001296  
+48             0.981413           0.947955            0.978664           0.959108            0.978664      1.472448        0.074806        0.006364         0.001296  
+54             0.981413           0.947955            0.978664           0.959108            0.978664      0.775682        0.518898        0.006364         0.001296  
+59             0.980483           0.947955            0.984230           0.955390            0.982375      1.347316        0.188428        0.007696         0.001530  
+69             0.980483           0.947955            0.984230           0.955390            0.982375      4.910988        0.303033        0.007696         0.001530  
+71             0.980483           0.947955            0.984230           0.955390            0.982375      0.648504        0.204738        0.007696         0.001530  
+94             0.980483           0.947955            0.984230           0.955390            0.982375      0.491978        0.299750        0.007696         0.001530  
+112            0.980483           0.947955            0.984230           0.955390            0.982375      0.900496        0.139238        0.007696         0.001530  
+2017-06-17 17:31:47,316 DEBUG randomized search done in 4:09:02.847529
+2017-06-17 17:31:47,668 INFO Evaluating the selected model on the test set...
+2017-06-17 18:14:42,236 DEBUG Fitted 1616 data points.
+2017-06-17 18:14:42,237 DEBUG Fitting and oob calculation done in 0:42:54.320753
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.96      0.96      0.96       271
+  nonCancer       0.96      0.96      0.96       268
+
+avg / total       0.96      0.96      0.96       539
+
+Accuracy: 0.9573283858998145
+2017-06-17 18:14:43,280 DEBUG Evaluation done in 0:00:00.839010
+2017-06-17 18:14:43,293 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': False,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 12,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 40,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 3,
+ 'clf__min_samples_split': 5,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1200,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7fc4a97caa20>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'union__abstractTokenizedAndLemmatized__select_chi2': SelectKBest(k='all', score_func=<function chi2 at 0x7fc4c3e620d0>),
+ 'union__abstractTokenizedAndLemmatized__select_chi2__k': 'all',
+ 'union__abstractTokenizedAndLemmatized__select_chi2__score_func': <function chi2 at 0x7fc4c3e620d0>,
+ 'union__abstractTokenizedAndLemmatized__selector': ItemSelector(key='Tokens'),
+ 'union__abstractTokenizedAndLemmatized__selector__key': 'Tokens',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__analyzer': 'word',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__binary': False,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__decode_error': 'strict',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__encoding': 'utf-8',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__input': 'content',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__lowercase': False,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__max_df': 1.0,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__max_features': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__min_df': 1,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__ngram_range': (1, 1),
+ 'union__abstractTokenizedAndLemmatized__vectorizer__norm': 'l2',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__preprocessor': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__smooth_idf': True,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__stop_words': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__strip_accents': None,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__sublinear_tf': False,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__abstractTokenizedAndLemmatized__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7fc4bce6e158>,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__use_idf': True,
+ 'union__abstractTokenizedAndLemmatized__vectorizer__vocabulary': None,
+ 'union__abstractWordCount__count__analyzer': 'word',
+ 'union__abstractWordCount__count__binary': False,
+ 'union__abstractWordCount__count__decode_error': 'strict',
+ 'union__abstractWordCount__count__dtype': <class 'numpy.int64'>,
+ 'union__abstractWordCount__count__encoding': 'utf-8',
+ 'union__abstractWordCount__count__input': 'content',
+ 'union__abstractWordCount__count__lowercase': True,
+ 'union__abstractWordCount__count__max_df': 1.0,
+ 'union__abstractWordCount__count__max_features': None,
+ 'union__abstractWordCount__count__min_df': 1,
+ 'union__abstractWordCount__count__ngram_range': (1, 1),
+ 'union__abstractWordCount__count__preprocessor': None,
+ 'union__abstractWordCount__count__stop_words': None,
+ 'union__abstractWordCount__count__strip_accents': None,
+ 'union__abstractWordCount__count__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__abstractWordCount__count__tokenizer': None,
+ 'union__abstractWordCount__count__vocabulary': None,
+ 'union__abstractWordCount__select_chi2': SelectKBest(k=4000, score_func=<function chi2 at 0x7fc4c3e620d0>),
+ 'union__abstractWordCount__select_chi2__k': 4000,
+ 'union__abstractWordCount__select_chi2__score_func': <function chi2 at 0x7fc4c3e620d0>,
+ 'union__abstractWordCount__selector': ItemSelector(key='Abstract'),
+ 'union__abstractWordCount__selector__key': 'Abstract',
+ 'union__char_ngrams': None,
+ 'union__n_jobs': 1,
+ 'union__titleWordCount__count__analyzer': 'word',
+ 'union__titleWordCount__count__binary': False,
+ 'union__titleWordCount__count__decode_error': 'strict',
+ 'union__titleWordCount__count__dtype': <class 'numpy.int64'>,
+ 'union__titleWordCount__count__encoding': 'utf-8',
+ 'union__titleWordCount__count__input': 'content',
+ 'union__titleWordCount__count__lowercase': True,
+ 'union__titleWordCount__count__max_df': 1.0,
+ 'union__titleWordCount__count__max_features': None,
+ 'union__titleWordCount__count__min_df': 1,
+ 'union__titleWordCount__count__ngram_range': (1, 1),
+ 'union__titleWordCount__count__preprocessor': None,
+ 'union__titleWordCount__count__stop_words': None,
+ 'union__titleWordCount__count__strip_accents': None,
+ 'union__titleWordCount__count__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__titleWordCount__count__tokenizer': None,
+ 'union__titleWordCount__count__vocabulary': None,
+ 'union__titleWordCount__select_chi2': SelectKBest(k=4000, score_func=<function chi2 at 0x7fc4c3e620d0>),
+ 'union__titleWordCount__select_chi2__k': 4000,
+ 'union__titleWordCount__select_chi2__score_func': <function chi2 at 0x7fc4c3e620d0>,
+ 'union__titleWordCount__selector': ItemSelector(key='Title'),
+ 'union__titleWordCount__selector__key': 'Title',
+ 'union__title_keyword_vector__select_chi2': SelectKBest(k='all', score_func=<function chi2 at 0x7fc4c3e620d0>),
+ 'union__title_keyword_vector__select_chi2__k': 'all',
+ 'union__title_keyword_vector__select_chi2__score_func': <function chi2 at 0x7fc4c3e620d0>,
+ 'union__title_keyword_vector__selector': ItemSelector(key='Keywords'),
+ 'union__title_keyword_vector__selector__key': 'Keywords',
+ 'union__title_keyword_vector__vectorizer__analyzer': 'word',
+ 'union__title_keyword_vector__vectorizer__binary': False,
+ 'union__title_keyword_vector__vectorizer__decode_error': 'strict',
+ 'union__title_keyword_vector__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__title_keyword_vector__vectorizer__encoding': 'utf-8',
+ 'union__title_keyword_vector__vectorizer__input': 'content',
+ 'union__title_keyword_vector__vectorizer__lowercase': False,
+ 'union__title_keyword_vector__vectorizer__max_df': 1.0,
+ 'union__title_keyword_vector__vectorizer__max_features': None,
+ 'union__title_keyword_vector__vectorizer__min_df': 1,
+ 'union__title_keyword_vector__vectorizer__ngram_range': (1, 1),
+ 'union__title_keyword_vector__vectorizer__norm': 'l2',
+ 'union__title_keyword_vector__vectorizer__preprocessor': None,
+ 'union__title_keyword_vector__vectorizer__smooth_idf': True,
+ 'union__title_keyword_vector__vectorizer__stop_words': None,
+ 'union__title_keyword_vector__vectorizer__strip_accents': None,
+ 'union__title_keyword_vector__vectorizer__sublinear_tf': False,
+ 'union__title_keyword_vector__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__title_keyword_vector__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7fc4bce6e158>,
+ 'union__title_keyword_vector__vectorizer__use_idf': True,
+ 'union__title_keyword_vector__vectorizer__vocabulary': None,
+ 'union__title_term_vector__select_chi2': SelectKBest(k='all', score_func=<function chi2 at 0x7fc4c3e620d0>),
+ 'union__title_term_vector__select_chi2__k': 'all',
+ 'union__title_term_vector__select_chi2__score_func': <function chi2 at 0x7fc4c3e620d0>,
+ 'union__title_term_vector__selector': ItemSelector(key='Terms'),
+ 'union__title_term_vector__selector__key': 'Terms',
+ 'union__title_term_vector__vectorizer__analyzer': 'word',
+ 'union__title_term_vector__vectorizer__binary': False,
+ 'union__title_term_vector__vectorizer__decode_error': 'strict',
+ 'union__title_term_vector__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__title_term_vector__vectorizer__encoding': 'utf-8',
+ 'union__title_term_vector__vectorizer__input': 'content',
+ 'union__title_term_vector__vectorizer__lowercase': False,
+ 'union__title_term_vector__vectorizer__max_df': 1.0,
+ 'union__title_term_vector__vectorizer__max_features': None,
+ 'union__title_term_vector__vectorizer__min_df': 1,
+ 'union__title_term_vector__vectorizer__ngram_range': (1, 1),
+ 'union__title_term_vector__vectorizer__norm': 'l2',
+ 'union__title_term_vector__vectorizer__preprocessor': None,
+ 'union__title_term_vector__vectorizer__smooth_idf': True,
+ 'union__title_term_vector__vectorizer__stop_words': None,
+ 'union__title_term_vector__vectorizer__strip_accents': None,
+ 'union__title_term_vector__vectorizer__sublinear_tf': False,
+ 'union__title_term_vector__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__title_term_vector__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7fc4bce6e158>,
+ 'union__title_term_vector__vectorizer__use_idf': True,
+ 'union__title_term_vector__vectorizer__vocabulary': None,
+ 'union__transformer_weights': None,
+ 'union__word_ngrams': None}
+2017-06-17 18:14:46,774 DEBUG Fitted 2155 data points.
+2017-06-17 18:14:46,774 DEBUG Fitting done in 0:00:03.471855
+Model saved as model_2017-06-17--18-14-43.pkl

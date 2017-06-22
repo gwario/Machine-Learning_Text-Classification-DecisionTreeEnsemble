@@ -10,6 +10,7 @@ from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer
 
+import file_io as io
 from preprocessor import NLTKPreprocessor, WordNetLemmatizer
 
 __doc__ = """
@@ -154,7 +155,10 @@ def print_folds_results(search):
                 if isinstance(value, Pipeline):
                     cv_results[param_key].data[index] = 'Pipeline'
 
-    print(DataFrame(cv_results))
+    df_results = DataFrame(cv_results)
+    print(df_results)
+
+    io.store_search_data(df_results)
 
 
 def print_hyper_parameter_search_report(type, pipeline_configuration, dt_search, search):
