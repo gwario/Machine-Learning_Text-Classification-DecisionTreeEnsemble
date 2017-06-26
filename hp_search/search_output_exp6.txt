@@ -1,0 +1,233 @@
+mutual info classif vs chi2
+
+python3 main.py --train ../wbi_binary/pre2_train.csv --score --hp config
+2017-06-23 17:08:27,687 DEBUG Commandline arguments: Namespace(hp='config', hp_metric='accuracy', model=None, oob=False, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-06-23 17:08:27,687 DEBUG Valid mode of operation
+2017-06-23 17:08:27,687 INFO Mode score->train
+2017-06-23 17:08:27,687 DEBUG Loading data...
+2017-06-23 17:08:27,773 INFO Created training set (1616) and test set (539)
+2017-06-23 17:08:27,773 INFO Recognised data-set: binary
+2017-06-23 17:08:27,774 INFO Using the pre-selected model (hyper-parameters)...
+2017-06-23 17:08:27,783 INFO Evaluating the selected model on the test set...
+2017-06-23 17:08:52,203 DEBUG Fitted 1616 data points.
+2017-06-23 17:08:52,204 DEBUG Fitting done in 0:00:24.420321
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.83      0.93      0.88       271
+  nonCancer       0.92      0.81      0.87       268
+
+avg / total       0.88      0.87      0.87       539
+
+Accuracy: 0.8738404452690167
+2017-06-23 17:08:52,661 DEBUG Evaluation done in 0:00:00.454074
+2017-06-23 17:08:52,665 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': True,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7fef856dcfc0>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'union__abstractPosTokLemSyn__select_mutinfcls': SelectKBest(k=10, score_func=<function mutual_info_classif at 0x7fef8e6c26a8>),
+ 'union__abstractPosTokLemSyn__select_mutinfcls__k': 10,
+ 'union__abstractPosTokLemSyn__select_mutinfcls__score_func': <function mutual_info_classif at 0x7fef8e6c26a8>,
+ 'union__abstractPosTokLemSyn__selector': ItemSelector(key='Tokens'),
+ 'union__abstractPosTokLemSyn__selector__key': 'Tokens',
+ 'union__abstractPosTokLemSyn__vectorizer__analyzer': 'word',
+ 'union__abstractPosTokLemSyn__vectorizer__binary': False,
+ 'union__abstractPosTokLemSyn__vectorizer__decode_error': 'strict',
+ 'union__abstractPosTokLemSyn__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__abstractPosTokLemSyn__vectorizer__encoding': 'utf-8',
+ 'union__abstractPosTokLemSyn__vectorizer__input': 'content',
+ 'union__abstractPosTokLemSyn__vectorizer__lowercase': False,
+ 'union__abstractPosTokLemSyn__vectorizer__max_df': 1.0,
+ 'union__abstractPosTokLemSyn__vectorizer__max_features': None,
+ 'union__abstractPosTokLemSyn__vectorizer__min_df': 1,
+ 'union__abstractPosTokLemSyn__vectorizer__ngram_range': (1, 1),
+ 'union__abstractPosTokLemSyn__vectorizer__norm': 'l2',
+ 'union__abstractPosTokLemSyn__vectorizer__preprocessor': None,
+ 'union__abstractPosTokLemSyn__vectorizer__smooth_idf': True,
+ 'union__abstractPosTokLemSyn__vectorizer__stop_words': None,
+ 'union__abstractPosTokLemSyn__vectorizer__strip_accents': None,
+ 'union__abstractPosTokLemSyn__vectorizer__sublinear_tf': False,
+ 'union__abstractPosTokLemSyn__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__abstractPosTokLemSyn__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7fef8767c0d0>,
+ 'union__abstractPosTokLemSyn__vectorizer__use_idf': True,
+ 'union__abstractPosTokLemSyn__vectorizer__vocabulary': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector': None,
+ 'union__n_jobs': 1,
+ 'union__term_vector': None,
+ 'union__titleWordCount': None,
+ 'union__transformer_weights': None,
+ 'union__word_ngrams': None}
+2017-06-23 17:09:27,047 DEBUG Fitted 2155 data points.
+2017-06-23 17:09:27,047 DEBUG Fitting done in 0:00:34.379600
+Model saved as model_2017-06-23--17-08-52.pkl
+mariogastegger@LINUXLTP:~/1_private/study/Auslandssemester/Kurse/TexKla/TextClassification$ ^C
+mariogastegger@LINUXLTP:~/1_private/study/Auslandssemester/Kurse/TexKla/TextClassification$ python3 main.py --train ../wbi_binary/pre2_train.csv --score --hp config
+2017-06-23 17:09:43,092 DEBUG Commandline arguments: Namespace(hp='config', hp_metric='accuracy', model=None, oob=False, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-06-23 17:09:43,092 DEBUG Valid mode of operation
+2017-06-23 17:09:43,092 INFO Mode score->train
+2017-06-23 17:09:43,092 DEBUG Loading data...
+2017-06-23 17:09:43,179 INFO Created training set (1616) and test set (539)
+2017-06-23 17:09:43,179 INFO Recognised data-set: binary
+2017-06-23 17:09:43,180 INFO Using the pre-selected model (hyper-parameters)...
+2017-06-23 17:09:43,188 INFO Evaluating the selected model on the test set...
+2017-06-23 17:13:42,304 DEBUG Fitted 1616 data points.
+2017-06-23 17:13:42,304 DEBUG Fitting done in 0:03:59.115345
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.91      0.95      0.93       271
+  nonCancer       0.95      0.91      0.93       268
+
+avg / total       0.93      0.93      0.93       539
+
+Accuracy: 0.9294990723562152
+2017-06-23 17:13:42,768 DEBUG Evaluation done in 0:00:00.460262
+2017-06-23 17:13:42,789 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': True,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7fd05176da20>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'union__abstractPosTokLemSyn__select_mutinfcls': SelectKBest(k=4000,
+      score_func=<function mutual_info_classif at 0x7fd05ac856a8>),
+ 'union__abstractPosTokLemSyn__select_mutinfcls__k': 4000,
+ 'union__abstractPosTokLemSyn__select_mutinfcls__score_func': <function mutual_info_classif at 0x7fd05ac856a8>,
+ 'union__abstractPosTokLemSyn__selector': ItemSelector(key='Tokens'),
+ 'union__abstractPosTokLemSyn__selector__key': 'Tokens',
+ 'union__abstractPosTokLemSyn__vectorizer__analyzer': 'word',
+ 'union__abstractPosTokLemSyn__vectorizer__binary': False,
+ 'union__abstractPosTokLemSyn__vectorizer__decode_error': 'strict',
+ 'union__abstractPosTokLemSyn__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__abstractPosTokLemSyn__vectorizer__encoding': 'utf-8',
+ 'union__abstractPosTokLemSyn__vectorizer__input': 'content',
+ 'union__abstractPosTokLemSyn__vectorizer__lowercase': False,
+ 'union__abstractPosTokLemSyn__vectorizer__max_df': 1.0,
+ 'union__abstractPosTokLemSyn__vectorizer__max_features': None,
+ 'union__abstractPosTokLemSyn__vectorizer__min_df': 1,
+ 'union__abstractPosTokLemSyn__vectorizer__ngram_range': (1, 2),
+ 'union__abstractPosTokLemSyn__vectorizer__norm': 'l2',
+ 'union__abstractPosTokLemSyn__vectorizer__preprocessor': None,
+ 'union__abstractPosTokLemSyn__vectorizer__smooth_idf': True,
+ 'union__abstractPosTokLemSyn__vectorizer__stop_words': None,
+ 'union__abstractPosTokLemSyn__vectorizer__strip_accents': None,
+ 'union__abstractPosTokLemSyn__vectorizer__sublinear_tf': False,
+ 'union__abstractPosTokLemSyn__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__abstractPosTokLemSyn__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7fd053c3e0d0>,
+ 'union__abstractPosTokLemSyn__vectorizer__use_idf': True,
+ 'union__abstractPosTokLemSyn__vectorizer__vocabulary': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector': None,
+ 'union__n_jobs': 1,
+ 'union__term_vector': None,
+ 'union__titleWordCount': None,
+ 'union__transformer_weights': None,
+ 'union__word_ngrams': None}
+2017-06-23 17:19:26,049 DEBUG Fitted 2155 data points.
+2017-06-23 17:19:26,049 DEBUG Fitting done in 0:05:43.256774
+Model saved as model_2017-06-23--17-13-42.pkl
+
+python3 main.py --train ../wbi_binary/pre2_train.csv --score --hp config
+2017-06-23 17:21:57,737 DEBUG Commandline arguments: Namespace(hp='config', hp_metric='accuracy', model=None, oob=False, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-06-23 17:21:57,737 DEBUG Valid mode of operation
+2017-06-23 17:21:57,737 INFO Mode score->train
+2017-06-23 17:21:57,737 DEBUG Loading data...
+2017-06-23 17:21:57,823 INFO Created training set (1616) and test set (539)
+2017-06-23 17:21:57,823 INFO Recognised data-set: binary
+2017-06-23 17:21:57,824 INFO Using the pre-selected model (hyper-parameters)...
+2017-06-23 17:21:57,831 INFO Evaluating the selected model on the test set...
+2017-06-23 17:22:00,234 DEBUG Fitted 1616 data points.
+2017-06-23 17:22:00,234 DEBUG Fitting done in 0:00:02.402228
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.91      0.94      0.93       271
+  nonCancer       0.94      0.91      0.92       268
+
+avg / total       0.93      0.93      0.93       539
+
+Accuracy: 0.9257884972170687
+2017-06-23 17:22:00,804 DEBUG Evaluation done in 0:00:00.567130
+2017-06-23 17:22:00,822 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': True,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7f5f136d6480>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'union__abstractPosTokLemSyn__select_chi2': SelectKBest(k=4000, score_func=<function chi2 at 0x7f5f1ce8a048>),
+ 'union__abstractPosTokLemSyn__select_chi2__k': 4000,
+ 'union__abstractPosTokLemSyn__select_chi2__score_func': <function chi2 at 0x7f5f1ce8a048>,
+ 'union__abstractPosTokLemSyn__selector': ItemSelector(key='Tokens'),
+ 'union__abstractPosTokLemSyn__selector__key': 'Tokens',
+ 'union__abstractPosTokLemSyn__vectorizer__analyzer': 'word',
+ 'union__abstractPosTokLemSyn__vectorizer__binary': False,
+ 'union__abstractPosTokLemSyn__vectorizer__decode_error': 'strict',
+ 'union__abstractPosTokLemSyn__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__abstractPosTokLemSyn__vectorizer__encoding': 'utf-8',
+ 'union__abstractPosTokLemSyn__vectorizer__input': 'content',
+ 'union__abstractPosTokLemSyn__vectorizer__lowercase': False,
+ 'union__abstractPosTokLemSyn__vectorizer__max_df': 1.0,
+ 'union__abstractPosTokLemSyn__vectorizer__max_features': None,
+ 'union__abstractPosTokLemSyn__vectorizer__min_df': 1,
+ 'union__abstractPosTokLemSyn__vectorizer__ngram_range': (1, 2),
+ 'union__abstractPosTokLemSyn__vectorizer__norm': 'l2',
+ 'union__abstractPosTokLemSyn__vectorizer__preprocessor': None,
+ 'union__abstractPosTokLemSyn__vectorizer__smooth_idf': True,
+ 'union__abstractPosTokLemSyn__vectorizer__stop_words': None,
+ 'union__abstractPosTokLemSyn__vectorizer__strip_accents': None,
+ 'union__abstractPosTokLemSyn__vectorizer__sublinear_tf': False,
+ 'union__abstractPosTokLemSyn__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__abstractPosTokLemSyn__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7f5f15e580d0>,
+ 'union__abstractPosTokLemSyn__vectorizer__use_idf': True,
+ 'union__abstractPosTokLemSyn__vectorizer__vocabulary': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector': None,
+ 'union__n_jobs': 1,
+ 'union__term_vector': None,
+ 'union__titleWordCount': None,
+ 'union__transformer_weights': None,
+ 'union__word_ngrams': None}
+2017-06-23 17:22:03,657 DEBUG Fitted 2155 data points.
+2017-06-23 17:22:03,657 DEBUG Fitting done in 0:00:02.831645
+Model saved as model_2017-06-23--17-22-00.pkl

@@ -1,0 +1,440 @@
+python3 main.py --train ../wbi_binary/pre2_train.csv --score --hp randomized --oob
+2017-06-23 11:16:21,923 DEBUG Commandline arguments: Namespace(hp='randomized', hp_metric='accuracy', model=None, oob=True, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-06-23 11:16:21,924 DEBUG Valid mode of operation
+2017-06-23 11:16:21,924 INFO Mode score->train
+2017-06-23 11:16:21,924 DEBUG Loading data...
+2017-06-23 11:16:22,009 INFO Created training set (1616) and test set (539)
+2017-06-23 11:16:22,009 INFO Recognised data-set: binary
+2017-06-23 11:16:22,010 INFO Using randomized search on the training set to select the best model (hyper-parameters)...
+2017-06-23 11:16:22,010 DEBUG Performing randomized search, optimizing accuracy score...
+Fitting 3 folds for each of 35 candidates, totalling 105 fits
+[Parallel(n_jobs=-1)]: Done  42 tasks      | elapsed:   56.8s
+[Parallel(n_jobs=-1)]: Done 105 out of 105 | elapsed:  2.6min finished
+Hyper parameter search report:
+Parameter search space:
+{'clf__criterion': ['gini'],
+ 'clf__max_depth': [11],
+ 'clf__max_features': ['log2'],
+ 'clf__max_leaf_nodes': [55],
+ 'clf__min_impurity_split': [1e-05],
+ 'clf__min_samples_leaf': [2],
+ 'clf__min_samples_split': [3],
+ 'clf__min_weight_fraction_leaf': [0.0],
+ 'clf__n_estimators': [1000],
+ 'union__abstractPosTokLemSyn': ['Pipeline'],
+ 'union__abstractPosTokLemSyn__select_chi2__k': [1,
+                                                 2,
+                                                 3,
+                                                 4,
+                                                 5,
+                                                 6,
+                                                 7,
+                                                 8,
+                                                 9,
+                                                 10,
+                                                 15,
+                                                 20,
+                                                 25,
+                                                 30,
+                                                 40,
+                                                 50,
+                                                 100,
+                                                 150,
+                                                 200,
+                                                 250,
+                                                 300,
+                                                 350,
+                                                 400,
+                                                 450,
+                                                 500,
+                                                 1000,
+                                                 1500,
+                                                 2000,
+                                                 2500,
+                                                 3000,
+                                                 3500,
+                                                 4000,
+                                                 4500,
+                                                 5000,
+                                                 10000],
+ 'union__abstractWordCount': [None],
+ 'union__char_ngrams': [None],
+ 'union__keyword_vector': [None],
+ 'union__term_vector': [None],
+ 'union__titleWordCount': [None],
+ 'union__word_ngrams': [None]}
+Best score: 0.928
+Best parameters set:
+{'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'union__abstractPosTokLemSyn': 'Pipeline',
+ 'union__abstractPosTokLemSyn__select_chi2__k': 10000,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector': None,
+ 'union__term_vector': None,
+ 'union__titleWordCount': None,
+ 'union__word_ngrams': None}
+Detailed folds results:
+    mean_fit_time  mean_score_time  mean_test_score  mean_train_score param_clf__criterion param_clf__max_depth param_clf__max_features param_clf__max_leaf_nodes param_clf__min_impurity_split  \
+0        3.364214         0.604618         0.790842          0.797956                 gini                   11                    log2                        55                         1e-05   
+1        3.011584         0.636932         0.803218          0.812497                 gini                   11                    log2                        55                         1e-05   
+2        3.147238         0.477542         0.812500          0.849300                 gini                   11                    log2                        55                         1e-05   
+3        3.333878         0.598911         0.815594          0.848373                 gini                   11                    log2                        55                         1e-05   
+4        3.251343         0.520862         0.847153          0.888920                 gini                   11                    log2                        55                         1e-05   
+5        3.034182         0.523858         0.855198          0.900692                 gini                   11                    log2                        55                         1e-05   
+6        3.272618         0.573060         0.855198          0.919554                 gini                   11                    log2                        55                         1e-05   
+7        3.920891         0.582084         0.865099          0.933479                 gini                   11                    log2                        55                         1e-05   
+8        3.872072         0.617184         0.877475          0.938120                 gini                   11                    log2                        55                         1e-05   
+9        3.978926         0.629723         0.886757          0.943066                 gini                   11                    log2                        55                         1e-05   
+10       4.033149         0.640467         0.900371          0.952661                 gini                   11                    log2                        55                         1e-05   
+11       4.131275         0.635954         0.912748          0.958228                 gini                   11                    log2                        55                         1e-05   
+12       3.864557         0.605389         0.910272          0.956992                 gini                   11                    log2                        55                         1e-05   
+13       4.386736         0.646694         0.913985          0.956993                 gini                   11                    log2                        55                         1e-05   
+14       4.580650         0.589267         0.915842          0.962870                 gini                   11                    log2                        55                         1e-05   
+15       4.185666         0.563298         0.915842          0.962559                 gini                   11                    log2                        55                         1e-05   
+16       4.037310         0.636356         0.915842          0.967200                 gini                   11                    log2                        55                         1e-05   
+17       4.374226         0.813091         0.923886          0.966582                 gini                   11                    log2                        55                         1e-05   
+18       4.434957         0.676590         0.922030          0.964726                 gini                   11                    log2                        55                         1e-05   
+19       4.263281         0.738551         0.922649          0.966273                 gini                   11                    log2                        55                         1e-05   
+20       4.838913         0.757870         0.923267          0.967202                 gini                   11                    log2                        55                         1e-05   
+21       5.200746         0.820015         0.920792          0.965347                 gini                   11                    log2                        55                         1e-05   
+22       5.331347         0.710743         0.923267          0.964726                 gini                   11                    log2                        55                         1e-05   
+23       4.867049         0.594612         0.922030          0.964416                 gini                   11                    log2                        55                         1e-05   
+24       4.690477         0.764023         0.923886          0.963798                 gini                   11                    log2                        55                         1e-05   
+25       5.206636         0.645714         0.919554          0.960086                 gini                   11                    log2                        55                         1e-05   
+26       4.210452         0.700714         0.920173          0.959158                 gini                   11                    log2                        55                         1e-05   
+27       4.112080         0.734427         0.918317          0.959775                 gini                   11                    log2                        55                         1e-05   
+28       4.741424         0.770108         0.919554          0.959157                 gini                   11                    log2                        55                         1e-05   
+29       4.974035         0.828999         0.922030          0.958539                 gini                   11                    log2                        55                         1e-05   
+30       4.044346         0.734587         0.926361          0.958539                 gini                   11                    log2                        55                         1e-05   
+31       3.616908         0.707814         0.925743          0.960085                 gini                   11                    log2                        55                         1e-05   
+32       3.495859         0.720317         0.926361          0.962562                 gini                   11                    log2                        55                         1e-05   
+33       3.613721         0.778015         0.922649          0.961013                 gini                   11                    log2                        55                         1e-05   
+34       3.342589         0.543904         0.927599          0.964728                 gini                   11                    log2                        55                         1e-05   
+
+   param_clf__min_samples_leaf param_clf__min_samples_split param_clf__min_weight_fraction_leaf param_clf__n_estimators param_union__abstractPosTokLemSyn  \
+0                            2                            3                                   0                    1000                          Pipeline   
+1                            2                            3                                   0                    1000                          Pipeline   
+2                            2                            3                                   0                    1000                          Pipeline   
+3                            2                            3                                   0                    1000                          Pipeline   
+4                            2                            3                                   0                    1000                          Pipeline   
+5                            2                            3                                   0                    1000                          Pipeline   
+6                            2                            3                                   0                    1000                          Pipeline   
+7                            2                            3                                   0                    1000                          Pipeline   
+8                            2                            3                                   0                    1000                          Pipeline   
+9                            2                            3                                   0                    1000                          Pipeline   
+10                           2                            3                                   0                    1000                          Pipeline   
+11                           2                            3                                   0                    1000                          Pipeline   
+12                           2                            3                                   0                    1000                          Pipeline   
+13                           2                            3                                   0                    1000                          Pipeline   
+14                           2                            3                                   0                    1000                          Pipeline   
+15                           2                            3                                   0                    1000                          Pipeline   
+16                           2                            3                                   0                    1000                          Pipeline   
+17                           2                            3                                   0                    1000                          Pipeline   
+18                           2                            3                                   0                    1000                          Pipeline   
+19                           2                            3                                   0                    1000                          Pipeline   
+20                           2                            3                                   0                    1000                          Pipeline   
+21                           2                            3                                   0                    1000                          Pipeline   
+22                           2                            3                                   0                    1000                          Pipeline   
+23                           2                            3                                   0                    1000                          Pipeline   
+24                           2                            3                                   0                    1000                          Pipeline   
+25                           2                            3                                   0                    1000                          Pipeline   
+26                           2                            3                                   0                    1000                          Pipeline   
+27                           2                            3                                   0                    1000                          Pipeline   
+28                           2                            3                                   0                    1000                          Pipeline   
+29                           2                            3                                   0                    1000                          Pipeline   
+30                           2                            3                                   0                    1000                          Pipeline   
+31                           2                            3                                   0                    1000                          Pipeline   
+32                           2                            3                                   0                    1000                          Pipeline   
+33                           2                            3                                   0                    1000                          Pipeline   
+34                           2                            3                                   0                    1000                          Pipeline   
+
+   param_union__abstractPosTokLemSyn__select_chi2__k param_union__abstractWordCount param_union__char_ngrams param_union__keyword_vector param_union__term_vector param_union__titleWordCount  \
+0                                                  1                           None                     None                        None                     None                        None   
+1                                                  2                           None                     None                        None                     None                        None   
+2                                                  3                           None                     None                        None                     None                        None   
+3                                                  4                           None                     None                        None                     None                        None   
+4                                                  5                           None                     None                        None                     None                        None   
+5                                                  6                           None                     None                        None                     None                        None   
+6                                                  7                           None                     None                        None                     None                        None   
+7                                                  8                           None                     None                        None                     None                        None   
+8                                                  9                           None                     None                        None                     None                        None   
+9                                                 10                           None                     None                        None                     None                        None   
+10                                                15                           None                     None                        None                     None                        None   
+11                                                20                           None                     None                        None                     None                        None   
+12                                                25                           None                     None                        None                     None                        None   
+13                                                30                           None                     None                        None                     None                        None   
+14                                                40                           None                     None                        None                     None                        None   
+15                                                50                           None                     None                        None                     None                        None   
+16                                               100                           None                     None                        None                     None                        None   
+17                                               150                           None                     None                        None                     None                        None   
+18                                               200                           None                     None                        None                     None                        None   
+19                                               250                           None                     None                        None                     None                        None   
+20                                               300                           None                     None                        None                     None                        None   
+21                                               350                           None                     None                        None                     None                        None   
+22                                               400                           None                     None                        None                     None                        None   
+23                                               450                           None                     None                        None                     None                        None   
+24                                               500                           None                     None                        None                     None                        None   
+25                                              1000                           None                     None                        None                     None                        None   
+26                                              1500                           None                     None                        None                     None                        None   
+27                                              2000                           None                     None                        None                     None                        None   
+28                                              2500                           None                     None                        None                     None                        None   
+29                                              3000                           None                     None                        None                     None                        None   
+30                                              3500                           None                     None                        None                     None                        None   
+31                                              4000                           None                     None                        None                     None                        None   
+32                                              4500                           None                     None                        None                     None                        None   
+33                                              5000                           None                     None                        None                     None                        None   
+34                                             10000                           None                     None                        None                     None                        None   
+
+   param_union__word_ngrams  rank_test_score  split0_test_score  split0_train_score  split1_test_score  split1_train_score  split2_test_score  split2_train_score  std_fit_time  std_score_time  \
+0                      None               35           0.796296            0.795539           0.799257            0.792208           0.776952            0.806122      0.287143        0.108272   
+1                      None               34           0.812963            0.807621           0.802974            0.812616           0.793680            0.817254      0.167715        0.226555   
+2                      None               33           0.818519            0.817844           0.806691            0.816327           0.812268            0.913729      0.069546        0.114122   
+3                      None               32           0.818519            0.818773           0.808550            0.815399           0.819703            0.910946      0.229451        0.082985   
+4                      None               31           0.851852            0.882900           0.866171            0.883117           0.823420            0.900742      0.102961        0.061072   
+5                      None               29           0.866667            0.918216           0.866171            0.884972           0.832714            0.898887      0.084235        0.031429   
+6                      None               29           0.875926            0.918216           0.862454            0.916512           0.827138            0.923933      0.192215        0.059420   
+7                      None               28           0.875926            0.935874           0.866171            0.920223           0.853160            0.944341      0.164850        0.059604   
+8                      None               27           0.885185            0.940520           0.875465            0.925788           0.871747            0.948052      0.217649        0.050386   
+9                      None               26           0.890741            0.937732           0.897770            0.945269           0.871747            0.946197      0.143918        0.094246   
+10                     None               25           0.911111            0.953532           0.907063            0.952690           0.882900            0.951763      0.249575        0.112251   
+11                     None               23           0.912963            0.955390           0.918216            0.959184           0.907063            0.960111      0.064605        0.093240   
+12                     None               24           0.916667            0.955390           0.920074            0.958256           0.894052            0.957328      0.061254        0.091190   
+13                     None               22           0.924074            0.958178           0.921933            0.955473           0.895911            0.957328      0.192113        0.104542   
+14                     None               19           0.927778            0.960037           0.918216            0.964750           0.901487            0.963822      0.201685        0.054079   
+15                     None               19           0.924074            0.957249           0.923792            0.968460           0.899628            0.961967      0.154008        0.031716   
+16                     None               19           0.918519            0.962825           0.921933            0.969388           0.907063            0.969388      0.176985        0.031306   
+17                     None                5           0.927778            0.962825           0.927509            0.970315           0.916357            0.966605      0.159238        0.189593   
+18                     None               11           0.925926            0.961896           0.925651            0.969388           0.914498            0.962894      0.289338        0.020242   
+19                     None                9           0.927778            0.963755           0.925651            0.970315           0.914498            0.964750      0.207429        0.150676   
+20                     None                7           0.927778            0.965613           0.925651            0.971243           0.916357            0.964750      0.051974        0.036968   
+21                     None               14           0.929630            0.965613           0.921933            0.967532           0.910781            0.962894      0.185639        0.108302   
+22                     None                7           0.931481            0.961896           0.921933            0.968460           0.916357            0.963822      0.574510        0.067259   
+23                     None               11           0.927778            0.960037           0.923792            0.967532           0.914498            0.965677      0.362214        0.123803   
+24                     None                5           0.929630            0.960967           0.923792            0.965677           0.918216            0.964750      0.506399        0.105868   
+25                     None               16           0.927778            0.959108           0.916357            0.958256           0.914498            0.962894      0.451046        0.100960   
+26                     None               15           0.927778            0.958178           0.914498            0.957328           0.918216            0.961967      0.224972        0.033558   
+27                     None               18           0.925926            0.955390           0.918216            0.962894           0.910781            0.961039      0.268907        0.070903   
+28                     None               16           0.925926            0.957249           0.918216            0.960111           0.914498            0.960111      0.307735        0.109084   
+29                     None               11           0.925926            0.958178           0.923792            0.958256           0.916357            0.959184      0.522033        0.137526   
+30                     None                2           0.927778            0.958178           0.929368            0.958256           0.921933            0.959184      0.178720        0.013741   
+31                     None                4           0.929630            0.958178           0.923792            0.959184           0.923792            0.962894      0.157714        0.051505   
+32                     None                2           0.931481            0.962825           0.923792            0.959184           0.923792            0.965677      0.177808        0.077803   
+33                     None                9           0.925926            0.957249           0.916357            0.961967           0.925651            0.963822      0.205887        0.026118   
+34                     None                1           0.922222            0.965613           0.933086            0.963822           0.927509            0.964750      0.341904        0.136353   
+
+    std_test_score  std_train_score  
+0         0.009887         0.005932  
+1         0.007876         0.003934  
+2         0.004833         0.045563  
+3         0.005000         0.044268  
+4         0.017757         0.008360  
+5         0.015885         0.013631  
+6         0.020573         0.003174  
+7         0.009328         0.009991  
+8         0.005669         0.009246  
+9         0.010986         0.003790  
+10        0.012453         0.000723  
+11        0.004553         0.002042  
+12        0.011543         0.001194  
+13        0.012799         0.001130  
+14        0.010867         0.002038  
+15        0.011454         0.004596  
+16        0.006356         0.003094  
+17        0.005320         0.003058  
+18        0.005322         0.003321  
+19        0.005823         0.002887  
+20        0.004959         0.002879  
+21        0.007740         0.001903  
+22        0.006248         0.002755  
+23        0.005564         0.003187  
+24        0.004662         0.002037  
+25        0.005875         0.002016  
+26        0.005597         0.002016  
+27        0.006185         0.003191  
+28        0.004762         0.001349  
+29        0.004101         0.000457  
+30        0.003195         0.000457  
+31        0.002754         0.002028  
+32        0.003627         0.002657  
+33        0.004446         0.002767  
+34        0.004437         0.000732  
+Search results saved as search_results.csv
+2017-06-23 11:18:58,005 DEBUG randomized search done in 0:02:34.563292
+2017-06-23 11:18:58,044 INFO Evaluating the selected model on the test set...
+2017-06-23 11:18:58,047 DEBUG Calculating out-of-bag error over tree count (range 25-1000)...
+2017-06-23 11:18:59,879 DEBUG Out-of-bag error for 30 trees = 0.14851485148514854
+2017-06-23 11:19:02,971 DEBUG Out-of-bag error for 40 trees = 0.13799504950495045
+2017-06-23 11:19:06,146 DEBUG Out-of-bag error for 50 trees = 0.12871287128712872
+2017-06-23 11:19:09,397 DEBUG Out-of-bag error for 60 trees = 0.12252475247524752
+2017-06-23 11:19:12,728 DEBUG Out-of-bag error for 70 trees = 0.11014851485148514
+2017-06-23 11:19:16,148 DEBUG Out-of-bag error for 80 trees = 0.11076732673267331
+2017-06-23 11:19:19,651 DEBUG Out-of-bag error for 90 trees = 0.10952970297029707
+2017-06-23 11:19:23,330 DEBUG Out-of-bag error for 100 trees = 0.10148514851485146
+2017-06-23 11:19:27,060 DEBUG Out-of-bag error for 110 trees = 0.09715346534653468
+2017-06-23 11:19:30,927 DEBUG Out-of-bag error for 120 trees = 0.09653465346534651
+2017-06-23 11:19:34,756 DEBUG Out-of-bag error for 130 trees = 0.09591584158415845
+2017-06-23 11:19:38,641 DEBUG Out-of-bag error for 140 trees = 0.09034653465346532
+2017-06-23 11:19:42,616 DEBUG Out-of-bag error for 150 trees = 0.08601485148514854
+2017-06-23 11:19:46,679 DEBUG Out-of-bag error for 160 trees = 0.08601485148514854
+2017-06-23 11:19:50,804 DEBUG Out-of-bag error for 170 trees = 0.0866336633663366
+2017-06-23 11:19:55,007 DEBUG Out-of-bag error for 180 trees = 0.08910891089108908
+2017-06-23 11:19:59,291 DEBUG Out-of-bag error for 190 trees = 0.08601485148514854
+2017-06-23 11:20:03,681 DEBUG Out-of-bag error for 200 trees = 0.08353960396039606
+2017-06-23 11:20:08,179 DEBUG Out-of-bag error for 210 trees = 0.08292079207920788
+2017-06-23 11:20:12,723 DEBUG Out-of-bag error for 220 trees = 0.08168316831683164
+2017-06-23 11:20:17,340 DEBUG Out-of-bag error for 230 trees = 0.08353960396039606
+2017-06-23 11:20:22,042 DEBUG Out-of-bag error for 240 trees = 0.07920792079207917
+2017-06-23 11:20:26,838 DEBUG Out-of-bag error for 250 trees = 0.07673267326732669
+2017-06-23 11:20:31,703 DEBUG Out-of-bag error for 260 trees = 0.0785891089108911
+2017-06-23 11:20:36,643 DEBUG Out-of-bag error for 270 trees = 0.07549504950495045
+2017-06-23 11:20:41,681 DEBUG Out-of-bag error for 280 trees = 0.07611386138613863
+2017-06-23 11:20:46,778 DEBUG Out-of-bag error for 290 trees = 0.07611386138613863
+2017-06-23 11:20:51,971 DEBUG Out-of-bag error for 300 trees = 0.07549504950495045
+2017-06-23 11:20:57,240 DEBUG Out-of-bag error for 310 trees = 0.07611386138613863
+2017-06-23 11:21:02,905 DEBUG Out-of-bag error for 320 trees = 0.07363861386138615
+2017-06-23 11:21:08,554 DEBUG Out-of-bag error for 330 trees = 0.07425742574257421
+2017-06-23 11:21:14,189 DEBUG Out-of-bag error for 340 trees = 0.07797029702970293
+2017-06-23 11:21:19,819 DEBUG Out-of-bag error for 350 trees = 0.07549504950495045
+2017-06-23 11:21:25,505 DEBUG Out-of-bag error for 360 trees = 0.07549504950495045
+2017-06-23 11:21:31,315 DEBUG Out-of-bag error for 370 trees = 0.07611386138613863
+2017-06-23 11:21:37,176 DEBUG Out-of-bag error for 380 trees = 0.07549504950495045
+2017-06-23 11:21:43,078 DEBUG Out-of-bag error for 390 trees = 0.07363861386138615
+2017-06-23 11:21:49,094 DEBUG Out-of-bag error for 400 trees = 0.06930693069306926
+2017-06-23 11:21:55,188 DEBUG Out-of-bag error for 410 trees = 0.06992574257425743
+2017-06-23 11:22:01,377 DEBUG Out-of-bag error for 420 trees = 0.0705445544554455
+2017-06-23 11:22:07,672 DEBUG Out-of-bag error for 430 trees = 0.06930693069306926
+2017-06-23 11:22:14,047 DEBUG Out-of-bag error for 440 trees = 0.06992574257425743
+2017-06-23 11:22:20,461 DEBUG Out-of-bag error for 450 trees = 0.07116336633663367
+2017-06-23 11:22:26,948 DEBUG Out-of-bag error for 460 trees = 0.0705445544554455
+2017-06-23 11:22:33,511 DEBUG Out-of-bag error for 470 trees = 0.07116336633663367
+2017-06-23 11:22:40,161 DEBUG Out-of-bag error for 480 trees = 0.07178217821782173
+2017-06-23 11:22:46,892 DEBUG Out-of-bag error for 490 trees = 0.07178217821782173
+2017-06-23 11:22:53,700 DEBUG Out-of-bag error for 500 trees = 0.07178217821782173
+2017-06-23 11:23:00,597 DEBUG Out-of-bag error for 510 trees = 0.07673267326732669
+2017-06-23 11:23:07,735 DEBUG Out-of-bag error for 520 trees = 0.07487623762376239
+2017-06-23 11:23:14,927 DEBUG Out-of-bag error for 530 trees = 0.07487623762376239
+2017-06-23 11:23:22,305 DEBUG Out-of-bag error for 540 trees = 0.07363861386138615
+2017-06-23 11:23:29,556 DEBUG Out-of-bag error for 550 trees = 0.07240099009900991
+2017-06-23 11:23:36,882 DEBUG Out-of-bag error for 560 trees = 0.07178217821782173
+2017-06-23 11:23:44,304 DEBUG Out-of-bag error for 570 trees = 0.07240099009900991
+2017-06-23 11:23:51,805 DEBUG Out-of-bag error for 580 trees = 0.07178217821782173
+2017-06-23 11:23:59,359 DEBUG Out-of-bag error for 590 trees = 0.07178217821782173
+2017-06-23 11:24:07,012 DEBUG Out-of-bag error for 600 trees = 0.07240099009900991
+2017-06-23 11:24:14,726 DEBUG Out-of-bag error for 610 trees = 0.07301980198019797
+2017-06-23 11:24:22,504 DEBUG Out-of-bag error for 620 trees = 0.07363861386138615
+2017-06-23 11:24:30,378 DEBUG Out-of-bag error for 630 trees = 0.07178217821782173
+2017-06-23 11:24:38,342 DEBUG Out-of-bag error for 640 trees = 0.07178217821782173
+2017-06-23 11:24:46,657 DEBUG Out-of-bag error for 650 trees = 0.07240099009900991
+2017-06-23 11:24:54,780 DEBUG Out-of-bag error for 660 trees = 0.06992574257425743
+2017-06-23 11:25:02,996 DEBUG Out-of-bag error for 670 trees = 0.06992574257425743
+2017-06-23 11:25:11,322 DEBUG Out-of-bag error for 680 trees = 0.07116336633663367
+2017-06-23 11:25:19,687 DEBUG Out-of-bag error for 690 trees = 0.0705445544554455
+2017-06-23 11:25:28,115 DEBUG Out-of-bag error for 700 trees = 0.07240099009900991
+2017-06-23 11:25:38,200 DEBUG Out-of-bag error for 710 trees = 0.07116336633663367
+2017-06-23 11:25:48,008 DEBUG Out-of-bag error for 720 trees = 0.0705445544554455
+2017-06-23 11:25:57,061 DEBUG Out-of-bag error for 730 trees = 0.0705445544554455
+2017-06-23 11:26:06,969 DEBUG Out-of-bag error for 740 trees = 0.07116336633663367
+2017-06-23 11:26:18,198 DEBUG Out-of-bag error for 750 trees = 0.07178217821782173
+2017-06-23 11:26:27,457 DEBUG Out-of-bag error for 760 trees = 0.0705445544554455
+2017-06-23 11:26:36,638 DEBUG Out-of-bag error for 770 trees = 0.06992574257425743
+2017-06-23 11:26:45,861 DEBUG Out-of-bag error for 780 trees = 0.06992574257425743
+2017-06-23 11:26:55,131 DEBUG Out-of-bag error for 790 trees = 0.06992574257425743
+2017-06-23 11:27:05,712 DEBUG Out-of-bag error for 800 trees = 0.06992574257425743
+2017-06-23 11:27:15,956 DEBUG Out-of-bag error for 810 trees = 0.07116336633663367
+2017-06-23 11:27:26,418 DEBUG Out-of-bag error for 820 trees = 0.0705445544554455
+2017-06-23 11:27:36,560 DEBUG Out-of-bag error for 830 trees = 0.0705445544554455
+2017-06-23 11:27:46,869 DEBUG Out-of-bag error for 840 trees = 0.07116336633663367
+2017-06-23 11:27:57,020 DEBUG Out-of-bag error for 850 trees = 0.07178217821782173
+2017-06-23 11:28:07,059 DEBUG Out-of-bag error for 860 trees = 0.07240099009900991
+2017-06-23 11:28:17,043 DEBUG Out-of-bag error for 870 trees = 0.07301980198019797
+2017-06-23 11:28:27,821 DEBUG Out-of-bag error for 880 trees = 0.07240099009900991
+2017-06-23 11:28:37,864 DEBUG Out-of-bag error for 890 trees = 0.07240099009900991
+2017-06-23 11:28:48,224 DEBUG Out-of-bag error for 900 trees = 0.07301980198019797
+2017-06-23 11:28:58,439 DEBUG Out-of-bag error for 910 trees = 0.07363861386138615
+2017-06-23 11:29:08,709 DEBUG Out-of-bag error for 920 trees = 0.07363861386138615
+2017-06-23 11:29:19,026 DEBUG Out-of-bag error for 930 trees = 0.07363861386138615
+2017-06-23 11:29:29,455 DEBUG Out-of-bag error for 940 trees = 0.07240099009900991
+2017-06-23 11:29:40,025 DEBUG Out-of-bag error for 950 trees = 0.07116336633663367
+2017-06-23 11:29:50,798 DEBUG Out-of-bag error for 960 trees = 0.07178217821782173
+2017-06-23 11:30:02,452 DEBUG Out-of-bag error for 970 trees = 0.07301980198019797
+2017-06-23 11:30:13,337 DEBUG Out-of-bag error for 980 trees = 0.07301980198019797
+2017-06-23 11:30:24,186 DEBUG Out-of-bag error for 990 trees = 0.07363861386138615
+2017-06-23 11:30:35,332 DEBUG Out-of-bag error for 1000 trees = 0.07363861386138615
+OOB error saved as oob.csv
+2017-06-23 11:30:35,433 DEBUG Fitted 1616 data points.
+2017-06-23 11:30:35,433 DEBUG Fitting and oob calculation done in 0:11:37.295140
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.90      0.97      0.93       271
+  nonCancer       0.97      0.89      0.93       268
+
+avg / total       0.93      0.93      0.93       539
+
+Accuracy: 0.9313543599257885
+2017-06-23 11:30:35,999 DEBUG Evaluation done in 0:00:00.470418
+2017-06-23 11:30:36,004 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': True,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7f7a137e1120>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'union__abstractPosTokLemSyn__select_chi2': SelectKBest(k=10000, score_func=<function chi2 at 0x7f7a32dc8048>),
+ 'union__abstractPosTokLemSyn__select_chi2__k': 10000,
+ 'union__abstractPosTokLemSyn__select_chi2__score_func': <function chi2 at 0x7f7a32dc8048>,
+ 'union__abstractPosTokLemSyn__selector': ItemSelector(key='Tokens'),
+ 'union__abstractPosTokLemSyn__selector__key': 'Tokens',
+ 'union__abstractPosTokLemSyn__vectorizer__analyzer': 'word',
+ 'union__abstractPosTokLemSyn__vectorizer__binary': False,
+ 'union__abstractPosTokLemSyn__vectorizer__decode_error': 'strict',
+ 'union__abstractPosTokLemSyn__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__abstractPosTokLemSyn__vectorizer__encoding': 'utf-8',
+ 'union__abstractPosTokLemSyn__vectorizer__input': 'content',
+ 'union__abstractPosTokLemSyn__vectorizer__lowercase': False,
+ 'union__abstractPosTokLemSyn__vectorizer__max_df': 1.0,
+ 'union__abstractPosTokLemSyn__vectorizer__max_features': None,
+ 'union__abstractPosTokLemSyn__vectorizer__min_df': 1,
+ 'union__abstractPosTokLemSyn__vectorizer__ngram_range': (1, 1),
+ 'union__abstractPosTokLemSyn__vectorizer__norm': 'l2',
+ 'union__abstractPosTokLemSyn__vectorizer__preprocessor': None,
+ 'union__abstractPosTokLemSyn__vectorizer__smooth_idf': True,
+ 'union__abstractPosTokLemSyn__vectorizer__stop_words': None,
+ 'union__abstractPosTokLemSyn__vectorizer__strip_accents': None,
+ 'union__abstractPosTokLemSyn__vectorizer__sublinear_tf': False,
+ 'union__abstractPosTokLemSyn__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__abstractPosTokLemSyn__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7f7a2bdd70d0>,
+ 'union__abstractPosTokLemSyn__vectorizer__use_idf': True,
+ 'union__abstractPosTokLemSyn__vectorizer__vocabulary': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector': None,
+ 'union__n_jobs': 1,
+ 'union__term_vector': None,
+ 'union__titleWordCount': None,
+ 'union__transformer_weights': None,
+ 'union__word_ngrams': None}
+2017-06-23 11:30:37,697 DEBUG Fitted 2155 data points.
+2017-06-23 11:30:37,697 DEBUG Fitting done in 0:00:01.689181
+Model saved as model_2017-06-23--11-30-36.pkl
+

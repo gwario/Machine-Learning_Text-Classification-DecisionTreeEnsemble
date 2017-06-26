@@ -76,8 +76,6 @@ Detailed folds results:
 50                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.953704   
 59                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.950000   
 61                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.951852   
-64                      None                    Pipeline                          Pipeline                       Pipeline                     None               13           0.944444   
-68                      None                    Pipeline                          Pipeline                       Pipeline                     None               13           0.950000   
 69                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.950000   
 71                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.950000   
 72                      None                    Pipeline                          Pipeline                       Pipeline                     None                1           0.946296   

@@ -1,0 +1,171 @@
+python3 main.py --train ../wbi_binary/pre2_train.csv --score --hp randomized
+2017-06-24 13:17:37,575 DEBUG Commandline arguments: Namespace(hp='randomized', hp_metric='accuracy', model=None, oob=False, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-06-24 13:17:37,575 DEBUG Valid mode of operation
+2017-06-24 13:17:37,575 INFO Mode score->train
+2017-06-24 13:17:37,575 DEBUG Loading data...
+2017-06-24 13:17:37,660 INFO Created training set (1616) and test set (539)
+2017-06-24 13:17:37,661 INFO Recognised data-set: binary
+2017-06-24 13:17:37,661 INFO Using randomized search on the training set to select the best model (hyper-parameters)...
+2017-06-24 13:17:37,662 DEBUG Performing randomized search, optimizing accuracy score...
+Fitting 5 folds for each of 7 candidates, totalling 35 fits
+[Parallel(n_jobs=-1)]: Done  35 out of  35 | elapsed:   30.2s finished
+Hyper parameter search report:
+Parameter search space:
+{'clf__criterion': ['gini'],
+ 'clf__max_depth': [11],
+ 'clf__max_features': ['log2'],
+ 'clf__max_leaf_nodes': [55],
+ 'clf__min_impurity_split': [1e-05],
+ 'clf__min_samples_leaf': [2],
+ 'clf__min_samples_split': [3],
+ 'clf__min_weight_fraction_leaf': [0.0],
+ 'clf__n_estimators': [1000],
+ 'union__abstractPosTokLemSyn': [None],
+ 'union__abstractWordCount': [None],
+ 'union__char_ngrams': [None],
+ 'union__keyword_vector': ['Pipeline'],
+ 'union__keyword_vector__select_chi2__k': [200,
+                                           400,
+                                           600,
+                                           800,
+                                           1000,
+                                           1200,
+                                           1400],
+ 'union__term_vector': [None],
+ 'union__titleWordCount': [None],
+ 'union__word_ngrams': [None]}
+Best score: 0.665
+Best parameters set:
+{'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'union__abstractPosTokLemSyn': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector': 'Pipeline',
+ 'union__keyword_vector__select_chi2__k': 800,
+ 'union__term_vector': None,
+ 'union__titleWordCount': None,
+ 'union__word_ngrams': None}
+Detailed folds results:
+   mean_fit_time  mean_score_time  mean_test_score  mean_train_score param_clf__criterion param_clf__max_depth param_clf__max_features param_clf__max_leaf_nodes param_clf__min_impurity_split  \
+0       2.395532         0.312855         0.657178          0.678219                 gini                   11                    log2                        55                         1e-05   
+1       2.329883         0.311750         0.661510          0.684871                 gini                   11                    log2                        55                         1e-05   
+2       2.348704         0.312527         0.659653          0.688274                 gini                   11                    log2                        55                         1e-05   
+3       2.419222         0.313867         0.664604          0.691058                 gini                   11                    log2                        55                         1e-05   
+4       2.360962         0.349538         0.662129          0.698483                 gini                   11                    log2                        55                         1e-05   
+5       2.743638         0.425061         0.634901          0.672187                 gini                   11                    log2                        55                         1e-05   
+6       2.694491         0.374381         0.631807          0.673118                 gini                   11                    log2                        55                         1e-05   
+
+  param_clf__min_samples_leaf param_clf__min_samples_split param_clf__min_weight_fraction_leaf param_clf__n_estimators param_union__abstractPosTokLemSyn param_union__abstractWordCount  \
+0                           2                            3                                   0                    1000                              None                           None   
+1                           2                            3                                   0                    1000                              None                           None   
+2                           2                            3                                   0                    1000                              None                           None   
+3                           2                            3                                   0                    1000                              None                           None   
+4                           2                            3                                   0                    1000                              None                           None   
+5                           2                            3                                   0                    1000                              None                           None   
+6                           2                            3                                   0                    1000                              None                           None   
+
+  param_union__char_ngrams param_union__keyword_vector param_union__keyword_vector__select_chi2__k param_union__term_vector param_union__titleWordCount param_union__word_ngrams  rank_test_score  \
+0                     None                    Pipeline                                         200                     None                        None                     None                5   
+1                     None                    Pipeline                                         400                     None                        None                     None                3   
+2                     None                    Pipeline                                         600                     None                        None                     None                4   
+3                     None                    Pipeline                                         800                     None                        None                     None                1   
+4                     None                    Pipeline                                        1000                     None                        None                     None                2   
+5                     None                    Pipeline                                        1200                     None                        None                     None                6   
+6                     None                    Pipeline                                        1400                     None                        None                     None                7   
+
+   split0_test_score  split0_train_score  split1_test_score  split1_train_score  split2_test_score  split2_train_score  split3_test_score  split3_train_score  split4_test_score  split4_train_score  \
+0           0.626543            0.687307           0.650155            0.685228           0.693498            0.669760           0.653251            0.675947           0.662539            0.672854   
+1           0.632716            0.692724           0.650155            0.691415           0.699690            0.678268           0.653251            0.681361           0.671827            0.680588   
+2           0.629630            0.694272           0.656347            0.694509           0.690402            0.676721           0.650155            0.686775           0.671827            0.689095   
+3           0.626543            0.691950           0.656347            0.700696           0.702786            0.683681           0.665635            0.695282           0.671827            0.683681   
+4           0.617284            0.691176           0.656347            0.710750           0.699690            0.694509           0.656347            0.693735           0.681115            0.702243   
+5           0.623457            0.688854           0.513932            0.590101           0.702786            0.696056           0.656347            0.696829           0.678019            0.689095   
+6           0.632716            0.705882           0.656347            0.700696           0.529412            0.571539           0.662539            0.689095           0.678019            0.698376   
+
+   std_fit_time  std_score_time  std_test_score  std_train_score  
+0      0.017941        0.001170        0.021691         0.006888  
+1      0.066821        0.001340        0.022766         0.005980  
+2      0.105058        0.001693        0.020483         0.006500  
+3      0.114174        0.001652        0.024619         0.006639  
+4      0.119709        0.044591        0.027760         0.007160  
+5      0.136356        0.008876        0.065847         0.041180  
+6      0.214853        0.052721        0.053215         0.051079  
+Search results saved as search_results.csv
+2017-06-24 13:18:08,063 DEBUG randomized search done in 0:00:30.333721
+2017-06-24 13:18:08,074 INFO Evaluating the selected model on the test set...
+2017-06-24 13:18:09,624 DEBUG Fitted 1616 data points.
+2017-06-24 13:18:09,624 DEBUG Fitting done in 0:00:01.549489
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.60      0.87      0.71       271
+  nonCancer       0.76      0.42      0.54       268
+
+avg / total       0.68      0.65      0.63       539
+
+Accuracy: 0.6456400742115028
+2017-06-24 13:18:10,046 DEBUG Evaluation done in 0:00:00.418460
+2017-06-24 13:18:10,050 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': True,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7f1fc03d9e10>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'union__abstractPosTokLemSyn': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector__select_chi2': SelectKBest(k=800, score_func=<function chi2 at 0x7f1fc9377048>),
+ 'union__keyword_vector__select_chi2__k': 800,
+ 'union__keyword_vector__select_chi2__score_func': <function chi2 at 0x7f1fc9377048>,
+ 'union__keyword_vector__selector': ItemSelector(key='Keywords'),
+ 'union__keyword_vector__selector__key': 'Keywords',
+ 'union__keyword_vector__vectorizer__analyzer': 'word',
+ 'union__keyword_vector__vectorizer__binary': False,
+ 'union__keyword_vector__vectorizer__decode_error': 'strict',
+ 'union__keyword_vector__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__keyword_vector__vectorizer__encoding': 'utf-8',
+ 'union__keyword_vector__vectorizer__input': 'content',
+ 'union__keyword_vector__vectorizer__lowercase': False,
+ 'union__keyword_vector__vectorizer__max_df': 1.0,
+ 'union__keyword_vector__vectorizer__max_features': None,
+ 'union__keyword_vector__vectorizer__min_df': 1,
+ 'union__keyword_vector__vectorizer__ngram_range': (1, 1),
+ 'union__keyword_vector__vectorizer__norm': 'l2',
+ 'union__keyword_vector__vectorizer__preprocessor': None,
+ 'union__keyword_vector__vectorizer__smooth_idf': True,
+ 'union__keyword_vector__vectorizer__stop_words': None,
+ 'union__keyword_vector__vectorizer__strip_accents': None,
+ 'union__keyword_vector__vectorizer__sublinear_tf': False,
+ 'union__keyword_vector__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__keyword_vector__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7f1fc233f0d0>,
+ 'union__keyword_vector__vectorizer__use_idf': True,
+ 'union__keyword_vector__vectorizer__vocabulary': None,
+ 'union__n_jobs': 1,
+ 'union__term_vector': None,
+ 'union__titleWordCount': None,
+ 'union__transformer_weights': None,
+ 'union__word_ngrams': None}
+2017-06-24 13:18:11,594 DEBUG Fitted 2155 data points.
+2017-06-24 13:18:11,594 DEBUG Fitting done in 0:00:01.541246
+Model saved as model_2017-06-24--13-18-10.pkl
+

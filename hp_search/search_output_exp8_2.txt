@@ -1,0 +1,220 @@
+python3 main.py --train ../wbi_binary/pre2_train.csv --score --hp randomized
+2017-06-24 12:23:03,888 DEBUG Commandline arguments: Namespace(hp='randomized', hp_metric='accuracy', model=None, oob=False, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-06-24 12:23:03,888 DEBUG Valid mode of operation
+2017-06-24 12:23:03,888 INFO Mode score->train
+2017-06-24 12:23:03,888 DEBUG Loading data...
+2017-06-24 12:23:03,973 INFO Created training set (1616) and test set (539)
+2017-06-24 12:23:03,974 INFO Recognised data-set: binary
+2017-06-24 12:23:03,974 INFO Using randomized search on the training set to select the best model (hyper-parameters)...
+2017-06-24 12:23:03,974 DEBUG Performing randomized search, optimizing accuracy score...
+Fitting 5 folds for each of 15 candidates, totalling 75 fits
+[Parallel(n_jobs=-1)]: Done  42 tasks      | elapsed:   46.2s
+[Parallel(n_jobs=-1)]: Done  75 out of  75 | elapsed:  1.3min finished
+Hyper parameter search report:
+Parameter search space:
+{'clf__criterion': ['gini'],
+ 'clf__max_depth': [11],
+ 'clf__max_features': ['log2'],
+ 'clf__max_leaf_nodes': [55],
+ 'clf__min_impurity_split': [1e-05],
+ 'clf__min_samples_leaf': [2],
+ 'clf__min_samples_split': [3],
+ 'clf__min_weight_fraction_leaf': [0.0],
+ 'clf__n_estimators': [1000],
+ 'union__abstractPosTokLemSyn': [None],
+ 'union__abstractWordCount': [None],
+ 'union__char_ngrams': [None],
+ 'union__keyword_vector': [None],
+ 'union__term_vector': ['Pipeline'],
+ 'union__term_vector__select_chi2__k': [3100,
+                                        3300,
+                                        3500,
+                                        3700,
+                                        3900,
+                                        4100,
+                                        4300,
+                                        4500,
+                                        4700,
+                                        4900,
+                                        5100,
+                                        5300,
+                                        5500,
+                                        5700,
+                                        5900],
+ 'union__titleWordCount': [None],
+ 'union__word_ngrams': [None]}
+Best score: 0.882
+Best parameters set:
+{'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'union__abstractPosTokLemSyn': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector': None,
+ 'union__term_vector': 'Pipeline',
+ 'union__term_vector__select_chi2__k': 5500,
+ 'union__titleWordCount': None,
+ 'union__word_ngrams': None}
+Detailed folds results:
+    mean_fit_time  mean_score_time  mean_test_score  mean_train_score param_clf__criterion param_clf__max_depth param_clf__max_features param_clf__max_leaf_nodes param_clf__min_impurity_split  \
+0        2.636318         0.348750         0.878713          0.887376                 gini                   11                    log2                        55                         1e-05   
+1        2.746852         0.392871         0.879950          0.887531                 gini                   11                    log2                        55                         1e-05   
+2        3.157795         0.444660         0.879332          0.886448                 gini                   11                    log2                        55                         1e-05   
+3        3.130000         0.435963         0.879332          0.886912                 gini                   11                    log2                        55                         1e-05   
+4        3.147437         0.442202         0.878713          0.888460                 gini                   11                    log2                        55                         1e-05   
+5        3.129382         0.437429         0.878094          0.886757                 gini                   11                    log2                        55                         1e-05   
+6        3.134199         0.444176         0.880569          0.889233                 gini                   11                    log2                        55                         1e-05   
+7        3.175860         0.432473         0.879332          0.888769                 gini                   11                    log2                        55                         1e-05   
+8        3.120231         0.490178         0.877475          0.888459                 gini                   11                    log2                        55                         1e-05   
+9        3.177556         0.446081         0.878094          0.888304                 gini                   11                    log2                        55                         1e-05   
+10       3.198784         0.442045         0.877475          0.888150                 gini                   11                    log2                        55                         1e-05   
+11       3.161048         0.455352         0.878713          0.889697                 gini                   11                    log2                        55                         1e-05   
+12       3.104053         0.434839         0.882426          0.889697                 gini                   11                    log2                        55                         1e-05   
+13       3.124725         0.441058         0.881188          0.888459                 gini                   11                    log2                        55                         1e-05   
+14       2.971286         0.390752         0.878713          0.889543                 gini                   11                    log2                        55                         1e-05   
+
+   param_clf__min_samples_leaf param_clf__min_samples_split param_clf__min_weight_fraction_leaf param_clf__n_estimators param_union__abstractPosTokLemSyn param_union__abstractWordCount  \
+0                            2                            3                                   0                    1000                              None                           None   
+1                            2                            3                                   0                    1000                              None                           None   
+2                            2                            3                                   0                    1000                              None                           None   
+3                            2                            3                                   0                    1000                              None                           None   
+4                            2                            3                                   0                    1000                              None                           None   
+5                            2                            3                                   0                    1000                              None                           None   
+6                            2                            3                                   0                    1000                              None                           None   
+7                            2                            3                                   0                    1000                              None                           None   
+8                            2                            3                                   0                    1000                              None                           None   
+9                            2                            3                                   0                    1000                              None                           None   
+10                           2                            3                                   0                    1000                              None                           None   
+11                           2                            3                                   0                    1000                              None                           None   
+12                           2                            3                                   0                    1000                              None                           None   
+13                           2                            3                                   0                    1000                              None                           None   
+14                           2                            3                                   0                    1000                              None                           None   
+
+   param_union__char_ngrams param_union__keyword_vector param_union__term_vector param_union__term_vector__select_chi2__k param_union__titleWordCount param_union__word_ngrams  rank_test_score  \
+0                      None                        None                 Pipeline                                     3100                        None                     None                8   
+1                      None                        None                 Pipeline                                     3300                        None                     None                4   
+2                      None                        None                 Pipeline                                     3500                        None                     None                5   
+3                      None                        None                 Pipeline                                     3700                        None                     None                5   
+4                      None                        None                 Pipeline                                     3900                        None                     None                8   
+5                      None                        None                 Pipeline                                     4100                        None                     None               12   
+6                      None                        None                 Pipeline                                     4300                        None                     None                3   
+7                      None                        None                 Pipeline                                     4500                        None                     None                5   
+8                      None                        None                 Pipeline                                     4700                        None                     None               14   
+9                      None                        None                 Pipeline                                     4900                        None                     None               12   
+10                     None                        None                 Pipeline                                     5100                        None                     None               14   
+11                     None                        None                 Pipeline                                     5300                        None                     None                8   
+12                     None                        None                 Pipeline                                     5500                        None                     None                1   
+13                     None                        None                 Pipeline                                     5700                        None                     None                2   
+14                     None                        None                 Pipeline                                     5900                        None                     None                8   
+
+    split0_test_score  split0_train_score  split1_test_score  split1_train_score  split2_test_score  split2_train_score  split3_test_score  split3_train_score  split4_test_score  split4_train_score  \
+0            0.873457            0.887771           0.900929            0.885538           0.879257            0.890178           0.857585            0.889404           0.882353            0.883991   
+1            0.870370            0.890093           0.910217            0.887084           0.876161            0.886311           0.854489            0.890178           0.888545            0.883991   
+2            0.873457            0.886997           0.904025            0.883217           0.879257            0.887858           0.854489            0.889404           0.885449            0.884764   
+3            0.867284            0.883127           0.907121            0.880124           0.885449            0.891725           0.851393            0.893271           0.885449            0.886311   
+4            0.867284            0.892415           0.910217            0.881671           0.879257            0.887084           0.851393            0.893271           0.885449            0.887858   
+5            0.867284            0.884675           0.900929            0.882444           0.885449            0.890178           0.854489            0.891725           0.882353            0.884764   
+6            0.873457            0.888545           0.907121            0.884764           0.885449            0.891725           0.854489            0.893271           0.882353            0.887858   
+7            0.867284            0.891641           0.910217            0.883217           0.882353            0.887084           0.851393            0.894045           0.885449            0.887858   
+8            0.864198            0.886223           0.907121            0.885538           0.876161            0.890178           0.845201            0.887858           0.894737            0.892498   
+9            0.870370            0.888545           0.904025            0.880897           0.879257            0.888631           0.851393            0.893271           0.885449            0.890178   
+10           0.864198            0.888545           0.907121            0.882444           0.882353            0.890178           0.851393            0.892498           0.882353            0.887084   
+11           0.867284            0.891641           0.907121            0.883991           0.882353            0.892498           0.857585            0.895592           0.879257            0.884764   
+12           0.876543            0.893189           0.913313            0.889404           0.879257            0.890951           0.857585            0.890178           0.885449            0.884764   
+13           0.879630            0.890093           0.907121            0.883991           0.879257            0.887084           0.854489            0.890951           0.885449            0.890178   
+14           0.870370            0.892415           0.910217            0.886311           0.873065            0.891725           0.854489            0.893271           0.885449            0.883991   
+
+    std_fit_time  std_score_time  std_test_score  std_train_score  
+0       0.090034        0.039882        0.014004         0.002322  
+1       0.112240        0.056400        0.018674         0.002358  
+2       0.100606        0.010597        0.016113         0.002205  
+3       0.074703        0.008475        0.018826         0.004987  
+4       0.040737        0.011789        0.019567         0.004175  
+5       0.043743        0.014070        0.015920         0.003558  
+6       0.043109        0.016199        0.017100         0.002995  
+7       0.084222        0.005858        0.019623         0.003757  
+8       0.149860        0.052050        0.021888         0.002575  
+9       0.178045        0.010546        0.017319         0.004080  
+10      0.215479        0.009904        0.018881         0.003373  
+11      0.182618        0.016226        0.016716         0.004545  
+12      0.126777        0.006567        0.018022         0.002772  
+13      0.104578        0.012103        0.016786         0.002596  
+14      0.080361        0.054019        0.018576         0.003693  
+Search results saved as search_results.csv
+2017-06-24 12:24:25,170 DEBUG randomized search done in 0:01:20.813635
+2017-06-24 12:24:25,187 INFO Evaluating the selected model on the test set...
+2017-06-24 12:24:26,793 DEBUG Fitted 1616 data points.
+2017-06-24 12:24:26,793 DEBUG Fitting done in 0:00:01.605308
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.91      0.77      0.84       271
+  nonCancer       0.80      0.93      0.86       268
+
+avg / total       0.86      0.85      0.85       539
+
+Accuracy: 0.849721706864564
+2017-06-24 12:24:27,223 DEBUG Evaluation done in 0:00:00.426042
+2017-06-24 12:24:27,226 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': True,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7fbe36a77ea0>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'union__abstractPosTokLemSyn': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector': None,
+ 'union__n_jobs': 1,
+ 'union__term_vector__select_chi2': SelectKBest(k=5500, score_func=<function chi2 at 0x7fbe4f9a6048>),
+ 'union__term_vector__select_chi2__k': 5500,
+ 'union__term_vector__select_chi2__score_func': <function chi2 at 0x7fbe4f9a6048>,
+ 'union__term_vector__selector': ItemSelector(key='Terms'),
+ 'union__term_vector__selector__key': 'Terms',
+ 'union__term_vector__vectorizer__analyzer': 'word',
+ 'union__term_vector__vectorizer__binary': False,
+ 'union__term_vector__vectorizer__decode_error': 'strict',
+ 'union__term_vector__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__term_vector__vectorizer__encoding': 'utf-8',
+ 'union__term_vector__vectorizer__input': 'content',
+ 'union__term_vector__vectorizer__lowercase': False,
+ 'union__term_vector__vectorizer__max_df': 1.0,
+ 'union__term_vector__vectorizer__max_features': None,
+ 'union__term_vector__vectorizer__min_df': 1,
+ 'union__term_vector__vectorizer__ngram_range': (1, 2),
+ 'union__term_vector__vectorizer__norm': 'l2',
+ 'union__term_vector__vectorizer__preprocessor': None,
+ 'union__term_vector__vectorizer__smooth_idf': True,
+ 'union__term_vector__vectorizer__stop_words': None,
+ 'union__term_vector__vectorizer__strip_accents': None,
+ 'union__term_vector__vectorizer__sublinear_tf': False,
+ 'union__term_vector__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__term_vector__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7fbe4896f0d0>,
+ 'union__term_vector__vectorizer__use_idf': True,
+ 'union__term_vector__vectorizer__vocabulary': None,
+ 'union__titleWordCount': None,
+ 'union__transformer_weights': None,
+ 'union__word_ngrams': None}
+2017-06-24 12:24:28,780 DEBUG Fitted 2155 data points.
+2017-06-24 12:24:28,780 DEBUG Fitting done in 0:00:01.551327
+Model saved as model_2017-06-24--12-24-27.pkl
+

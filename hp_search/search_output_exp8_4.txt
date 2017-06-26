@@ -1,0 +1,256 @@
+python3 main.py --train ../wbi_binary/pre2_train.csv --score --hp randomized
+2017-06-24 12:47:20,897 DEBUG Commandline arguments: Namespace(hp='randomized', hp_metric='accuracy', model=None, oob=False, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-06-24 12:47:20,897 DEBUG Valid mode of operation
+2017-06-24 12:47:20,897 INFO Mode score->train
+2017-06-24 12:47:20,897 DEBUG Loading data...
+2017-06-24 12:47:20,981 INFO Created training set (1616) and test set (539)
+2017-06-24 12:47:20,982 INFO Recognised data-set: binary
+2017-06-24 12:47:20,983 INFO Using randomized search on the training set to select the best model (hyper-parameters)...
+2017-06-24 12:47:20,983 DEBUG Performing randomized search, optimizing accuracy score...
+Fitting 5 folds for each of 21 candidates, totalling 105 fits
+[Parallel(n_jobs=-1)]: Done  42 tasks      | elapsed:   42.4s
+[Parallel(n_jobs=-1)]: Done 105 out of 105 | elapsed:  1.9min finished
+Hyper parameter search report:
+Parameter search space:
+{'clf__criterion': ['gini'],
+ 'clf__max_depth': [11],
+ 'clf__max_features': ['log2'],
+ 'clf__max_leaf_nodes': [55],
+ 'clf__min_impurity_split': [1e-05],
+ 'clf__min_samples_leaf': [2],
+ 'clf__min_samples_split': [3],
+ 'clf__min_weight_fraction_leaf': [0.0],
+ 'clf__n_estimators': [1000],
+ 'union__abstractPosTokLemSyn': [None],
+ 'union__abstractWordCount': [None],
+ 'union__char_ngrams': [None],
+ 'union__keyword_vector': [None],
+ 'union__term_vector': ['Pipeline'],
+ 'union__term_vector__select_chi2__k': [4200,
+                                        4220,
+                                        4240,
+                                        4260,
+                                        4280,
+                                        4300,
+                                        4320,
+                                        4340,
+                                        4360,
+                                        4380,
+                                        4400,
+                                        4420,
+                                        4440,
+                                        4460,
+                                        4480,
+                                        4500,
+                                        4520,
+                                        4540,
+                                        4560,
+                                        4580,
+                                        4600],
+ 'union__titleWordCount': [None],
+ 'union__word_ngrams': [None]}
+Best score: 0.884
+Best parameters set:
+{'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'union__abstractPosTokLemSyn': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector': None,
+ 'union__term_vector': 'Pipeline',
+ 'union__term_vector__select_chi2__k': 4380,
+ 'union__titleWordCount': None,
+ 'union__word_ngrams': None}
+Detailed folds results:
+    mean_fit_time  mean_score_time  mean_test_score  mean_train_score param_clf__criterion param_clf__max_depth param_clf__max_features param_clf__max_leaf_nodes param_clf__min_impurity_split  \
+0        2.633080         0.327144         0.878713          0.888151                 gini                   11                    log2                        55                         1e-05   
+1        2.601179         0.369722         0.881807          0.889542                 gini                   11                    log2                        55                         1e-05   
+2        2.616590         0.347273         0.878094          0.886603                 gini                   11                    log2                        55                         1e-05   
+3        2.605208         0.327497         0.883045          0.887841                 gini                   11                    log2                        55                         1e-05   
+4        2.596547         0.390472         0.880569          0.889388                 gini                   11                    log2                        55                         1e-05   
+5        2.680428         0.376757         0.880569          0.889233                 gini                   11                    log2                        55                         1e-05   
+6        2.983328         0.435343         0.876856          0.887376                 gini                   11                    log2                        55                         1e-05   
+7        3.177470         0.444584         0.878094          0.888459                 gini                   11                    log2                        55                         1e-05   
+8        3.149966         0.465786         0.881807          0.889542                 gini                   11                    log2                        55                         1e-05   
+9        3.217782         0.457374         0.883663          0.887067                 gini                   11                    log2                        55                         1e-05   
+10       3.235953         0.442911         0.883663          0.888768                 gini                   11                    log2                        55                         1e-05   
+11       3.191266         0.444251         0.877475          0.886139                 gini                   11                    log2                        55                         1e-05   
+12       3.135730         0.445559         0.879332          0.887840                 gini                   11                    log2                        55                         1e-05   
+13       3.183734         0.463602         0.878094          0.888305                 gini                   11                    log2                        55                         1e-05   
+14       3.182480         0.451793         0.879332          0.887686                 gini                   11                    log2                        55                         1e-05   
+15       3.310027         0.462263         0.879332          0.888769                 gini                   11                    log2                        55                         1e-05   
+16       3.183878         0.447960         0.876856          0.886294                 gini                   11                    log2                        55                         1e-05   
+17       3.161643         0.472058         0.878094          0.887686                 gini                   11                    log2                        55                         1e-05   
+18       3.205215         0.446194         0.879332          0.884902                 gini                   11                    log2                        55                         1e-05   
+19       3.244046         0.439510         0.879332          0.889697                 gini                   11                    log2                        55                         1e-05   
+20       2.972569         0.388534         0.877475          0.888460                 gini                   11                    log2                        55                         1e-05   
+
+   param_clf__min_samples_leaf param_clf__min_samples_split param_clf__min_weight_fraction_leaf param_clf__n_estimators param_union__abstractPosTokLemSyn param_union__abstractWordCount  \
+0                            2                            3                                   0                    1000                              None                           None   
+1                            2                            3                                   0                    1000                              None                           None   
+2                            2                            3                                   0                    1000                              None                           None   
+3                            2                            3                                   0                    1000                              None                           None   
+4                            2                            3                                   0                    1000                              None                           None   
+5                            2                            3                                   0                    1000                              None                           None   
+6                            2                            3                                   0                    1000                              None                           None   
+7                            2                            3                                   0                    1000                              None                           None   
+8                            2                            3                                   0                    1000                              None                           None   
+9                            2                            3                                   0                    1000                              None                           None   
+10                           2                            3                                   0                    1000                              None                           None   
+11                           2                            3                                   0                    1000                              None                           None   
+12                           2                            3                                   0                    1000                              None                           None   
+13                           2                            3                                   0                    1000                              None                           None   
+14                           2                            3                                   0                    1000                              None                           None   
+15                           2                            3                                   0                    1000                              None                           None   
+16                           2                            3                                   0                    1000                              None                           None   
+17                           2                            3                                   0                    1000                              None                           None   
+18                           2                            3                                   0                    1000                              None                           None   
+19                           2                            3                                   0                    1000                              None                           None   
+20                           2                            3                                   0                    1000                              None                           None   
+
+   param_union__char_ngrams param_union__keyword_vector param_union__term_vector param_union__term_vector__select_chi2__k param_union__titleWordCount param_union__word_ngrams  rank_test_score  \
+0                      None                        None                 Pipeline                                     4200                        None                     None               13   
+1                      None                        None                 Pipeline                                     4220                        None                     None                4   
+2                      None                        None                 Pipeline                                     4240                        None                     None               14   
+3                      None                        None                 Pipeline                                     4260                        None                     None                3   
+4                      None                        None                 Pipeline                                     4280                        None                     None                6   
+5                      None                        None                 Pipeline                                     4300                        None                     None                6   
+6                      None                        None                 Pipeline                                     4320                        None                     None               20   
+7                      None                        None                 Pipeline                                     4340                        None                     None               14   
+8                      None                        None                 Pipeline                                     4360                        None                     None                4   
+9                      None                        None                 Pipeline                                     4380                        None                     None                1   
+10                     None                        None                 Pipeline                                     4400                        None                     None                1   
+11                     None                        None                 Pipeline                                     4420                        None                     None               18   
+12                     None                        None                 Pipeline                                     4440                        None                     None                8   
+13                     None                        None                 Pipeline                                     4460                        None                     None               14   
+14                     None                        None                 Pipeline                                     4480                        None                     None                8   
+15                     None                        None                 Pipeline                                     4500                        None                     None                8   
+16                     None                        None                 Pipeline                                     4520                        None                     None               20   
+17                     None                        None                 Pipeline                                     4540                        None                     None               14   
+18                     None                        None                 Pipeline                                     4560                        None                     None                8   
+19                     None                        None                 Pipeline                                     4580                        None                     None                8   
+20                     None                        None                 Pipeline                                     4600                        None                     None               18   
+
+    split0_test_score  split0_train_score  split1_test_score  split1_train_score  split2_test_score  split2_train_score  split3_test_score  split3_train_score  split4_test_score  split4_train_score  \
+0            0.876543            0.893189           0.907121            0.881671           0.876161            0.889404           0.851393            0.891725           0.882353            0.884764   
+1            0.873457            0.888545           0.910217            0.887084           0.885449            0.894045           0.860681            0.893271           0.879257            0.884764   
+2            0.867284            0.887771           0.910217            0.883991           0.882353            0.885538           0.851393            0.889404           0.879257            0.886311   
+3            0.879630            0.891641           0.907121            0.884764           0.882353            0.886311           0.857585            0.890951           0.888545            0.885538   
+4            0.876543            0.892415           0.910217            0.887858           0.882353            0.887084           0.854489            0.896365           0.879257            0.883217   
+5            0.873457            0.888545           0.907121            0.884764           0.885449            0.891725           0.854489            0.893271           0.882353            0.887858   
+6            0.861111            0.885449           0.907121            0.884764           0.879257            0.887084           0.857585            0.893271           0.879257            0.886311   
+7            0.873457            0.886997           0.907121            0.883217           0.876161            0.889404           0.854489            0.896365           0.879257            0.886311   
+8            0.876543            0.891641           0.910217            0.881671           0.882353            0.890178           0.851393            0.893271           0.888545            0.890951   
+9            0.870370            0.888545           0.910217            0.881671           0.888545            0.887084           0.860681            0.889404           0.888545            0.888631   
+10           0.876543            0.887771           0.910217            0.884764           0.885449            0.890178           0.857585            0.894045           0.888545            0.887084   
+11           0.867284            0.890093           0.900929            0.877030           0.882353            0.890951           0.854489            0.890178           0.882353            0.882444   
+12           0.867284            0.888545           0.910217            0.882444           0.882353            0.890178           0.857585            0.890178           0.879257            0.887858   
+13           0.873457            0.889319           0.894737            0.882444           0.879257            0.888631           0.860681            0.893271           0.882353            0.887858   
+14           0.870370            0.890867           0.907121            0.884764           0.882353            0.890178           0.857585            0.888631           0.879257            0.883991   
+15           0.867284            0.891641           0.910217            0.883217           0.882353            0.887084           0.851393            0.894045           0.885449            0.887858   
+16           0.858025            0.887771           0.907121            0.880124           0.879257            0.889404           0.854489            0.890178           0.885449            0.883991   
+17           0.867284            0.887771           0.907121            0.883991           0.876161            0.890178           0.854489            0.891725           0.885449            0.884764   
+18           0.882716            0.891641           0.897833            0.876257           0.879257            0.883217           0.854489            0.888631           0.882353            0.884764   
+19           0.870370            0.892415           0.907121            0.887858           0.882353            0.888631           0.860681            0.893271           0.876161            0.886311   
+20           0.867284            0.890867           0.907121            0.883217           0.882353            0.889404           0.854489            0.892498           0.876161            0.886311   
+
+    std_fit_time  std_score_time  std_test_score  std_train_score  
+0       0.062222        0.007180        0.017759         0.004317  
+1       0.048152        0.049032        0.016385         0.003579  
+2       0.056680        0.039194        0.019393         0.001858  
+3       0.054312        0.002135        0.015934         0.002871  
+4       0.040981        0.051826        0.017773         0.004551  
+5       0.168771        0.055548        0.017100         0.002995  
+6       0.225623        0.004533        0.017587         0.003050  
+7       0.098903        0.010776        0.016885         0.004419  
+8       0.159403        0.035937        0.018997         0.004066  
+9       0.156743        0.021864        0.017072         0.002801  
+10      0.177258        0.011469        0.017100         0.003153  
+11      0.191872        0.014707        0.015681         0.005509  
+12      0.124358        0.013306        0.017779         0.002848  
+13      0.225647        0.022849        0.011143         0.003474  
+14      0.160067        0.026194        0.016334         0.002808  
+15      0.206952        0.044964        0.019623         0.003757  
+16      0.045883        0.014900        0.019237         0.003750  
+17      0.082766        0.033413        0.017742         0.002991  
+18      0.132400        0.016861        0.013996         0.005233  
+19      0.034293        0.009216        0.015614         0.002689  
+20      0.358102        0.056817        0.017527         0.003319  
+Search results saved as search_results.csv
+2017-06-24 12:49:12,922 DEBUG randomized search done in 0:01:51.421441
+2017-06-24 12:49:12,941 INFO Evaluating the selected model on the test set...
+2017-06-24 12:49:14,549 DEBUG Fitted 1616 data points.
+2017-06-24 12:49:14,549 DEBUG Fitting done in 0:00:01.607117
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.91      0.78      0.84       271
+  nonCancer       0.81      0.93      0.86       268
+
+avg / total       0.86      0.85      0.85       539
+
+Accuracy: 0.8534322820037106
+2017-06-24 12:49:15,001 DEBUG Evaluation done in 0:00:00.448307
+2017-06-24 12:49:15,004 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': True,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 55,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1000,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7f6eedabfcf0>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'union__abstractPosTokLemSyn': None,
+ 'union__abstractWordCount': None,
+ 'union__char_ngrams': None,
+ 'union__keyword_vector': None,
+ 'union__n_jobs': 1,
+ 'union__term_vector__select_chi2': SelectKBest(k=4380, score_func=<function chi2 at 0x7f6f07adb048>),
+ 'union__term_vector__select_chi2__k': 4380,
+ 'union__term_vector__select_chi2__score_func': <function chi2 at 0x7f6f07adb048>,
+ 'union__term_vector__selector': ItemSelector(key='Terms'),
+ 'union__term_vector__selector__key': 'Terms',
+ 'union__term_vector__vectorizer__analyzer': 'word',
+ 'union__term_vector__vectorizer__binary': False,
+ 'union__term_vector__vectorizer__decode_error': 'strict',
+ 'union__term_vector__vectorizer__dtype': <class 'numpy.int64'>,
+ 'union__term_vector__vectorizer__encoding': 'utf-8',
+ 'union__term_vector__vectorizer__input': 'content',
+ 'union__term_vector__vectorizer__lowercase': False,
+ 'union__term_vector__vectorizer__max_df': 1.0,
+ 'union__term_vector__vectorizer__max_features': None,
+ 'union__term_vector__vectorizer__min_df': 1,
+ 'union__term_vector__vectorizer__ngram_range': (1, 2),
+ 'union__term_vector__vectorizer__norm': 'l2',
+ 'union__term_vector__vectorizer__preprocessor': None,
+ 'union__term_vector__vectorizer__smooth_idf': True,
+ 'union__term_vector__vectorizer__stop_words': None,
+ 'union__term_vector__vectorizer__strip_accents': None,
+ 'union__term_vector__vectorizer__sublinear_tf': False,
+ 'union__term_vector__vectorizer__token_pattern': '(?u)\\b\\w\\w+\\b',
+ 'union__term_vector__vectorizer__tokenizer': <function additional_data_tokenizer at 0x7f6f00aa40d0>,
+ 'union__term_vector__vectorizer__use_idf': True,
+ 'union__term_vector__vectorizer__vocabulary': None,
+ 'union__titleWordCount': None,
+ 'union__transformer_weights': None,
+ 'union__word_ngrams': None}
+2017-06-24 12:49:16,518 DEBUG Fitted 2155 data points.
+2017-06-24 12:49:16,519 DEBUG Fitting done in 0:00:01.511766
+Model saved as model_2017-06-24--12-49-15.pkl
+
