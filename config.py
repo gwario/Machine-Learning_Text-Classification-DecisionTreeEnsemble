@@ -1,12 +1,11 @@
 import pandas as pd
 from numpy.random import RandomState
-from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
-from sklearn.dummy import DummyClassifier
-from sklearn.feature_selection import chi2, SelectKBest, mutual_info_classif, SelectFromModel
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_selection import chi2, SelectKBest
+from sklearn.pipeline import FeatureUnion, Pipeline
 
-from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer, TfidfVectorizer
-from extractor import Printer, ItemSelector, FeatureCountPrinter
+from extractor import ItemSelector
 from preprocessor import additional_data_tokenizer
 
 __doc__ = """
@@ -41,39 +40,33 @@ class PipelineConfiguration:
     #########################################
     # Pipelines
     ###########
-    def word_count_pipeline(self, selector_key):
-        return Pipeline([
-                ('selector', ItemSelector(key=selector_key)),
-                ('count', CountVectorizer()),
-                #('feature_count_printer', FeatureCountPrinter(selector_key+'_word_count_pipeline')),
-            ])
-
-    def word_ngrams_pipeline(self, selector_key):
+    def word_ngrams_pipeline(self, selector_key, ngram_range=(1,2)):
         return Pipeline([
                 ('selector', ItemSelector(key=selector_key)),
                 ('vectorizer', TfidfVectorizer(strip_accents='unicode',
                                                analyzer='word',
-                                               ngram_range=(1, 2),
+                                               ngram_range=ngram_range,
                                                stop_words='english')),
-                #('select', SelectKBest(mutual_info_classif, k=1500)),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_word_ngrams_pipeline')),
         ])
 
-    def char_ngrams_pipeline(self, selector_key):
+    def char_ngrams_pipeline(self, selector_key, ngram_range=(3,7)):
         return Pipeline([
                 ('selector', ItemSelector(key=selector_key)),
                 ('vectorizer', TfidfVectorizer(strip_accents='unicode',
                                                analyzer='char',
-                                               ngram_range=(3, 7),
+                                               ngram_range=ngram_range,
                                                stop_words='english')),
-                #('select_chi2', SelectKBest(mutual_info_classif, k=1500)),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_char_ngrams_pipeline')),
         ])
 
     def additional_data_vectorizer_pipeline(self, key, ngram_range):
         return Pipeline([
             ('selector', ItemSelector(key=key)),
-            ('vectorizer', TfidfVectorizer(tokenizer=additional_data_tokenizer, preprocessor=None, lowercase=False, ngram_range=ngram_range)),
+            ('vectorizer', TfidfVectorizer(tokenizer=additional_data_tokenizer,
+                                           preprocessor=None,
+                                           lowercase=False,
+                                           ngram_range=ngram_range)),
             #('feature_count_printer', FeatureCountPrinter(key+'_additional_data_vectorizer_pipeline')),
             #('select_mutinfcls', SelectKBest(mutual_info_classif)),
         ])
@@ -124,11 +117,10 @@ class PipelineConfiguration:
     def binary_pipeline(self):
         return self.union_pipeline([
             # Pipeline for pulling features from the articles's title
-            ('titleWordCount', self.word_count_pipeline('Title')),
-            #('abstractWordCount', self.word_count_pipeline('Abstract')),
-            ('abstractPosTokLemSyn', self.additional_data_vectorizer_pipeline('Tokens', (1, 2))),
-            #('word_ngrams', self.word_ngrams_pipeline('Abstract')),
-            #('char_ngrams', self.char_ngrams_pipeline('Abstract')),
+            ('abstractPosTokLemSyn', self.additional_data_vectorizer_pipeline('Tokens', (1, 3))),
+            ('title_ngrams', self.word_ngrams_pipeline('Title', (1, 3))),
+            ('abstract_ngrams', self.word_ngrams_pipeline('Abstract', (1, 3))),
+            #('char_ngrams', self.char_ngrams_pipeline('Abstract', (3, 9)),
             ('term_vector', self.additional_data_vectorizer_pipeline('Terms', (1, 1))),
             ('keyword_vector', self.additional_data_vectorizer_pipeline('Keywords', (1, 1))),
         ])
