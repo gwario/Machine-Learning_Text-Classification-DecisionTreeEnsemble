@@ -41,11 +41,10 @@ class PipelineConfiguration:
     #########################################
     # Pipelines
     ###########
-    def word_count_pipeline(self, selector_key, k=4000):
+    def word_count_pipeline(self, selector_key):
         return Pipeline([
                 ('selector', ItemSelector(key=selector_key)),
                 ('count', CountVectorizer()),
-                ('select', SelectKBest(chi2, k=k)),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_word_count_pipeline')),
             ])
 
@@ -56,7 +55,6 @@ class PipelineConfiguration:
                                                analyzer='word',
                                                ngram_range=(1, 2),
                                                stop_words='english')),
-                ('select', SelectKBest(chi2)),
                 #('select', SelectKBest(mutual_info_classif, k=1500)),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_word_ngrams_pipeline')),
         ])
@@ -68,31 +66,37 @@ class PipelineConfiguration:
                                                analyzer='char',
                                                ngram_range=(3, 7),
                                                stop_words='english')),
-                ('select', SelectKBest(chi2)),
                 #('select_chi2', SelectKBest(mutual_info_classif, k=1500)),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_char_ngrams_pipeline')),
         ])
 
-    def additional_data_vectorizer_pipeline(self, key, k, ngram_range):
+    def additional_data_vectorizer_pipeline(self, key, ngram_range):
         return Pipeline([
             ('selector', ItemSelector(key=key)),
             ('vectorizer', TfidfVectorizer(tokenizer=additional_data_tokenizer, preprocessor=None, lowercase=False, ngram_range=ngram_range)),
             #('feature_count_printer', FeatureCountPrinter(key+'_additional_data_vectorizer_pipeline')),
-            ('select', SelectKBest(chi2, k=k)),
             #('select_mutinfcls', SelectKBest(mutual_info_classif)),
         ])
+
+    def clf_extra_trees(self):
+        return ExtraTreesClassifier(random_state=self.classifier_random_state, n_jobs=-1,
+                                    min_impurity_split=1e-05,
+                                    max_features='log2')
+
+    def clf_random_forest(self):
+        return RandomForestClassifier(random_state=self.classifier_random_state, n_jobs=-1,
+                                      min_impurity_split=1e-05,
+                                      max_features='log2')
 
     def union_pipeline(self, subpipelines):
         # Use FeatureUnion to combine the features
         return Pipeline([
-            ('union', FeatureUnion(subpipelines, transformer_weights={'abstractPosTokLemSyn': 12, 'term_vector': 25, 'keyword_vector': 19, 'titleWordCount': 16})),
+            ('union', FeatureUnion(subpipelines)),
             #('feature_count', FeatureCountPrinter('union')),
-            #('select_chi2', SelectKBest(chi2, k=1000)),
-            #('feature_count_chi2', FeatureCountPrinter('kbest_chi2')),
+            ('select', SelectKBest(chi2)),
             #('select_mic', SelectKBest(mutual_info_classif, k=1000)),
             #('feature_count_mic', FeatureCountPrinter('kbest_mic')),
-            # ('printer', Printer()),
-            ('clf', ExtraTreesClassifier(random_state=self.classifier_random_state, n_jobs=-1, min_impurity_split=1e-05, max_features='log2')),
+            ('clf', self.clf_extra_trees()),
             # ('clf', DummyClassifier()),    
             ])
 
@@ -120,13 +124,13 @@ class PipelineConfiguration:
     def binary_pipeline(self):
         return self.union_pipeline([
             # Pipeline for pulling features from the articles's title
-            ('titleWordCount', self.word_count_pipeline('Title', 2000)),
+            ('titleWordCount', self.word_count_pipeline('Title')),
             #('abstractWordCount', self.word_count_pipeline('Abstract')),
-            ('abstractPosTokLemSyn', self.additional_data_vectorizer_pipeline('Tokens', 20000, (1,2))),
+            ('abstractPosTokLemSyn', self.additional_data_vectorizer_pipeline('Tokens', (1, 2))),
             #('word_ngrams', self.word_ngrams_pipeline('Abstract')),
             #('char_ngrams', self.char_ngrams_pipeline('Abstract')),
-            ('term_vector', self.additional_data_vectorizer_pipeline('Terms', 1650, (1,1))),
-            ('keyword_vector', self.additional_data_vectorizer_pipeline('Keywords', 1150, (1,1))),
+            ('term_vector', self.additional_data_vectorizer_pipeline('Terms', (1, 1))),
+            ('keyword_vector', self.additional_data_vectorizer_pipeline('Keywords', (1, 1))),
         ])
 
     # ### Multiclass ####################################################
@@ -158,11 +162,6 @@ class PipelineConfiguration:
             'clf__min_samples_split': 3,
             'clf__min_weight_fraction_leaf': 0.0,
             'clf__n_estimators': 1000, #  Has to be > 25 for oob
-	    'union__titleWordCount__select_chi2__k': 4000,
-            'union__abstractPosTokLemSyn__select_chi2__k':	42000,
-            'union__term_vector__select_chi2__k':     		1650,
-            'union__keyword_vector__select_chi2__k':		1150,
-
         }
 
     def multiclass_pipeline_parameters(self):
@@ -192,7 +191,7 @@ class PipelineConfiguration:
         return {
             'clf__max_depth': (2, 10, 40),
             'clf__n_estimators': (10, 80, 300),
-            'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', 30000, (1,2)))
+            'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2)))
         }
 
     ###################################################################
@@ -201,28 +200,30 @@ class PipelineConfiguration:
     # This set of parameters is used when --hp randomized was specified.
     ############
     # The parameter space must be larger than or equal to n_iter
-    pipeline_parameters_randomized_n_iter = 80
+    pipeline_parameters_randomized_n_iter = 2053 # space = 12320 / 6 = 2053
     # The default is to cross-validate with 3 folds, this takes a considerable amount of time
     # Must be greater or equal to 2
-    pipeline_parameters_randomized_n_splits = 8
+    pipeline_parameters_randomized_n_splits = 3
     # To ensure some reproducibility
     pipeline_parameters_randomized_random_state = RandomState(654321)
 
     def binary_pipeline_parameters_randomized(self):
 
         return {
-            'clf__max_depth': [14, 15],
-            'clf__max_leaf_nodes': [35, 40, 65],
-            'clf__min_samples_leaf': [1],
-            'clf__min_samples_split': [3, 4, 5],
-            'clf__n_estimators': [1289,1290,1291,1292,1293,1294],  # Has to be > 25 for oob
+            'select__k': [10,100,1000,],
+            'clf': [self.clf_extra_trees(), self.clf_random_forest()],
+            'clf__max_depth': [6,7,8,9,10,12,13,14,15,16,17,18,19,20],
+            'clf__max_leaf_nodes': [20,23,27,35,37,44,47,53,56,59,65],
+            'clf__min_samples_leaf': [3,5,7,9,13,15,17,19],
+            'clf__min_samples_split': [3,5,7,9,11],
+            'clf__n_estimators': [900],#[1289,1290,1291,1292,1293,1294],  # Has to be > 25 for oob
         }
 
     def multiclass_pipeline_parameters_randomized(self):
         return {
             'clf__max_depth': (2, 5, 10, 20),
             'clf__n_estimators': (10, 20, 50, 80, 300),
-            'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', 30000, (1,2)))
+            'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2)))
         }
 
 
@@ -235,12 +236,12 @@ class PipelineConfiguration:
             'clf__max_depth': (2, 5),
             'clf__n_estimators': (10, 80),
             'union__abstractWordCount': (None, self.word_count_pipeline('Abstract')),
-            'union__abstractPosTokLemSyn': (None, self.additional_data_vectorizer_pipeline('Tokens', 41400, (1,2))),
+            'union__abstractPosTokLemSyn': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2))),
         }
 
     def multiclass_pipeline_parameters_grid(self):
         return {
             'clf__max_depth': (2, 5),
             'clf__n_estimators': (10, 80),
-            'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', 30000, (1,2))),
+            'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2))),
         }
