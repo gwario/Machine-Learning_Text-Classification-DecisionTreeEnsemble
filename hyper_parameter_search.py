@@ -17,29 +17,32 @@ __license__ = "FreeBSD License"
 __version__ = "1.1"
 __status__ = "Production"
 
+
 def get_search(type, pipeline_configuration, hp_metric):
+    union_pl, clf_pipeline = pipeline_configuration.pipeline()
     if type == 'grid':
-      return GridSearchCV(pipeline_configuration.pipeline(), 
+      return GridSearchCV(clf_pipeline,
                           pipeline_configuration.parameters('grid'), 
                           scoring=hp_metric,
                           cv=pipeline_configuration.pipeline_parameters_grid_n_splits,
                           refit=False,
                           n_jobs=-1, 
-                          verbose=1)
+                          verbose=1), union_pl
     elif type == 'randomized':
-      return RandomizedSearchCV(pipeline_configuration.pipeline(), 
+      return RandomizedSearchCV(clf_pipeline,
                                 pipeline_configuration.parameters('randomized'),
                                 scoring=hp_metric,
                                 random_state=pipeline_configuration.pipeline_parameters_randomized_random_state,
                                 n_iter=pipeline_configuration.pipeline_parameters_randomized_n_iter,
                                 cv=pipeline_configuration.pipeline_parameters_randomized_n_splits,
                                 refit=False,
-                                n_jobs=-1, 
-                                verbose=1)
+                                n_jobs=-1,
+                                #pre_dispatch=6,
+                                verbose=1), union_pl
     elif type == 'evolutionary':
       from random import seed
       seed(pipeline_configuration.pipeline_parameters_evolutionary_random_seed)
-      return EvolutionaryAlgorithmSearchCV(pipeline_configuration.pipeline(), 
+      return EvolutionaryAlgorithmSearchCV(clf_pipeline,
                                            pipeline_configuration.parameters('evolutionary'), 
                                            scoring=hp_metric,
                                            cv=pipeline_configuration.pipeline_parameters_evolutionary_n_splits,
@@ -50,7 +53,7 @@ def get_search(type, pipeline_configuration, hp_metric):
                                            generations_number=pipeline_configuration.pipeline_parameters_evolutionary_generations_number,
                                            refit=False,
                                            n_jobs=-1, 
-                                           verbose=1)
+                                           verbose=1), union_pl
 
 
 def get_result(type, pipeline_configuration, hp_metric, x, y):
@@ -58,7 +61,12 @@ def get_result(type, pipeline_configuration, hp_metric, x, y):
     Changing the grid increases processing time in a combinatorial way."""
 
     log.debug("Performing {} search, optimizing {} score...".format(type, hp_metric))
-    search = get_search(type, pipeline_configuration, hp_metric)
+    search, union_pl = get_search(type, pipeline_configuration, hp_metric)
+
+    log.debug("Generating feature vector...")
+    t0 = datetime.now()
+    x = union_pl.fit_transform(x, y)
+    log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
 
     t0 = datetime.now()
     search.fit(x, y)
@@ -69,6 +77,7 @@ def get_result(type, pipeline_configuration, hp_metric, x, y):
     rp.print_hyper_parameter_search_report(type, pipeline_configuration, dt, search)
 
     return best_parameters
+
 
 def get_optimized_parameters(type, pipeline_configuration, x_train, y_train, hp_metric):
     log.info("Using {} search on the training set to select the best model (hyper-parameters)...".format(type))

@@ -1,11 +1,11 @@
 import pandas as pd
 from numpy.random import RandomState
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, HashingVectorizer, TfidfTransformer
 from sklearn.feature_selection import chi2, SelectKBest
 from sklearn.pipeline import FeatureUnion, Pipeline
 
-from extractor import ItemSelector
+from extractor import ItemSelector, FeatureCountPrinter
 from preprocessor import additional_data_tokenizer
 
 __doc__ = """
@@ -43,30 +43,39 @@ class PipelineConfiguration:
     def word_ngrams_pipeline(self, selector_key, ngram_range=(1,2)):
         return Pipeline([
                 ('selector', ItemSelector(key=selector_key)),
-                ('vectorizer', TfidfVectorizer(strip_accents='unicode',
-                                               analyzer='word',
-                                               ngram_range=ngram_range,
-                                               stop_words='english')),
+                ('hashing_vectorizer', HashingVectorizer(n_features=2**20,
+                                                         strip_accents='unicode',
+                                                         analyzer='word',
+                                                         ngram_range=ngram_range,
+                                                         stop_words='english',
+                                                         non_negative=True)),
+                ('tfidf_transformer', TfidfTransformer()),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_word_ngrams_pipeline')),
         ])
 
     def char_ngrams_pipeline(self, selector_key, ngram_range=(3,7)):
         return Pipeline([
                 ('selector', ItemSelector(key=selector_key)),
-                ('vectorizer', TfidfVectorizer(strip_accents='unicode',
-                                               analyzer='char',
-                                               ngram_range=ngram_range,
-                                               stop_words='english')),
+                ('hashing_vectorizer', HashingVectorizer(n_features=2**20,
+                                                         strip_accents='unicode',
+                                                         analyzer='char_wb',
+                                                         ngram_range=ngram_range,
+                                                         stop_words='english',
+                                                         non_negative=True)),
+                ('tfidf_transformer', TfidfTransformer()),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_char_ngrams_pipeline')),
         ])
 
     def additional_data_vectorizer_pipeline(self, key, ngram_range):
         return Pipeline([
             ('selector', ItemSelector(key=key)),
-            ('vectorizer', TfidfVectorizer(tokenizer=additional_data_tokenizer,
-                                           preprocessor=None,
-                                           lowercase=False,
-                                           ngram_range=ngram_range)),
+            ('hashing_vectorizer', HashingVectorizer(n_features=2**20,
+                                                     tokenizer=additional_data_tokenizer,
+                                                     preprocessor=None,
+                                                     lowercase=False,
+                                                     ngram_range=ngram_range,
+                                                     non_negative=True)),
+            ('tfidf_transformer', TfidfTransformer()),
             #('feature_count_printer', FeatureCountPrinter(key+'_additional_data_vectorizer_pipeline')),
             #('select_mutinfcls', SelectKBest(mutual_info_classif)),
         ])
@@ -84,14 +93,14 @@ class PipelineConfiguration:
     def union_pipeline(self, subpipelines):
         # Use FeatureUnion to combine the features
         return Pipeline([
-            ('union', FeatureUnion(subpipelines)),
-            #('feature_count', FeatureCountPrinter('union')),
-            ('select', SelectKBest(chi2)),
+            ('union', FeatureUnion(subpipelines, n_jobs=-1)),
+            ('feature_count', FeatureCountPrinter('union')),
             #('select_mic', SelectKBest(mutual_info_classif, k=1000)),
             #('feature_count_mic', FeatureCountPrinter('kbest_mic')),
-            ('clf', self.clf_extra_trees()),
-            # ('clf', DummyClassifier()),    
-            ])
+            ]), Pipeline([('select', SelectKBest(chi2)),
+                          ('clf', self.clf_extra_trees()),
+                          # ('clf', DummyClassifier()),
+                          ])
 
     def binary_or_multi(self, binaryOption, multiOption):
         if self.dataset == 'binary':
@@ -118,9 +127,13 @@ class PipelineConfiguration:
         return self.union_pipeline([
             # Pipeline for pulling features from the articles's title
             ('abstractPosTokLemSyn', self.additional_data_vectorizer_pipeline('Tokens', (1, 3))),
-            ('title_ngrams', self.word_ngrams_pipeline('Title', (1, 3))),
-            ('abstract_ngrams', self.word_ngrams_pipeline('Abstract', (1, 3))),
-            #('char_ngrams', self.char_ngrams_pipeline('Abstract', (3, 9)),
+
+            ('title_word_ngrams', self.word_ngrams_pipeline('Title', (1, 3))),
+            ('abstract_word_ngrams', self.word_ngrams_pipeline('Abstract', (1, 3))),
+
+            ('title_char_ngrams', self.char_ngrams_pipeline('Abstract', (3, 9))),
+            ('abstract_char_ngrams', self.char_ngrams_pipeline('Abstract', (3, 9))),
+
             ('term_vector', self.additional_data_vectorizer_pipeline('Terms', (1, 1))),
             ('keyword_vector', self.additional_data_vectorizer_pipeline('Keywords', (1, 1))),
         ])
@@ -147,7 +160,7 @@ class PipelineConfiguration:
     # This set of parameters is used when --hp randomized was specified.
     ############
     # The parameter space must be larger than or equal to n_iter
-    pipeline_parameters_randomized_n_iter = 2053 # space = 12320 / 6 = 2053
+    pipeline_parameters_randomized_n_iter = 6 # space = 12320 / 6 = 2053
     # The default is to cross-validate with 3 folds, this takes a considerable amount of time
     # Must be greater or equal to 2
     pipeline_parameters_randomized_n_splits = 3
@@ -157,13 +170,15 @@ class PipelineConfiguration:
     def binary_pipeline_parameters_randomized(self):
 
         return {
-            'select__k': [10,100,1000,],
+            'select__k': [#10,50,100,200,500,700,900,1000,5000,10000,20000,50000,70000,100000,200000,300000,400000,
+                          #500000,600000,700000,800000,900000,1000000,2000000,3000000,4000000,5000000,
+                          1000000],
             'clf': [self.clf_extra_trees(), self.clf_random_forest()],
-            'clf__max_depth': [6,7,8,9,10,12,13,14,15,16,17,18,19,20],
-            'clf__max_leaf_nodes': [20,23,27,35,37,44,47,53,56,59,65],
-            'clf__min_samples_leaf': [3,5,7,9,13,15,17,19],
-            'clf__min_samples_split': [3,5,7,9,11],
-            'clf__n_estimators': [900],#[1289,1290,1291,1292,1293,1294],  # Has to be > 25 for oob
+            'clf__max_depth': [12],#[6,7,8,9,10,12,13,14,15,16,17,18,19,20],
+            'clf__max_leaf_nodes': [35,40,45],
+            'clf__min_samples_leaf': [3],
+            'clf__min_samples_split': [5],
+            'clf__n_estimators': [420],#[1289,1290,1291,1292,1293,1294],  # Has to be > 25 for oob
         }
 
     def multiclass_pipeline_parameters_randomized(self):
