@@ -43,41 +43,31 @@ class PipelineConfiguration:
     def word_ngrams_pipeline(self, selector_key, ngram_range=(1,2)):
         return Pipeline([
                 ('selector', ItemSelector(key=selector_key)),
-                ('hashing_vectorizer', HashingVectorizer(n_features=2**20,
-                                                         strip_accents='unicode',
-                                                         analyzer='word',
-                                                         ngram_range=ngram_range,
-                                                         stop_words='english',
-                                                         non_negative=True)),
-                ('tfidf_transformer', TfidfTransformer()),
+                ('vectorizer', TfidfVectorizer(strip_accents='unicode',
+                                               analyzer='word',
+                                               ngram_range=ngram_range,
+                                               stop_words='english')),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_word_ngrams_pipeline')),
         ])
 
     def char_ngrams_pipeline(self, selector_key, ngram_range=(3,7)):
         return Pipeline([
                 ('selector', ItemSelector(key=selector_key)),
-                ('hashing_vectorizer', HashingVectorizer(n_features=2**20,
-                                                         strip_accents='unicode',
-                                                         analyzer='char_wb',
-                                                         ngram_range=ngram_range,
-                                                         stop_words='english',
-                                                         non_negative=True)),
-                ('tfidf_transformer', TfidfTransformer()),
+                ('vectorizer', TfidfVectorizer(strip_accents='unicode',
+                                               analyzer='char_wb',
+                                               ngram_range=ngram_range,
+                                               stop_words='english')),
                 #('feature_count_printer', FeatureCountPrinter(selector_key+'_char_ngrams_pipeline')),
         ])
 
     def additional_data_vectorizer_pipeline(self, key, ngram_range):
         return Pipeline([
             ('selector', ItemSelector(key=key)),
-            ('hashing_vectorizer', HashingVectorizer(n_features=2**20,
-                                                     tokenizer=additional_data_tokenizer,
-                                                     preprocessor=None,
-                                                     lowercase=False,
-                                                     ngram_range=ngram_range,
-                                                     non_negative=True)),
-            ('tfidf_transformer', TfidfTransformer()),
+            ('vectorizer', TfidfVectorizer(tokenizer=additional_data_tokenizer,
+                                           preprocessor=None,
+                                           lowercase=False,
+                                           ngram_range=ngram_range)),
             #('feature_count_printer', FeatureCountPrinter(key+'_additional_data_vectorizer_pipeline')),
-            #('select_mutinfcls', SelectKBest(mutual_info_classif)),
         ])
 
     def clf_extra_trees(self):
