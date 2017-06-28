@@ -19,17 +19,17 @@ __status__ = "Production"
 
 
 def get_search(type, pipeline_configuration, hp_metric):
-    union_pl, clf_pipeline = pipeline_configuration.pipeline()
+    fu_pl, clf_pl = pipeline_configuration.pipelines()
     if type == 'grid':
-      return GridSearchCV(clf_pipeline,
+      return GridSearchCV(clf_pl,
                           pipeline_configuration.parameters('grid'), 
                           scoring=hp_metric,
                           cv=pipeline_configuration.pipeline_parameters_grid_n_splits,
                           refit=False,
                           n_jobs=-1, 
-                          verbose=1), union_pl
+                          verbose=1), fu_pl
     elif type == 'randomized':
-      return RandomizedSearchCV(clf_pipeline,
+      return RandomizedSearchCV(clf_pl,
                                 pipeline_configuration.parameters('randomized'),
                                 scoring=hp_metric,
                                 random_state=pipeline_configuration.pipeline_parameters_randomized_random_state,
@@ -38,11 +38,11 @@ def get_search(type, pipeline_configuration, hp_metric):
                                 refit=False,
                                 n_jobs=-1,
                                 #pre_dispatch=6,
-                                verbose=1), union_pl
+                                verbose=1), fu_pl
     elif type == 'evolutionary':
       from random import seed
       seed(pipeline_configuration.pipeline_parameters_evolutionary_random_seed)
-      return EvolutionaryAlgorithmSearchCV(clf_pipeline,
+      return EvolutionaryAlgorithmSearchCV(clf_pl,
                                            pipeline_configuration.parameters('evolutionary'), 
                                            scoring=hp_metric,
                                            cv=pipeline_configuration.pipeline_parameters_evolutionary_n_splits,
@@ -53,7 +53,7 @@ def get_search(type, pipeline_configuration, hp_metric):
                                            generations_number=pipeline_configuration.pipeline_parameters_evolutionary_generations_number,
                                            refit=False,
                                            n_jobs=-1, 
-                                           verbose=1), union_pl
+                                           verbose=1), fu_pl
 
 
 def get_result(type, pipeline_configuration, hp_metric, x, y):
@@ -61,11 +61,11 @@ def get_result(type, pipeline_configuration, hp_metric, x, y):
     Changing the grid increases processing time in a combinatorial way."""
 
     log.debug("Performing {} search, optimizing {} score...".format(type, hp_metric))
-    search, union_pl = get_search(type, pipeline_configuration, hp_metric)
+    search, fu_pl = get_search(type, pipeline_configuration, hp_metric)
 
     log.debug("Generating feature vector...")
     t0 = datetime.now()
-    x = union_pl.fit_transform(x, y)
+    x = fu_pl.fit_transform(x)
     log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
 
     t0 = datetime.now()

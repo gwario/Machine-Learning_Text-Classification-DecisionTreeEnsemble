@@ -107,7 +107,7 @@ def check_mode_of_operation(arguments):
         exit(1)
 
 
-def mode_score(args, pipeline, x_train, y_train, x_test, y_test):
+def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test):
     """Evaluates the estimator.
 
     Returns
@@ -119,39 +119,44 @@ def mode_score(args, pipeline, x_train, y_train, x_test, y_test):
 
     tFit = datetime.now()
 
+    log.debug("Generating feature vector...")
+    t0 = datetime.now()
+    x_train = fu_pl.fit_transform(x_train)
+    log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
+
     if args.oob:
         clf_n_min = 25
-        clf_n_max = pipeline.get_params()['clf__n_estimators']
+        clf_n_max = clf_pl.get_params()['clf__n_estimators']
         oob_errors = []
 
-        bs = pipeline.get_params()['clf__bootstrap']
-        pipeline.set_params(clf__bootstrap=True)
-        pipeline.set_params(clf__oob_score=True)
-        pipeline.set_params(clf__warm_start=True)
+        bs = clf_pl.get_params()['clf__bootstrap']
+        clf_pl.set_params(clf__bootstrap=True)
+        clf_pl.set_params(clf__oob_score=True)
+        clf_pl.set_params(clf__warm_start=True)
 
         log.debug("Calculating out-of-bag error over tree count (range {}-{})...".format(clf_n_min, clf_n_max))
         for i in range(clf_n_min, clf_n_max + 1):
-            pipeline.set_params(clf__n_estimators=i)
-            pipeline.fit(x_train, y_train)
-            oob_error = 1 - pipeline.get_params()['clf'].oob_score_
+            clf_pl.set_params(clf__n_estimators=i)
+            clf_pl.fit(x_train, y_train)
+            oob_error = 1 - clf_pl.get_params()['clf'].oob_score_
             oob_errors.append((i, oob_error))
             if i % 10 == 0:
                 log.debug("Out-of-bag error for {} trees = {}".format(i, oob_error))
 
-        io.store_oob_error_data(pipeline.get_params(), oob_errors)
+        io.store_oob_error_data(clf_pl.get_params(), oob_errors)
 
-        pipeline.set_params(clf__bootstrap=bs)
-        pipeline.set_params(clf__oob_score=False)
-        pipeline.set_params(clf__warm_start=False)
-        pipeline.set_params(clf__n_estimators=clf_n_max)
+        clf_pl.set_params(clf__bootstrap=bs)
+        clf_pl.set_params(clf__oob_score=False)
+        clf_pl.set_params(clf__warm_start=False)
+        clf_pl.set_params(clf__n_estimators=clf_n_max)
 
     else:
         clf_n_min = None
         clf_n_max = None
         oob_errors = None
-        pipeline.fit(x_train, y_train)
+        clf_pl.fit(x_train, y_train)
 
-    rp.print_fitting_report(pipeline,
+    rp.print_fitting_report(clf_pl,
                             dt_fitting=datetime.now() - tFit,
                             x_train=x_train,
                             y_train=y_train,
@@ -159,17 +164,22 @@ def mode_score(args, pipeline, x_train, y_train, x_test, y_test):
                             max_estimators=clf_n_max,
                             error_rate=oob_errors)
 
+    log.debug("Generating feature vector...")
+    t0 = datetime.now()
+    x_test = fu_pl.transform(x_test)
+    log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
+
     tPredict = datetime.now()
-    categories_true, categories_predicted = y_test, pipeline.predict(x_test)
-    rp.print_evaluation_report(pipeline,
+    categories_true, categories_predicted = y_test, clf_pl.predict(x_test)
+    rp.print_evaluation_report(clf_pl,
                                dt_evaluation=datetime.now() - tPredict,
                                y_true=categories_true,
                                y_pred=categories_predicted)
 
     # Reset the estimator to the state be for fitting
-    pipeline = clone(pipeline)
+    clf_pl = clone(clf_pl)
 
-    return pipeline
+    return fu_pl, clf_pl
 
 
 def select_model(args, data_set, x_train, y_train):
@@ -182,23 +192,23 @@ def select_model(args, data_set, x_train, y_train):
     pipeline: The parametrized pipeline.
     """
     configuration = PipelineConfiguration(data_set)
-    pipeline = configuration.pipeline()
+    (fu_pl, clf_pl) = configuration.pipelines()
 
     if args.hp == 'config':
         log.info("Using the pre-selected model (hyper-parameters)...")
-        pipeline.set_params(**configuration.parameters())
+        clf_pl.set_params(**configuration.parameters())
 
     elif args.hp == 'grid' or args.hp == 'randomized' or args.hp == 'evolutionary':
         best_params = hp.get_optimized_parameters(args.hp, configuration, x_train, y_train, args.hp_metric)
-        pipeline.set_params(**best_params)
+        clf_pl.set_params(**best_params)
         
         # Reset the estimator to the state be for fitting
-        pipeline = clone(pipeline)
+        clf_pl = clone(clf_pl)
 
-    return pipeline
+    return fu_pl, clf_pl
 
 
-def mode_train(pipeline, x, y):
+def mode_train(fu_pl, clf_pl, x, y):
     """Trains the model.
 
     Returns
@@ -209,31 +219,41 @@ def mode_train(pipeline, x, y):
 
     log.info("Building the selected model on the whole data set...")
     # The pipeline parameters
-    rp.print_hyper_parameters(pipeline)
+    rp.print_hyper_parameters(clf_pl)
+
+    log.debug("Generating feature vector...")
+    t0 = datetime.now()
+    x = fu_pl.fit_transform(x)
+    log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
 
     t_fit = datetime.now()
-    pipeline.fit(x, y)
-    rp.print_fitting_report(pipeline,
+    clf_pl.fit(x, y)
+    rp.print_fitting_report(clf_pl,
                             dt_fitting=datetime.now() - t_fit,
                             x_train=x,
                             y_train=y)
 
-    io.save_model(pipeline, model_filename)
+    io.save_model(fu_pl, clf_pl, model_filename)
 
-    return pipeline
+    return fu_pl, clf_pl
 
 
-def mode_predict(pipeline, x):
+def mode_predict(fu_pl, clf_pl, x):
     """Predicts using the given model."""
 
     prediction_filename = 'prediction_{}.csv'.format(datetime.now().strftime('%Y-%m-%d--%H-%M-%S'))
 
     log.info("Predicting {} data points...".format(len(x)))
 
+    log.debug("Generating feature vector...")
+    t0 = datetime.now()
+    x = fu_pl.transform(x)
+    log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
+
     t_predict = datetime.now()
-    y = pipeline.predict(x)
+    y = clf_pl.predict(x)
     combined_data = x.assign(Category=pd.Series(y).values)
-    rp.print_prediction_report(pipeline,
+    rp.print_prediction_report(clf_pl,
                                dt_predict=datetime.now() - t_predict,
                                data=combined_data)
 
@@ -262,18 +282,18 @@ if __name__ == '__main__':
         log.info("Created training set ({}) and test set ({})".format(len(y_train), len(y_test)))
 
         data_set = io.get_data_set(args.predict)
-        pipeline = select_model(args, data_set, x_train, y_train)
+        fu_pl, clf_pl = select_model(args, data_set, x_train, y_train)
 
         # Score part
-        pipeline = mode_score(args, pipeline, x_train, y_train, x_test, y_test)
+        fu_pl, clf_pl = mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test)
 
         # Train part
-        mode_train(pipeline, x, y)
+        mode_train(fu_pl, clf_pl, x, y)
 
         # Predict part
         x, _ = io.load_data(args.predict)
 
-        mode_predict(pipeline, x)
+        mode_predict(fu_pl, clf_pl, x)
 
     elif args.score and args.train:
         log.info("Mode score->train")
@@ -289,13 +309,13 @@ if __name__ == '__main__':
         log.info("Created training set ({}) and test set ({})".format(len(y_train), len(y_test)))
 
         data_set = io.get_data_set(args.train)
-        pipeline = select_model(args, data_set, x_train, y_train)
+        fu_pl, clf_pl = select_model(args, data_set, x_train, y_train)
 
         # Score part
-        pipeline = mode_score(args, pipeline, x_train, y_train, x_test, y_test)
+        fu_pl, clf_pl = mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test)
 
         # Train part
-        mode_train(pipeline, x, y)
+        mode_train(fu_pl, clf_pl, x, y)
 
     elif args.train and args.predict:
         log.info("Mode train->predict")
@@ -311,23 +331,23 @@ if __name__ == '__main__':
         log.info("Created training set ({}) and test set ({})".format(len(y_train), len(y_test)))
 
         data_set = io.get_data_set(args.predict)
-        pipeline = select_model(args, data_set, x_train, y_train)
+        fu_pl, clf_pl = select_model(args, data_set, x_train, y_train)
 
         # Train part
-        mode_train(pipeline, x, y)
+        mode_train(fu_pl, clf_pl, x, y)
 
         # Predict part
         x, _ = io.load_data(args.predict)
 
-        mode_predict(pipeline, x)
+        mode_predict(fu_pl, clf_pl, x)
 
     elif args.model and args.predict:
         log.info("Mode model->predict")
 
         # Load model
-        pipeline = io.load_model(args.model)
+        fu_pl, clf_pl = io.load_model(args.model)
 
         # Predict part
         x, _ = io.load_data(args.predict)
 
-        mode_predict(pipeline, x)
+        mode_predict(fu_pl, clf_pl, x)

@@ -59,13 +59,14 @@ def load_model(model_file):
     """Loads and returns the pipeline model from model_file."""
 
     log.debug("Loading model from {}".format(model_file))
-    return joblib.load(model_file)
+    model = joblib.load(model_file)
+    return model[0], model[1]
 
 
-def save_model(pipeline, model_filename):
+def save_model(fu_pl, clf_pl, model_filename):
     """Saves the pipeline model to model_filename."""
 
-    joblib.dump(pipeline, model_filename)
+    joblib.dump([fu_pl, clf_pl], model_filename)
     print("Model saved as {}".format(model_filename))
 
 
