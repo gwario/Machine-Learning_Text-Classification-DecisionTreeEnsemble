@@ -142,6 +142,38 @@ class PipelineConfiguration:
     # Hyper-parameter search configuration
     ######################################
 
+
+    ###################################################################
+    # This set of parameters is used when --hp randomized was specified.
+    ############
+    # The parameter space must be larger than or equal to n_iter
+    pipeline_parameters_randomized_n_iter = 2053 # space = 12320 / 6 = 2053
+    # The default is to cross-validate with 3 folds, this takes a considerable amount of time
+    # Must be greater or equal to 2
+    pipeline_parameters_randomized_n_splits = 3
+    # To ensure some reproducibility
+    pipeline_parameters_randomized_random_state = RandomState(654321)
+
+    def binary_pipeline_parameters_randomized(self):
+
+        return {
+            'select__k': [10,100,1000,],
+            'clf': [self.clf_extra_trees(), self.clf_random_forest()],
+            'clf__max_depth': [6,7,8,9,10,12,13,14,15,16,17,18,19,20],
+            'clf__max_leaf_nodes': [20,23,27,35,37,44,47,53,56,59,65],
+            'clf__min_samples_leaf': [3,5,7,9,13,15,17,19],
+            'clf__min_samples_split': [3,5,7,9,11],
+            'clf__n_estimators': [900],#[1289,1290,1291,1292,1293,1294],  # Has to be > 25 for oob
+        }
+
+    def multiclass_pipeline_parameters_randomized(self):
+        return {
+            'clf__max_depth': (2, 5, 10, 20),
+            'clf__n_estimators': (10, 20, 50, 80, 300),
+            'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2)))
+        }
+
+
     # This custom set of parameters is used when --hp config was specified.
     def binary_pipeline_parameters(self):
         return {
@@ -186,40 +218,7 @@ class PipelineConfiguration:
             'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2)))
         }
 
-    ###################################################################
-    # This search space takes about 12 minutes to search
-    #
-    # This set of parameters is used when --hp randomized was specified.
-    ############
-    # The parameter space must be larger than or equal to n_iter
-    pipeline_parameters_randomized_n_iter = 2053 # space = 12320 / 6 = 2053
-    # The default is to cross-validate with 3 folds, this takes a considerable amount of time
-    # Must be greater or equal to 2
-    pipeline_parameters_randomized_n_splits = 3
-    # To ensure some reproducibility
-    pipeline_parameters_randomized_random_state = RandomState(654321)
-
-    def binary_pipeline_parameters_randomized(self):
-
-        return {
-            'select__k': [10,100,1000,],
-            'clf': [self.clf_extra_trees(), self.clf_random_forest()],
-            'clf__max_depth': [6,7,8,9,10,12,13,14,15,16,17,18,19,20],
-            'clf__max_leaf_nodes': [20,23,27,35,37,44,47,53,56,59,65],
-            'clf__min_samples_leaf': [3,5,7,9,13,15,17,19],
-            'clf__min_samples_split': [3,5,7,9,11],
-            'clf__n_estimators': [900],#[1289,1290,1291,1292,1293,1294],  # Has to be > 25 for oob
-        }
-
-    def multiclass_pipeline_parameters_randomized(self):
-        return {
-            'clf__max_depth': (2, 5, 10, 20),
-            'clf__n_estimators': (10, 20, 50, 80, 300),
-            'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2)))
-        }
-
-
-    # This parameters grid is used to find the best parameter configuration for the pipeline when --hp grid was specified.
+    # This set of parameters is used when --hp grid was specified.
     # http://scikit-learn.org/stable/modules/grid_search.html#grid-search
     # The default is to cross-validate with 3 folds, this takes a considerable amount of time
     pipeline_parameters_grid_n_splits = 2
@@ -227,7 +226,7 @@ class PipelineConfiguration:
         return {
             'clf__max_depth': (2, 5),
             'clf__n_estimators': (10, 80),
-            'union__abstractWordCount': (None, self.word_count_pipeline('Abstract')),
+            'union__abstractWordCount': (None, self.word_ngrams_pipeline('Abstract', (1,1))),
             'union__abstractPosTokLemSyn': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2))),
         }
 
