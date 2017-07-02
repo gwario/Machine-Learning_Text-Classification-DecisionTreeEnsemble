@@ -9,6 +9,7 @@ from datetime import datetime
 from sys import exit
 
 import pandas as pd
+import numpy as np
 from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 
@@ -80,6 +81,9 @@ def get_args(args_parser):
                              each class.''')
     args_parser.add_argument('--oob', action='store_true',
                              help='''Whether or not to Calculate the out of bag score for the estimator.''')
+    
+    args_parser.add_argument('--importance', action='store_true',
+                             help='''Whether or not to Calculate the importance of features.''')
 
     args_parser.add_argument('--score', action='store_true',
                              help='''Whether or not to evaluate the estimator performance.''')
@@ -163,6 +167,32 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test):
                             min_estimators=clf_n_min,
                             max_estimators=clf_n_max,
                             error_rate=oob_errors)
+    
+    # --- Feature Importances ---
+    if args.importance:
+        clf_n = clf_pl.get_params()['clf__n_estimators']
+
+        log.debug("Compute the feature importances...")
+        clf_pl.set_params(clf__n_estimators=clf_n)
+        clf_pl.fit(x_train, y_train)
+
+        importances = clf_pl.feature_importances_
+        std = np.std([tree.feature_importances_ for tree in clf_pl.estimators_], axis=0)
+        indices = np.argsort(importances)[::-1]
+
+    else:
+        clf_n = None
+        clf_pl.fit(x_train, y_train)
+
+        
+    rp.print_feature_importances_report(clf_pl,
+                                        dt_fitting=datetime.now() - tFit,
+                                        x_train=x_train,
+                                        y_train=y_train,
+                                        n_estimators=clf_n,
+                                        importances=importances,
+                                        indices=indices)
+    #--- End ---
 
     log.debug("Generating feature vector...")
     t0 = datetime.now()
