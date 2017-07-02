@@ -109,24 +109,24 @@ def print_fitting_report(pipeline, dt_fitting, x_train, y_train, min_estimators=
 def print_feature_importances_report(pipeline, dt_fitting, x_train, y_train, n_estimators=None, importances = None, indices = None):
 
     if n_estimators:
- 
-      # Print the feature ranking
-      log.debug("Print the feature ranking...")
-      for f in range(x_train.shape[1]):
-          print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
-      
-      # Plot the feature importances
-      plt.figure()
-      plt.title("Feature importances")
-      plt.bar(range(x_train.shape[1]), importances[indices], color="r", yerr=std[indices], align="center")
-      plt.xticks(range(x_train.shape[1]), indices)
-      plt.xlim([-1, x_train.shape[1]])
+        # Print the feature ranking
+        log.debug("Print the feature ranking...")
+        for f in range(x_train.shape[1]):
+            print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
+        
+        # Plot the feature importances
+        plt.figure()
+        plt.title("Feature importances")
+        plt.bar(range(x_train.shape[1]), importances[indices], color="r", yerr=std[indices], align="center")
+        plt.xticks(range(x_train.shape[1]), indices)
+        plt.xlim([-1, x_train.shape[1]])
 
-      log.debug("Fitted {} data points.".format(len(y_train)))
-      log.debug("Fitting and feature importances done in {}".format(dt_fitting))
+        log.debug("Fitted {} data points.".format(len(y_train)))
+        log.debug("Fitting and feature importances done in {}".format(dt_fitting))
 
-      plt.savefig('feature_importances.png', transparent=True)
-      #plt.show()
+        plt.savefig('feature_importances.png', transparent=True)
+        plt.show()
+
 
     else:
         log.debug("Fitted {} data points.".format(len(y_train)))
