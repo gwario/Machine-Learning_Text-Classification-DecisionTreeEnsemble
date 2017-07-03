@@ -106,19 +106,19 @@ def print_fitting_report(pipeline, dt_fitting, x_train, y_train, min_estimators=
         log.debug("Fitted {} data points.".format(len(y_train)))
         log.debug("Fitting done in {}".format(dt_fitting))
   
-def print_feature_importances_report(pipeline, dt_fitting, x_train, y_train, n_estimators=None, importances = None, indices = None):
+def print_feature_importances_report(pipeline, dt_fitting, x_train, y_train, n_estimators=None, p_importances = None, p_indices = None):
 
     if n_estimators:
         # Print the feature ranking
         log.debug("Print the feature ranking...")
         for f in range(x_train.shape[1]):
-            print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
+            print("%d. feature %d (%f)" % (f + 1, p_indices[f], p_importances[p_indices[f]]))
         
         # Plot the feature importances
         plt.figure()
         plt.title("Feature importances")
-        plt.bar(range(x_train.shape[1]), importances[indices], color="r", yerr=std[indices], align="center")
-        plt.xticks(range(x_train.shape[1]), indices)
+        plt.bar(range(x_train.shape[1]), p_importances[p_indices], color="r", yerr=std[p_indices], align="center")
+        plt.xticks(range(x_train.shape[1]), p_indices)
         plt.xlim([-1, x_train.shape[1]])
 
         log.debug("Fitted {} data points.".format(len(y_train)))
