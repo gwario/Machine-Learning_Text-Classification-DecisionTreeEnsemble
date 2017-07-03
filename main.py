@@ -190,8 +190,8 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test):
                                         x_train=x_train,
                                         y_train=y_train,
                                         n_estimators=clf_n,
-                                        importances=importances,
-                                        indices=indices)
+                                        p_importances=importances,
+                                        p_indices=indices)
     #--- End ---
 
     log.debug("Generating feature vector...")
