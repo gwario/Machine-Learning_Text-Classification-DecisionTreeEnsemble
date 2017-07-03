@@ -1,0 +1,816 @@
+python3 main.py --train ../wbi_binary/pre2_train.csv --score --hp randomized 
+2017-07-01 17:20:50,375 DEBUG Commandline arguments: Namespace(hp='randomized', hp_metric='accuracy', model=None, oob=False, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-07-01 17:20:50,375 DEBUG Valid mode of operation
+2017-07-01 17:20:50,375 INFO Mode score->train
+2017-07-01 17:20:50,375 DEBUG Loading data...
+2017-07-01 17:20:50,494 INFO Created training set (1616) and test set (539)
+2017-07-01 17:20:50,494 INFO Recognised data-set: binary
+2017-07-01 17:20:50,495 INFO Using randomized search on the training set to select the best model (hyper-parameters)...
+2017-07-01 17:20:50,495 DEBUG Performing randomized search, optimizing accuracy score...
+2017-07-01 17:20:50,496 DEBUG Generating feature vector...
+Vector union has 1485775 features.
+2017-07-01 17:21:11,454 INFO Generated vector of 1485775 features in 0:00:20.958334 from 1616 samples.
+Fitting 4 folds for each of 240 candidates, totalling 960 fits
+[Parallel(n_jobs=-1)]: Done  42 tasks      | elapsed: 11.6min
+[Parallel(n_jobs=-1)]: Done 192 tasks      | elapsed: 49.8min
+[Parallel(n_jobs=-1)]: Done 442 tasks      | elapsed: 112.2min
+[Parallel(n_jobs=-1)]: Done 792 tasks      | elapsed: 202.2min
+[Parallel(n_jobs=-1)]: Done 960 out of 960 | elapsed: 241.6min finished
+Hyper parameter search report:
+Parameter search space:
+{'clf': [ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='gini',
+           max_depth=None, max_features='log2', max_leaf_nodes=None,
+           min_impurity_split=1e-05, min_samples_leaf=1,
+           min_samples_split=2, min_weight_fraction_leaf=0.0,
+           n_estimators=10, n_jobs=-1, oob_score=False,
+           random_state=<mtrand.RandomState object at 0x7f5bec9e6ee8>,
+           verbose=0, warm_start=False)],
+ 'clf__max_depth': [12],
+ 'clf__max_leaf_nodes': [35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90],
+ 'clf__min_samples_leaf': [1, 2, 3, 4],
+ 'clf__min_samples_split': [2, 3, 4, 5, 6],
+ 'clf__n_estimators': [600],
+ 'select__k': [411500]}
+Best score: 0.942
+Best parameters set:
+{'clf__max_depth': 12,
+ 'clf__max_leaf_nodes': 45,
+ 'clf__min_samples_leaf': 1,
+ 'clf__min_samples_split': 5,
+ 'clf__n_estimators': 600,
+ 'select__k': 411500}
+Detailed folds results:
+     mean_fit_time  mean_score_time  mean_test_score  mean_train_score                                          param_clf param_clf__max_depth param_clf__max_leaf_nodes param_clf__min_samples_leaf  \
+0        23.753354         7.429089         0.941213          0.991337  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           1   
+1        24.719671         8.014953         0.939975          0.989893  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           1   
+2        24.639227         7.384200         0.941213          0.988861  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           1   
+3        24.794346         7.826973         0.941832          0.988861  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           1   
+4        25.439080         7.518404         0.941213          0.987830  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           1   
+5        25.699149         7.058600         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           2   
+6        26.352651         6.973565         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           2   
+7        27.446439         6.813030         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           2   
+8        29.079924         8.313607         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           2   
+9        34.331364         9.374967         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           2   
+10       25.315952         8.472118         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           3   
+11       26.709808         6.946231         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           3   
+12       25.729001         7.518658         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           3   
+13       24.835929         7.715008         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           3   
+14       26.275898         7.863930         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           3   
+15       25.916578         7.933769         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           4   
+16       27.120520         7.794382         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           4   
+17       26.321419         6.773510         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           4   
+18       27.905330         7.311508         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           4   
+19       28.218225         7.358596         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        35                           4   
+20       28.243345         8.012647         0.940594          0.993812  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           1   
+21       26.950907         7.859703         0.941213          0.993399  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           1   
+22       28.891073         7.555665         0.940594          0.990924  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           1   
+23       27.623025         7.525461         0.941832          0.990717  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           1   
+24       28.366082         7.867631         0.941832          0.989480  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           1   
+25       26.679400         7.965949         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           2   
+26       25.013692         7.854232         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           2   
+27       25.796543         7.157546         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           2   
+28       26.646988         7.084544         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           2   
+29       26.333152         7.755523         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           2   
+30       27.771628         7.744060         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           3   
+31       28.290539         7.295915         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           3   
+32       26.709864         6.633984         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           3   
+33       25.914797         6.649650         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           3   
+34       25.813450         7.008665         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           3   
+35       25.232935         6.792932         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           4   
+36       24.997334         6.859556         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           4   
+37       24.431245         7.077542         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           4   
+38       26.525043         7.931987         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           4   
+39       28.384057         7.443325         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        40                           4   
+40       27.829965         7.434441         0.939975          0.994843  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           1   
+41       26.517406         7.597108         0.940594          0.994637  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           1   
+42       27.940310         7.351225         0.941213          0.993193  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           1   
+43       27.436260         6.827500         0.942450          0.992368  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           1   
+44       27.467386         7.859762         0.941213          0.991749  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           1   
+45       26.526012         7.218508         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           2   
+46       26.279353         7.291300         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           2   
+47       25.342743         7.000033         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           2   
+48       25.643064         7.039377         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           2   
+49       25.244618         6.937916         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           2   
+50       24.794957         6.699401         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           3   
+51       25.885403         7.235277         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           3   
+52       26.324617         6.919249         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           3   
+53       25.917199         6.997204         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           3   
+54       25.063785         6.895161         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           3   
+55       24.360516         7.118732         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           4   
+56       23.996251         7.348523         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           4   
+57       24.574251         7.718942         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           4   
+58       23.699757         8.040963         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           4   
+59       23.444918         7.484729         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        45                           4   
+60       24.145968         7.436816         0.939975          0.995462  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           1   
+61       24.203339         7.799993         0.941832          0.994843  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           1   
+62       23.912850         7.790979         0.941832          0.993812  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           1   
+63       24.022227         7.798748         0.941213          0.993399  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           1   
+64       23.889194         7.621311         0.940594          0.992367  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           1   
+65       23.657908         7.428858         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           2   
+66       24.053646         7.668605         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           2   
+67       23.568731         9.141517         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           2   
+68       25.014873         6.861656         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           2   
+69       24.229417         7.666266         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           2   
+70       23.480288         8.105496         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           3   
+71       23.353498         7.633437         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           3   
+72       23.827683         7.279686         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           3   
+73       24.771963         6.777430         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           3   
+74       24.038280         7.116090         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           3   
+75       23.587397         7.378850         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           4   
+76       23.513408         7.625707         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           4   
+77       23.634800         7.774927         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           4   
+78       23.616735         7.675948         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           4   
+79       23.157911         7.555259         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        50                           4   
+80       23.578417         8.007304         0.939356          0.996081  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           1   
+81       23.702236         7.823929         0.939975          0.994843  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           1   
+82       24.024538         7.319636         0.941832          0.994431  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           1   
+83       24.144916         7.660629         0.940594          0.994224  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           1   
+84       23.735777         8.007097         0.941832          0.992780  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           1   
+85       23.188273         7.700042         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           2   
+86       23.460270         7.553707         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           2   
+87       23.302663         7.432712         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           2   
+88       24.777194         6.901057         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           2   
+89       24.424676         7.116866         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           2   
+90       24.401849         7.605207         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           3   
+91       24.792978         6.712167         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           3   
+92       26.052829         6.929556         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           3   
+93       25.882119         7.016875         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           3   
+94       25.558481         6.541769         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           3   
+95       24.932602         6.733319         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           4   
+96       24.884299         6.755399         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           4   
+97       24.766778         6.953103         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           4   
+98       24.798280         6.811968         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           4   
+99       24.203140         6.962368         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        55                           4   
+100      23.869909         7.960576         0.939356          0.996081  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           1   
+101      23.811368         7.346950         0.940594          0.994843  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           1   
+102      24.196054         7.351262         0.942450          0.994637  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           1   
+103      23.450427         7.913327         0.940594          0.994224  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           1   
+104      23.769475         7.571917         0.942450          0.992780  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           1   
+105      23.346519         7.842989         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           2   
+106      23.060482         8.029084         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           2   
+107      23.019841         7.863006         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           2   
+108      23.286395         7.912225         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           2   
+109      22.825889         7.980132         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           2   
+110      23.147145         7.768204         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           3   
+111      23.293175         7.587180         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           3   
+112      23.609156         7.754669         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           3   
+113      23.502652         7.735469         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           3   
+114      23.350420         7.745398         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           3   
+115      23.208257         7.559267         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           4   
+116      23.443268         7.723846         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           4   
+117      23.261304         7.507209         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           4   
+118      23.335288         7.291716         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           4   
+119      23.192701         7.640662         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        60                           4   
+120      23.424920         7.661067         0.939356          0.996081  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           1   
+121      23.555675         7.342171         0.940594          0.995050  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           1   
+122      29.184554         7.491354         0.942450          0.994637  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           1   
+123      24.874253         7.500198         0.940594          0.994224  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           1   
+124      33.934325         9.155183         0.942450          0.992780  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           1   
+125      24.329749         7.746361         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           2   
+126      25.210183         8.051914         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           2   
+127      23.823741         7.780423         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           2   
+128      23.915089         8.709409         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           2   
+129      23.367918         7.759600         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           2   
+130      23.845758         7.810460         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           3   
+131      30.192537         8.393810         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           3   
+132      25.131174         8.232363         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           3   
+133      23.867136         7.953655         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           3   
+134      23.988373         7.348573         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           3   
+135      24.066759         7.598920         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           4   
+136      23.821241         8.086547         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           4   
+137      23.586543         7.539276         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           4   
+138      24.845964         7.888052         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           4   
+139      23.503139         7.891548         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        65                           4   
+140      23.670094         7.860749         0.939356          0.996081  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           1   
+141      30.243984         7.557748         0.940594          0.995256  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           1   
+142      29.756995         7.702198         0.942450          0.994637  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           1   
+143      27.244441         6.818852         0.940594          0.994224  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           1   
+144      25.969726         6.921481         0.942450          0.992780  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           1   
+145      25.312237         6.943810         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           2   
+146      25.074087         7.325574         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           2   
+147      24.215700         7.036267         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           2   
+148      26.854883         9.363796         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           2   
+149      26.871395         7.270536         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           2   
+150      24.845153         7.294088         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           3   
+151      24.425153         7.538477         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           3   
+152      24.210442         7.560316         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           3   
+153      24.445321         7.471361         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           3   
+154      24.362513         7.573188         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           3   
+155      24.001376         7.641609         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           4   
+156      23.745733         7.617412         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           4   
+157      23.771319         7.839156         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           4   
+158      23.875235         8.651540         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           4   
+159      23.939571         7.993964         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        70                           4   
+160      24.979113         7.464813         0.939356          0.996081  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           1   
+161      24.221359         7.882334         0.940594          0.995256  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           1   
+162      23.884672         8.489861         0.942450          0.994637  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           1   
+163      26.792298         7.146039         0.940594          0.994224  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           1   
+164      26.450761         7.898493         0.942450          0.992780  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           1   
+165      34.191087         8.875713         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           2   
+166      29.320224         9.267443         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           2   
+167      30.641263         9.794985         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           2   
+168      35.240721        11.027990         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           2   
+169      37.887852        10.103142         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           2   
+170      41.975064        10.487761         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           3   
+171      40.287881        10.057107         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           3   
+172      41.389207         9.047519         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           3   
+173      42.081954         9.096219         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           3   
+174      37.137840         7.116574         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           3   
+175      38.965254         6.550936         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           4   
+176      33.520052         5.841710         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           4   
+177      34.364308         5.393247         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           4   
+178      33.771316         5.210581         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           4   
+179      37.577906         5.039789         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        75                           4   
+180      34.192766         5.465417         0.939356          0.996081  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           1   
+181      33.719033         5.902076         0.940594          0.995256  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           1   
+182      33.833745         5.663096         0.942450          0.994637  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           1   
+183      33.419581         5.376194         0.940594          0.994224  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           1   
+184      36.982446         5.543796         0.942450          0.992780  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           1   
+185      33.569033         5.226762         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           2   
+186      33.328324         5.028125         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           2   
+187      33.417230         5.214349         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           2   
+188      34.279998         5.148413         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           2   
+189      34.569008         5.112963         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           2   
+190      34.612000         5.230116         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           3   
+191      34.668784         5.044036         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           3   
+192      34.703409         5.093500         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           3   
+193      34.806020         5.200608         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           3   
+194      36.009254         4.312797         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           3   
+195      35.884232         4.552873         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           4   
+196      35.488639         4.438210         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           4   
+197      36.670301         4.617120         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           4   
+198      35.392962         4.563926         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           4   
+199      35.328363         4.372642         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        80                           4   
+200      35.667818         4.351477         0.939356          0.996081  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           1   
+201      35.744172         4.634535         0.940594          0.995256  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           1   
+202      36.139449         4.635865         0.942450          0.994637  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           1   
+203      36.880414         5.057259         0.940594          0.994224  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           1   
+204      37.552875         5.156927         0.942450          0.992780  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           1   
+205      36.669312         4.528118         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           2   
+206      36.862034         4.643264         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           2   
+207      36.312770         4.448337         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           2   
+208      35.480867         4.530771         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           2   
+209      35.076150         4.246827         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           2   
+210      35.652357         4.313617         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           3   
+211      35.145985         4.638957         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           3   
+212      35.334996         4.552472         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           3   
+213      35.045218         4.688667         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           3   
+214      35.221878         4.547105         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           3   
+215      35.063549         4.632645         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           4   
+216      34.953907         4.417495         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           4   
+217      35.136096         4.834509         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           4   
+218      35.143251         4.697831         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           4   
+219      36.096861         4.460927         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        85                           4   
+220      36.684466         4.559780         0.939356          0.996081  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           1   
+221      35.929556         4.665756         0.940594          0.995256  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           1   
+222      37.163542         4.921220         0.942450          0.994637  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           1   
+223      39.039903         4.975739         0.940594          0.994224  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           1   
+224      38.136121         4.939312         0.942450          0.992780  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           1   
+225      45.421684         4.970047         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           2   
+226      39.199843         4.637881         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           2   
+227      35.975235         4.663210         0.939356          0.972981  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           2   
+228      39.630207         5.531209         0.939975          0.973187  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           2   
+229      36.857419         5.028556         0.939356          0.972980  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           2   
+230      35.908237         4.433960         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           3   
+231      39.750408         5.235513         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           3   
+232      42.019276         5.205371         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           3   
+233      40.937690         5.156362         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           3   
+234      40.993188         4.658773         0.938119          0.968029  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           3   
+235      44.828011         4.430014         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           4   
+236      35.902417         4.582295         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           4   
+237      41.907868         5.826466         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           4   
+238      36.888464         5.482677         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           4   
+239      41.705251         6.517951         0.938119          0.965555  (ExtraTreeClassifier(class_weight=None, criter...                   12                        90                           4   
+
+    param_clf__min_samples_split param_clf__n_estimators param_select__k  rank_test_score  split0_test_score  split0_train_score  split1_test_score  split1_train_score  split2_test_score  \
+0                              2                     600          411500               23           0.935802            0.995045           0.955446            0.987624           0.928218   
+1                              3                     600          411500               49           0.930864            0.993394           0.955446            0.985149           0.930693   
+2                              4                     600          411500               23           0.933333            0.990917           0.955446            0.984323           0.933168   
+3                              5                     600          411500               16           0.935802            0.990917           0.955446            0.984323           0.930693   
+4                              6                     600          411500               23           0.930864            0.989265           0.955446            0.985149           0.933168   
+5                              2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+6                              3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+7                              4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+8                              5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+9                              6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+10                             2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+11                             3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+12                             4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+13                             5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+14                             6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+15                             2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+16                             3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+17                             4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+18                             5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+19                             6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+20                             2                     600          411500               30           0.935802            0.996697           0.955446            0.990924           0.928218   
+21                             3                     600          411500               23           0.933333            0.996697           0.955446            0.989274           0.933168   
+22                             4                     600          411500               30           0.933333            0.993394           0.955446            0.986799           0.933168   
+23                             5                     600          411500               16           0.935802            0.993394           0.955446            0.985974           0.930693   
+24                             6                     600          411500               16           0.933333            0.990917           0.955446            0.985974           0.933168   
+25                             2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+26                             3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+27                             4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+28                             5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+29                             6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+30                             2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+31                             3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+32                             4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+33                             5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+34                             6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+35                             2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+36                             3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+37                             4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+38                             5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+39                             6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+40                             2                     600          411500               49           0.933333            0.996697           0.955446            0.992574           0.928218   
+41                             3                     600          411500               30           0.930864            0.996697           0.955446            0.993399           0.933168   
+42                             4                     600          411500               23           0.935802            0.996697           0.955446            0.990099           0.933168   
+43                             5                     600          411500                1           0.935802            0.995045           0.955446            0.989274           0.933168   
+44                             6                     600          411500               23           0.930864            0.993394           0.955446            0.989274           0.933168   
+45                             2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+46                             3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+47                             4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+48                             5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+49                             6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+50                             2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+51                             3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+52                             4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+53                             5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+54                             6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+55                             2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+56                             3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+57                             4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+58                             5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+59                             6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+60                             2                     600          411500               49           0.933333            0.996697           0.955446            0.993399           0.928218   
+61                             3                     600          411500               16           0.933333            0.996697           0.955446            0.993399           0.933168   
+62                             4                     600          411500               16           0.935802            0.996697           0.955446            0.991749           0.933168   
+63                             5                     600          411500               23           0.933333            0.995871           0.952970            0.991749           0.930693   
+64                             6                     600          411500               30           0.928395            0.993394           0.955446            0.990099           0.933168   
+65                             2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+66                             3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+67                             4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+68                             5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+69                             6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+70                             2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+71                             3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+72                             4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+73                             5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+74                             6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+75                             2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+76                             3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+77                             4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+78                             5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+79                             6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+80                             2                     600          411500               65           0.930864            0.996697           0.955446            0.995050           0.928218   
+81                             3                     600          411500               49           0.930864            0.996697           0.955446            0.993399           0.933168   
+82                             4                     600          411500               16           0.935802            0.996697           0.955446            0.993399           0.933168   
+83                             5                     600          411500               30           0.930864            0.996697           0.952970            0.991749           0.930693   
+84                             6                     600          411500               16           0.930864            0.994220           0.955446            0.990099           0.933168   
+85                             2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+86                             3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+87                             4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+88                             5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+89                             6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+90                             2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+91                             3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+92                             4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+93                             5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+94                             6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+95                             2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+96                             3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+97                             4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+98                             5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+99                             6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+100                            2                     600          411500               65           0.930864            0.996697           0.955446            0.995050           0.928218   
+101                            3                     600          411500               30           0.930864            0.996697           0.955446            0.993399           0.933168   
+102                            4                     600          411500                1           0.935802            0.996697           0.955446            0.993399           0.933168   
+103                            5                     600          411500               30           0.930864            0.996697           0.952970            0.991749           0.930693   
+104                            6                     600          411500                1           0.933333            0.994220           0.955446            0.990099           0.933168   
+105                            2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+106                            3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+107                            4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+108                            5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+109                            6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+110                            2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+111                            3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+112                            4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+113                            5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+114                            6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+115                            2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+116                            3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+117                            4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+118                            5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+119                            6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+120                            2                     600          411500               65           0.930864            0.996697           0.955446            0.995050           0.928218   
+121                            3                     600          411500               30           0.930864            0.996697           0.955446            0.993399           0.933168   
+122                            4                     600          411500                1           0.935802            0.996697           0.955446            0.993399           0.933168   
+123                            5                     600          411500               30           0.930864            0.996697           0.952970            0.991749           0.930693   
+124                            6                     600          411500                1           0.933333            0.994220           0.955446            0.990099           0.933168   
+125                            2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+126                            3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+127                            4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+128                            5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+129                            6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+130                            2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+131                            3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+132                            4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+133                            5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+134                            6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+135                            2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+136                            3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+137                            4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+138                            5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+139                            6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+140                            2                     600          411500               65           0.930864            0.996697           0.955446            0.995050           0.928218   
+141                            3                     600          411500               30           0.930864            0.996697           0.955446            0.993399           0.933168   
+142                            4                     600          411500                1           0.935802            0.996697           0.955446            0.993399           0.933168   
+143                            5                     600          411500               30           0.930864            0.996697           0.952970            0.991749           0.930693   
+144                            6                     600          411500                1           0.933333            0.994220           0.955446            0.990099           0.933168   
+145                            2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+146                            3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+147                            4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+148                            5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+149                            6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+150                            2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+151                            3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+152                            4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+153                            5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+154                            6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+155                            2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+156                            3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+157                            4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+158                            5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+159                            6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+160                            2                     600          411500               65           0.930864            0.996697           0.955446            0.995050           0.928218   
+161                            3                     600          411500               30           0.930864            0.996697           0.955446            0.993399           0.933168   
+162                            4                     600          411500                1           0.935802            0.996697           0.955446            0.993399           0.933168   
+163                            5                     600          411500               30           0.930864            0.996697           0.952970            0.991749           0.930693   
+164                            6                     600          411500                1           0.933333            0.994220           0.955446            0.990099           0.933168   
+165                            2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+166                            3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+167                            4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+168                            5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+169                            6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+170                            2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+171                            3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+172                            4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+173                            5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+174                            6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+175                            2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+176                            3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+177                            4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+178                            5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+179                            6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+180                            2                     600          411500               65           0.930864            0.996697           0.955446            0.995050           0.928218   
+181                            3                     600          411500               30           0.930864            0.996697           0.955446            0.993399           0.933168   
+182                            4                     600          411500                1           0.935802            0.996697           0.955446            0.993399           0.933168   
+183                            5                     600          411500               30           0.930864            0.996697           0.952970            0.991749           0.930693   
+184                            6                     600          411500                1           0.933333            0.994220           0.955446            0.990099           0.933168   
+185                            2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+186                            3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+187                            4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+188                            5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+189                            6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+190                            2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+191                            3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+192                            4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+193                            5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+194                            6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+195                            2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+196                            3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+197                            4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+198                            5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+199                            6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+200                            2                     600          411500               65           0.930864            0.996697           0.955446            0.995050           0.928218   
+201                            3                     600          411500               30           0.930864            0.996697           0.955446            0.993399           0.933168   
+202                            4                     600          411500                1           0.935802            0.996697           0.955446            0.993399           0.933168   
+203                            5                     600          411500               30           0.930864            0.996697           0.952970            0.991749           0.930693   
+204                            6                     600          411500                1           0.933333            0.994220           0.955446            0.990099           0.933168   
+205                            2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+206                            3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+207                            4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+208                            5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+209                            6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+210                            2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+211                            3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+212                            4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+213                            5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+214                            6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+215                            2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+216                            3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+217                            4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+218                            5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+219                            6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+220                            2                     600          411500               65           0.930864            0.996697           0.955446            0.995050           0.928218   
+221                            3                     600          411500               30           0.930864            0.996697           0.955446            0.993399           0.933168   
+222                            4                     600          411500                1           0.935802            0.996697           0.955446            0.993399           0.933168   
+223                            5                     600          411500               30           0.930864            0.996697           0.952970            0.991749           0.930693   
+224                            6                     600          411500                1           0.933333            0.994220           0.955446            0.990099           0.933168   
+225                            2                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+226                            3                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+227                            4                     600          411500               65           0.935802            0.979356           0.952970            0.969472           0.930693   
+228                            5                     600          411500               49           0.933333            0.979356           0.952970            0.968647           0.928218   
+229                            6                     600          411500               65           0.933333            0.979356           0.952970            0.968647           0.928218   
+230                            2                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+231                            3                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+232                            4                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+233                            5                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+234                            6                     600          411500              121           0.930864            0.971098           0.950495            0.965347           0.928218   
+235                            2                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+236                            3                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+237                            4                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+238                            5                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+239                            6                     600          411500              121           0.938272            0.973576           0.945545            0.960396           0.933168   
+
+     split2_train_score  split3_test_score  split3_train_score  std_fit_time  std_score_time  std_test_score  std_train_score  
+0              0.990099           0.945409            0.992580      2.210564        0.825195        0.010227         0.002767  
+1              0.989274           0.942928            0.991756      1.443828        0.390126        0.010215         0.003107  
+2              0.987624           0.942928            0.992580      1.539030        0.583763        0.009117         0.003169  
+3              0.987624           0.945409            0.992580      1.231365        0.768889        0.009469         0.003169  
+4              0.986799           0.945409            0.990107      2.311234        0.751891        0.009902         0.001968  
+5              0.973597           0.937965            0.969497      1.944764        1.558476        0.008291         0.004046  
+6              0.973597           0.937965            0.969497      1.031670        1.914763        0.008291         0.004046  
+7              0.973597           0.937965            0.969497      2.176388        1.779729        0.008291         0.004046  
+8              0.975248           0.945409            0.969497      2.347358        2.001588        0.009757         0.004374  
+9              0.973597           0.942928            0.970322      2.198588        0.248070        0.009467         0.004089  
+10             0.967822           0.942928            0.967848      1.071033        0.370961        0.009042         0.002043  
+11             0.967822           0.942928            0.967848      1.141605        0.975601        0.009042         0.002043  
+12             0.967822           0.942928            0.967848      2.389955        0.368180        0.009042         0.002043  
+13             0.967822           0.942928            0.967848      0.985069        0.737394        0.009042         0.002043  
+14             0.967822           0.942928            0.967848      1.379694        1.157994        0.009042         0.002043  
+15             0.963696           0.935484            0.964551      2.154223        1.035777        0.004653         0.004884  
+16             0.963696           0.935484            0.964551      2.614564        1.260421        0.004653         0.004884  
+17             0.963696           0.935484            0.964551      1.810628        1.994465        0.004653         0.004884  
+18             0.963696           0.935484            0.964551      1.343698        1.431826        0.004653         0.004884  
+19             0.963696           0.935484            0.964551      1.517875        1.778620        0.004653         0.004884  
+20             0.990924           0.942928            0.996702      2.353518        0.817085        0.010027         0.002888  
+21             0.990924           0.942928            0.996702      1.572136        1.566138        0.009117         0.003352  
+22             0.989274           0.940447            0.994229      3.317590        1.041777        0.009063         0.003032  
+23             0.988449           0.945409            0.995054      1.090138        1.168033        0.009469         0.003661  
+24             0.988449           0.945409            0.992580      2.813248        1.993923        0.009295         0.002502  
+25             0.973597           0.937965            0.969497      2.520783        0.488951        0.008291         0.004046  
+26             0.973597           0.937965            0.969497      1.155567        1.068807        0.008291         0.004046  
+27             0.973597           0.937965            0.969497      2.624018        0.995582        0.008291         0.004046  
+28             0.975248           0.945409            0.969497      2.363414        1.137154        0.009757         0.004374  
+29             0.973597           0.942928            0.970322      2.427715        1.986833        0.009467         0.004089  
+30             0.967822           0.942928            0.967848      2.495221        2.235024        0.009042         0.002043  
+31             0.967822           0.942928            0.967848      1.913464        1.730376        0.009042         0.002043  
+32             0.967822           0.942928            0.967848      1.007408        1.382226        0.009042         0.002043  
+33             0.967822           0.942928            0.967848      1.308145        1.474829        0.009042         0.002043  
+34             0.967822           0.942928            0.967848      1.889688        1.121736        0.009042         0.002043  
+35             0.963696           0.935484            0.964551      0.783692        0.886609        0.004653         0.004884  
+36             0.963696           0.935484            0.964551      0.662841        0.592752        0.004653         0.004884  
+37             0.963696           0.935484            0.964551      0.951274        0.457198        0.004653         0.004884  
+38             0.963696           0.935484            0.964551      2.695599        1.389488        0.004653         0.004884  
+39             0.963696           0.935484            0.964551      2.294940        2.030171        0.004653         0.004884  
+40             0.992574           0.942928            0.997527      2.086200        2.056467        0.010374         0.002288  
+41             0.991749           0.942928            0.996702      1.272570        1.917787        0.009696         0.002144  
+42             0.990924           0.940447            0.995054      1.277253        1.676044        0.008620         0.002760  
+43             0.988449           0.945409            0.996702      1.466126        1.199748        0.008776         0.003567  
+44             0.990099           0.945409            0.994229      2.651088        1.892967        0.009902         0.002104  
+45             0.973597           0.937965            0.969497      1.613745        1.797789        0.008291         0.004046  
+46             0.973597           0.937965            0.969497      1.530609        0.861765        0.008291         0.004046  
+47             0.973597           0.937965            0.969497      1.634294        1.192184        0.008291         0.004046  
+48             0.975248           0.945409            0.969497      1.363550        0.912591        0.009757         0.004374  
+49             0.973597           0.942928            0.970322      1.097352        0.448200        0.009467         0.004089  
+50             0.967822           0.942928            0.967848      1.327301        0.802139        0.009042         0.002043  
+51             0.967822           0.942928            0.967848      1.881833        1.756807        0.009042         0.002043  
+52             0.967822           0.942928            0.967848      1.339345        1.478255        0.009042         0.002043  
+53             0.967822           0.942928            0.967848      0.955085        0.976409        0.009042         0.002043  
+54             0.967822           0.942928            0.967848      1.171291        0.503052        0.009042         0.002043  
+55             0.963696           0.935484            0.964551      1.244822        0.893544        0.004653         0.004884  
+56             0.963696           0.935484            0.964551      1.153065        0.302686        0.004653         0.004884  
+57             0.963696           0.935484            0.964551      1.194760        0.663847        0.004653         0.004884  
+58             0.963696           0.935484            0.964551      0.867211        0.467120        0.004653         0.004884  
+59             0.963696           0.935484            0.964551      0.847628        0.542475        0.004653         0.004884  
+60             0.994224           0.942928            0.997527      1.124246        0.803729        0.010374         0.001701  
+61             0.992574           0.945409            0.996702      1.450477        0.413937        0.009295         0.001879  
+62             0.990924           0.942928            0.995878      1.121398        0.850130        0.008632         0.002509  
+63             0.989274           0.947891            0.996702      1.281254        0.701961        0.009429         0.003032  
+64             0.990099           0.945409            0.995878      0.938180        0.416712        0.010583         0.002433  
+65             0.973597           0.937965            0.969497      0.911681        1.021169        0.008291         0.004046  
+66             0.973597           0.937965            0.969497      1.455946        0.349894        0.008291         0.004046  
+67             0.973597           0.937965            0.969497      1.110091        1.500724        0.008291         0.004046  
+68             0.975248           0.945409            0.969497      1.135465        0.886000        0.009757         0.004374  
+69             0.973597           0.942928            0.970322      1.385133        0.402569        0.009467         0.004089  
+70             0.967822           0.942928            0.967848      0.534285        0.360104        0.009042         0.002043  
+71             0.967822           0.942928            0.967848      0.941994        0.399175        0.009042         0.002043  
+72             0.967822           0.942928            0.967848      1.717988        1.431725        0.009042         0.002043  
+73             0.967822           0.942928            0.967848      1.824832        0.876104        0.009042         0.002043  
+74             0.967822           0.942928            0.967848      1.267986        0.828399        0.009042         0.002043  
+75             0.963696           0.935484            0.964551      1.210661        1.033731        0.004653         0.004884  
+76             0.963696           0.935484            0.964551      1.728333        0.565802        0.004653         0.004884  
+77             0.963696           0.935484            0.964551      1.509736        0.866824        0.004653         0.004884  
+78             0.963696           0.935484            0.964551      1.261253        0.386090        0.004653         0.004884  
+79             0.963696           0.935484            0.964551      0.769090        0.429380        0.004653         0.004884  
+80             0.995050           0.942928            0.997527      0.933475        0.455169        0.010816         0.001072  
+81             0.992574           0.940447            0.996702      0.797659        0.686779        0.009606         0.001879  
+82             0.990924           0.942928            0.996702      1.229804        0.438612        0.008632         0.002432  
+83             0.991749           0.947891            0.996702      0.907473        0.576413        0.009990         0.002475  
+84             0.990924           0.947891            0.995878      1.325378        0.313617        0.010218         0.002361  
+85             0.973597           0.937965            0.969497      0.600802        0.540636        0.008291         0.004046  
+86             0.973597           0.937965            0.969497      0.759985        0.446381        0.008291         0.004046  
+87             0.973597           0.937965            0.969497      0.802535        0.633042        0.008291         0.004046  
+88             0.975248           0.945409            0.969497      0.715875        1.068688        0.009757         0.004374  
+89             0.973597           0.942928            0.970322      1.346506        1.017225        0.009467         0.004089  
+90             0.967822           0.942928            0.967848      1.319324        0.491564        0.009042         0.002043  
+91             0.967822           0.942928            0.967848      1.889545        1.590866        0.009042         0.002043  
+92             0.967822           0.942928            0.967848      1.907899        1.736728        0.009042         0.002043  
+93             0.967822           0.942928            0.967848      1.764920        1.547598        0.009042         0.002043  
+94             0.967822           0.942928            0.967848      1.237858        1.032115        0.009042         0.002043  
+95             0.963696           0.935484            0.964551      1.769358        0.675692        0.004653         0.004884  
+96             0.963696           0.935484            0.964551      1.198879        0.846594        0.004653         0.004884  
+97             0.963696           0.935484            0.964551      1.438394        0.790047        0.004653         0.004884  
+98             0.963696           0.935484            0.964551      1.318636        0.631791        0.004653         0.004884  
+99             0.963696           0.935484            0.964551      1.078093        0.529245        0.004653         0.004884  
+100            0.995050           0.942928            0.997527      1.299050        0.413262        0.010816         0.001072  
+101            0.992574           0.942928            0.996702      1.227778        0.921417        0.009696         0.001879  
+102            0.991749           0.945409            0.996702      1.471136        0.222989        0.008776         0.002144  
+103            0.991749           0.947891            0.996702      1.026598        0.671385        0.009990         0.002475  
+104            0.990924           0.947891            0.995878      0.817571        0.632717        0.009590         0.002361  
+105            0.973597           0.937965            0.969497      1.008412        0.508480        0.008291         0.004046  
+106            0.973597           0.937965            0.969497      1.092876        0.318335        0.008291         0.004046  
+107            0.973597           0.937965            0.969497      1.216722        0.594063        0.008291         0.004046  
+108            0.975248           0.945409            0.969497      1.527792        0.443844        0.009757         0.004374  
+109            0.973597           0.942928            0.970322      1.020519        0.452730        0.009467         0.004089  
+110            0.967822           0.942928            0.967848      1.029302        0.478571        0.009042         0.002043  
+111            0.967822           0.942928            0.967848      1.270334        0.803538        0.009042         0.002043  
+112            0.967822           0.942928            0.967848      1.453270        0.585040        0.009042         0.002043  
+113            0.967822           0.942928            0.967848      1.054099        0.557297        0.009042         0.002043  
+114            0.967822           0.942928            0.967848      1.285305        0.508132        0.009042         0.002043  
+115            0.963696           0.935484            0.964551      1.608028        0.585412        0.004653         0.004884  
+116            0.963696           0.935484            0.964551      1.252401        0.229212        0.004653         0.004884  
+117            0.963696           0.935484            0.964551      1.000920        0.560237        0.004653         0.004884  
+118            0.963696           0.935484            0.964551      0.822031        0.608441        0.004653         0.004884  
+119            0.963696           0.935484            0.964551      1.139335        0.317552        0.004653         0.004884  
+120            0.995050           0.942928            0.997527      1.344146        0.519930        0.010816         0.001072  
+121            0.993399           0.942928            0.996702      0.990691        0.995662        0.009696         0.001650  
+122            0.991749           0.945409            0.996702      1.636904        0.392908        0.008776         0.002144  
+123            0.991749           0.947891            0.996702      0.665546        0.782885        0.009990         0.002475  
+124            0.990924           0.947891            0.995878      1.217160        0.410428        0.009590         0.002361  
+125            0.973597           0.937965            0.969497      0.931206        0.629970        0.008291         0.004046  
+126            0.973597           0.937965            0.969497      1.143261        0.313702        0.008291         0.004046  
+127            0.973597           0.937965            0.969497      0.807077        0.660746        0.008291         0.004046  
+128            0.975248           0.945409            0.969497      1.130094        0.190493        0.009757         0.004374  
+129            0.973597           0.942928            0.970322      0.904525        0.709960        0.009467         0.004089  
+130            0.967822           0.942928            0.967848      1.291242        0.968691        0.009042         0.002043  
+131            0.967822           0.942928            0.967848      1.529465        0.794348        0.009042         0.002043  
+132            0.967822           0.942928            0.967848      1.610748        0.882715        0.009042         0.002043  
+133            0.967822           0.942928            0.967848      1.898557        0.770699        0.009042         0.002043  
+134            0.967822           0.942928            0.967848      0.982650        0.738089        0.009042         0.002043  
+135            0.963696           0.935484            0.964551      1.154130        0.455218        0.004653         0.004884  
+136            0.963696           0.935484            0.964551      1.149321        0.353285        0.004653         0.004884  
+137            0.963696           0.935484            0.964551      0.967579        0.825643        0.004653         0.004884  
+138            0.963696           0.935484            0.964551      1.057984        0.419899        0.004653         0.004884  
+139            0.963696           0.935484            0.964551      0.992775        0.463940        0.004653         0.004884  
+140            0.995050           0.942928            0.997527      1.234975        0.795770        0.010816         0.001072  
+141            0.994224           0.942928            0.996702      1.977109        0.595285        0.009696         0.001473  
+142            0.991749           0.945409            0.996702      2.922359        2.479260        0.008776         0.002144  
+143            0.991749           0.947891            0.996702      1.762754        1.558446        0.009990         0.002475  
+144            0.990924           0.947891            0.995878      1.842767        1.101034        0.009590         0.002361  
+145            0.973597           0.937965            0.969497      1.313105        0.949759        0.008291         0.004046  
+146            0.973597           0.937965            0.969497      1.036546        0.519606        0.008291         0.004046  
+147            0.973597           0.937965            0.969497      1.194356        0.794644        0.008291         0.004046  
+148            0.975248           0.945409            0.969497      1.550296        0.628587        0.009757         0.004374  
+149            0.973597           0.942928            0.970322      1.366337        1.021312        0.009467         0.004089  
+150            0.967822           0.942928            0.967848      0.999966        0.630584        0.009042         0.002043  
+151            0.967822           0.942928            0.967848      1.833734        0.768683        0.009042         0.002043  
+152            0.967822           0.942928            0.967848      2.030469        0.636817        0.009042         0.002043  
+153            0.967822           0.942928            0.967848      1.730518        0.854322        0.009042         0.002043  
+154            0.967822           0.942928            0.967848      0.905805        0.597845        0.009042         0.002043  
+155            0.963696           0.935484            0.964551      0.753958        0.552065        0.004653         0.004884  
+156            0.963696           0.935484            0.964551      0.902850        0.309335        0.004653         0.004884  
+157            0.963696           0.935484            0.964551      0.784499        0.696714        0.004653         0.004884  
+158            0.963696           0.935484            0.964551      1.583824        0.915817        0.004653         0.004884  
+159            0.963696           0.935484            0.964551      1.282065        0.544831        0.004653         0.004884  
+160            0.995050           0.942928            0.997527      1.452127        0.875030        0.010816         0.001072  
+161            0.994224           0.942928            0.996702      1.185424        0.692665        0.009696         0.001473  
+162            0.991749           0.945409            0.996702      1.446319        0.977750        0.008776         0.002144  
+163            0.991749           0.947891            0.996702      1.447710        1.129018        0.009990         0.002475  
+164            0.990924           0.947891            0.995878      1.475509        0.649994        0.009590         0.002361  
+165            0.973597           0.937965            0.969497      1.579812        0.729200        0.008291         0.004046  
+166            0.973597           0.937965            0.969497      5.086831        0.934457        0.008291         0.004046  
+167            0.973597           0.937965            0.969497      0.956260        1.566526        0.008291         0.004046  
+168            0.975248           0.945409            0.969497     10.161615        2.286959        0.009757         0.004374  
+169            0.973597           0.942928            0.970322      7.367310        3.204555        0.009467         0.004089  
+170            0.967822           0.942928            0.967848      6.378718        4.132433        0.009042         0.002043  
+171            0.967822           0.942928            0.967848      3.072865        3.159941        0.009042         0.002043  
+172            0.967822           0.942928            0.967848      6.483258        3.013667        0.009042         0.002043  
+173            0.967822           0.942928            0.967848      0.925612        2.842398        0.009042         0.002043  
+174            0.967822           0.942928            0.967848      4.965035        2.277932        0.009042         0.002043  
+175            0.963696           0.935484            0.964551      6.337742        1.835584        0.004653         0.004884  
+176            0.963696           0.935484            0.964551      3.766525        2.121884        0.004653         0.004884  
+177            0.963696           0.935484            0.964551      4.602343        1.797865        0.004653         0.004884  
+178            0.963696           0.935484            0.964551      4.422262        2.050691        0.004653         0.004884  
+179            0.963696           0.935484            0.964551      4.119205        1.527678        0.004653         0.004884  
+180            0.995050           0.942928            0.997527      4.534929        1.918807        0.010816         0.001072  
+181            0.994224           0.942928            0.996702      5.347149        1.918036        0.009696         0.001473  
+182            0.991749           0.945409            0.996702      5.970874        2.035736        0.008776         0.002144  
+183            0.991749           0.947891            0.996702      4.876536        1.982367        0.009990         0.002475  
+184            0.990924           0.947891            0.995878      3.709538        1.669801        0.009590         0.002361  
+185            0.973597           0.937965            0.969497      4.838712        1.864459        0.008291         0.004046  
+186            0.973597           0.937965            0.969497      4.509776        1.566286        0.008291         0.004046  
+187            0.973597           0.937965            0.969497      4.744455        2.166777        0.008291         0.004046  
+188            0.975248           0.945409            0.969497      4.452481        1.862593        0.009757         0.004374  
+189            0.973597           0.942928            0.970322      3.868996        1.951131        0.009467         0.004089  
+190            0.967822           0.942928            0.967848      4.135984        1.884051        0.009042         0.002043  
+191            0.967822           0.942928            0.967848      4.538667        1.615410        0.009042         0.002043  
+192            0.967822           0.942928            0.967848      3.607106        1.776294        0.009042         0.002043  
+193            0.967822           0.942928            0.967848      3.918175        1.709573        0.009042         0.002043  
+194            0.967822           0.942928            0.967848      4.257461        0.395718        0.009042         0.002043  
+195            0.963696           0.935484            0.964551      3.550726        0.792733        0.004653         0.004884  
+196            0.963696           0.935484            0.964551      2.710553        0.777594        0.004653         0.004884  
+197            0.963696           0.935484            0.964551      2.024798        0.832405        0.004653         0.004884  
+198            0.963696           0.935484            0.964551      1.872026        0.879410        0.004653         0.004884  
+199            0.963696           0.935484            0.964551      0.752159        0.802826        0.004653         0.004884  
+200            0.995050           0.942928            0.997527      0.799420        0.853961        0.010816         0.001072  
+201            0.994224           0.942928            0.996702      1.357621        0.898452        0.009696         0.001473  
+202            0.991749           0.945409            0.996702      2.256947        0.895482        0.008776         0.002144  
+203            0.991749           0.947891            0.996702      2.582138        0.863417        0.009990         0.002475  
+204            0.990924           0.947891            0.995878      2.661467        0.882721        0.009590         0.002361  
+205            0.973597           0.937965            0.969497      2.442101        0.950677        0.008291         0.004046  
+206            0.973597           0.937965            0.969497      2.649402        0.894698        0.008291         0.004046  
+207            0.973597           0.937965            0.969497      1.854869        0.877746        0.008291         0.004046  
+208            0.975248           0.945409            0.969497      1.652242        0.859234        0.009757         0.004374  
+209            0.973597           0.942928            0.970322      1.681628        0.801076        0.009467         0.004089  
+210            0.967822           0.942928            0.967848      1.560227        0.799157        0.009042         0.002043  
+211            0.967822           0.942928            0.967848      1.399843        0.727672        0.009042         0.002043  
+212            0.967822           0.942928            0.967848      1.654818        0.955524        0.009042         0.002043  
+213            0.967822           0.942928            0.967848      1.560742        0.937908        0.009042         0.002043  
+214            0.967822           0.942928            0.967848      1.879064        0.763381        0.009042         0.002043  
+215            0.963696           0.935484            0.964551      1.667591        0.782890        0.004653         0.004884  
+216            0.963696           0.935484            0.964551      1.959109        0.975480        0.004653         0.004884  
+217            0.963696           0.935484            0.964551      1.792767        0.809075        0.004653         0.004884  
+218            0.963696           0.935484            0.964551      1.851144        0.767894        0.004653         0.004884  
+219            0.963696           0.935484            0.964551      2.423870        0.962311        0.004653         0.004884  
+220            0.995050           0.942928            0.997527      1.613993        0.839590        0.010816         0.001072  
+221            0.994224           0.942928            0.996702      2.048714        0.804162        0.009696         0.001473  
+222            0.991749           0.945409            0.996702      1.876178        0.877691        0.008776         0.002144  
+223            0.991749           0.947891            0.996702      2.174037        1.113104        0.009990         0.002475  
+224            0.990924           0.947891            0.995878      4.806176        0.738212        0.009590         0.002361  
+225            0.973597           0.937965            0.969497      1.681636        1.374622        0.008291         0.004046  
+226            0.973597           0.937965            0.969497      1.525181        1.004867        0.008291         0.004046  
+227            0.973597           0.937965            0.969497      1.906023        0.984184        0.008291         0.004046  
+228            0.975248           0.945409            0.969497      1.682879        1.627070        0.009757         0.004374  
+229            0.973597           0.942928            0.970322      2.405704        0.972955        0.009467         0.004089  
+230            0.967822           0.942928            0.967848      2.153683        0.685811        0.009042         0.002043  
+231            0.967822           0.942928            0.967848      3.569363        0.686683        0.009042         0.002043  
+232            0.967822           0.942928            0.967848      2.953402        0.724843        0.009042         0.002043  
+233            0.967822           0.942928            0.967848      4.119417        0.946120        0.009042         0.002043  
+234            0.967822           0.942928            0.967848      4.992113        1.011296        0.009042         0.002043  
+235            0.963696           0.935484            0.964551      2.868491        0.791354        0.004653         0.004884  
+236            0.963696           0.935484            0.964551      3.515091        1.023731        0.004653         0.004884  
+237            0.963696           0.935484            0.964551      4.715178        2.345947        0.004653         0.004884  
+238            0.963696           0.935484            0.964551      6.191393        1.705452        0.004653         0.004884  
+239            0.963696           0.935484            0.964551      6.591940        3.480641        0.004653         0.004884  
+Search results saved as search_results.csv
+2017-07-01 21:23:11,761 DEBUG randomized search done in 4:01:36.256829
+2017-07-01 21:23:11,942 INFO Evaluating the selected model on the test set...
+2017-07-01 21:23:11,942 DEBUG Generating feature vector...
+Vector union has 1485775 features.
+2017-07-01 21:24:31,745 INFO Generated vector of 6 features in 0:01:19.796895 from 2155 samples.
+2017-07-01 21:24:34,183 DEBUG Fitted 1616 data points.
+2017-07-01 21:24:34,184 DEBUG Fitting done in 0:01:22.238985
+2017-07-01 21:24:34,184 DEBUG Generating feature vector...
+Vector union has 1485775 features.
+2017-07-01 21:24:45,185 INFO Generated vector of 6 features in 0:00:11.000555 from 2155 samples.
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.91      0.97      0.94       271
+  nonCancer       0.97      0.90      0.93       268
+
+avg / total       0.94      0.94      0.93       539
+
+Accuracy: 0.935064935064935
+2017-07-01 21:24:48,202 DEBUG Evaluation done in 0:00:03.008476
+2017-07-01 21:24:48,204 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': False,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 12,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 45,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 1,
+ 'clf__min_samples_split': 5,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 600,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7f5bda918630>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'select': SelectKBest(k=411500, score_func=<function chi2 at 0x7f5bf39e22f0>),
+ 'select__k': 411500,
+ 'select__score_func': <function chi2 at 0x7f5bf39e22f0>}
+2017-07-01 21:24:48,206 DEBUG Generating feature vector...
+Vector union has 1863572 features.
+2017-07-01 21:27:30,015 INFO Generated vector of 1863572 features in 0:02:41.809349 from 2155 samples.
+2017-07-01 21:27:32,723 DEBUG Fitted 2155 data points.
+2017-07-01 21:27:32,723 DEBUG Fitting done in 0:00:02.707721
+Model saved as model_2017-07-01--21-24-48.pkl
+
