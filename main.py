@@ -111,7 +111,7 @@ def check_mode_of_operation(arguments):
         exit(1)
 
 
-def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test):
+def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
     """Evaluates the estimator.
 
     Returns
@@ -136,16 +136,29 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test):
         bs = clf_pl.get_params()['clf__bootstrap']
         clf_pl.set_params(clf__bootstrap=True)
         clf_pl.set_params(clf__oob_score=True)
-        clf_pl.set_params(clf__warm_start=True)
+        # clf_pl.set_params(clf__warm_start=True)
 
-        log.debug("Calculating out-of-bag error over tree count (range {}-{})...".format(clf_n_min, clf_n_max))
-        for i in range(clf_n_min, clf_n_max + 1):
-            clf_pl.set_params(clf__n_estimators=i)
-            clf_pl.fit(x_train, y_train)
-            oob_error = 1 - clf_pl.get_params()['clf'].oob_score_
-            oob_errors.append((i, oob_error))
-            if i % 10 == 0:
-                log.debug("Out-of-bag error for {} trees = {}".format(i, oob_error))
+        if dataset == 'binary':
+            log.debug("Calculating out-of-bag error over tree count (range {}-{})...".format(clf_n_min, clf_n_max))
+            for i in range(clf_n_min, clf_n_max + 1):
+                clf_pl.set_params(clf__n_estimators=i)
+                clf_pl.fit(x_train, y_train)
+                oob_error = 1 - clf_pl.get_params()['clf'].oob_score_
+                oob_errors.append((i, oob_error))
+                if i % 10 == 0:
+                    log.debug("Out-of-bag error for {} trees = {}".format(i, oob_error))
+
+        elif dataset == 'multi-class':
+            select_k = [100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000,
+                         1100000, 1200000, 1300000, 1400000]
+            log.debug("Calculating out-of-bag error for k {}...".format(', '.join(str(e) for e in select_k)))            
+            for i in select_k:
+                clf_pl.set_params(select__k=i)
+                clf_pl.fit(x_train, y_train)
+                oob_error = 1 - clf_pl.get_params()['clf'].oob_score_
+                oob_errors.append((i, oob_error))
+                log.debug("Out-of-bag error for {} k = {}".format(i, oob_error))
+
 
         io.store_oob_error_data(clf_pl.get_params(), oob_errors)
 
@@ -315,7 +328,7 @@ if __name__ == '__main__':
         fu_pl, clf_pl = select_model(args, data_set, x_train, y_train)
 
         # Score part
-        fu_pl, clf_pl = mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test)
+        fu_pl, clf_pl = mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, data_set)
 
         # Train part
         mode_train(fu_pl, clf_pl, x, y)
@@ -342,7 +355,7 @@ if __name__ == '__main__':
         fu_pl, clf_pl = select_model(args, data_set, x_train, y_train)
 
         # Score part
-        fu_pl, clf_pl = mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test)
+        fu_pl, clf_pl = mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, data_set)
 
         # Train part
         mode_train(fu_pl, clf_pl, x, y)
