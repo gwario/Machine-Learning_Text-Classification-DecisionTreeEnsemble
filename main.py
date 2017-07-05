@@ -276,11 +276,11 @@ def mode_predict(fu_pl, clf_pl, x):
 
     log.debug("Generating feature vector...")
     t0 = datetime.now()
-    x = fu_pl.transform(x)
-    log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
+    x_feature_vect = fu_pl.transform(x)
+    log.info("Generated vector of {} features in {} from {} samples.".format(x_feature_vect.shape[1], datetime.now() - t0, x_feature_vect.shape[0]))
 
     t_predict = datetime.now()
-    y = clf_pl.predict(x)
+    y = clf_pl.predict(x_feature_vect)
     combined_data = x.assign(Category=pd.Series(y).values)
     rp.print_prediction_report(clf_pl,
                                dt_predict=datetime.now() - t_predict,
