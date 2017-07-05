@@ -131,7 +131,7 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
     if args.oob:
         clf_n_min = 25
         clf_n_max = clf_pl.get_params()['clf__n_estimators']
-        oob_errors = []
+        oob_scores = []
 
         bs = clf_pl.get_params()['clf__bootstrap']
         clf_pl.set_params(clf__bootstrap=True)
@@ -159,8 +159,18 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
                 oob_errors.append((i, oob_error))
                 log.debug("Out-of-bag error for {} k = {}".format(i, oob_error))
 
+<<<<<<< HEAD
+=======
+        log.debug("Calculating out-of-bag score over tree count (range {}-{})...".format(clf_n_min, clf_n_max))
+        for i in range(clf_n_min, clf_n_max + 1):
+            clf_pl.set_params(clf__n_estimators=i)
+            clf_pl.fit(x_train, y_train)
+            oob_scores.append((i, clf_pl.get_params()['clf'].oob_score_))
+            if i % 10 == 0:
+                log.debug("Out-of-bag score for {} trees = {}".format(i, clf_pl.get_params()['clf'].oob_score_))
+>>>>>>> 1ad1c114029439348059ed06c5d90f80303eab17
 
-        io.store_oob_error_data(clf_pl.get_params(), oob_errors)
+        io.store_oob_score_data(clf_pl.get_params(), oob_scores)
 
         clf_pl.set_params(clf__bootstrap=bs)
         clf_pl.set_params(clf__oob_score=False)
@@ -170,7 +180,7 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
     else:
         clf_n_min = None
         clf_n_max = None
-        oob_errors = None
+        oob_scores = None
         clf_pl.fit(x_train, y_train)
 
     rp.print_fitting_report(clf_pl,
@@ -179,7 +189,7 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
                             y_train=y_train,
                             min_estimators=clf_n_min,
                             max_estimators=clf_n_max,
-                            error_rate=oob_errors)
+                            score=oob_scores)
     
     # --- Feature Importances ---
     if args.importance:
@@ -203,8 +213,8 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
                                         x_train=x_train,
                                         y_train=y_train,
                                         n_estimators=clf_n,
-                                        importances=importances,
-                                        indices=indices)
+                                        p_importances=importances,
+                                        p_indices=indices)
     #--- End ---
 
     log.debug("Generating feature vector...")
@@ -290,11 +300,11 @@ def mode_predict(fu_pl, clf_pl, x):
 
     log.debug("Generating feature vector...")
     t0 = datetime.now()
-    x = fu_pl.transform(x)
-    log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
+    x_feature_vect = fu_pl.transform(x)
+    log.info("Generated vector of {} features in {} from {} samples.".format(x_feature_vect.shape[1], datetime.now() - t0, x_feature_vect.shape[0]))
 
     t_predict = datetime.now()
-    y = clf_pl.predict(x)
+    y = clf_pl.predict(x_feature_vect)
     combined_data = x.assign(Category=pd.Series(y).values)
     rp.print_prediction_report(clf_pl,
                                dt_predict=datetime.now() - t_predict,

@@ -1,0 +1,216 @@
+python3 main.py --train ../wbi_binary/pre2_train.csv --score --hp randomized 
+2017-07-05 06:18:11,178 DEBUG Commandline arguments: Namespace(hp='randomized', hp_metric='accuracy', model=None, oob=False, predict=None, score=True, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-07-05 06:18:11,178 DEBUG Valid mode of operation
+2017-07-05 06:18:11,179 INFO Mode score->train
+2017-07-05 06:18:11,179 DEBUG Loading data...
+2017-07-05 06:18:11,292 INFO Created training set (1616) and test set (539)
+2017-07-05 06:18:11,293 INFO Recognised data-set: binary
+2017-07-05 06:18:11,294 INFO Using randomized search on the training set to select the best model (hyper-parameters)...
+2017-07-05 06:18:11,294 DEBUG Performing randomized search, optimizing accuracy score...
+2017-07-05 06:18:11,295 DEBUG Generating feature vector...
+Vector union has 1485775 features.
+2017-07-05 06:18:30,240 INFO Generated vector of 1485775 features in 0:00:18.944978 from 1616 samples.
+Fitting 8 folds for each of 30 candidates, totalling 240 fits
+[Parallel(n_jobs=-1)]: Done  42 tasks      | elapsed: 10.3min
+[Parallel(n_jobs=-1)]: Done 192 tasks      | elapsed: 54.2min
+[Parallel(n_jobs=-1)]: Done 240 out of 240 | elapsed: 73.0min finished
+Hyper parameter search report:
+Parameter search space:
+{'clf': [RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=None, max_features='log2', max_leaf_nodes=None,
+            min_impurity_split=1e-05, min_samples_leaf=1,
+            min_samples_split=2, min_weight_fraction_leaf=0.0,
+            n_estimators=10, n_jobs=-1, oob_score=False,
+            random_state=<mtrand.RandomState object at 0x7f21a4384ee8>,
+            verbose=0, warm_start=False)],
+ 'clf__max_depth': [11],
+ 'clf__max_leaf_nodes': [60, 70, None],
+ 'clf__min_samples_leaf': [2],
+ 'clf__min_samples_split': [2],
+ 'clf__n_estimators': [1100, 1600],
+ 'select__k': [6000, 10000, 300000, 411500, 455500]}
+Best score: 0.935
+Best parameters set:
+{'clf__max_depth': 11,
+ 'clf__max_leaf_nodes': 70,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 2,
+ 'clf__n_estimators': 1100,
+ 'select__k': 10000}
+Detailed folds results:
+    mean_fit_time  mean_score_time  mean_test_score  mean_train_score                                          param_clf param_clf__max_depth param_clf__max_leaf_nodes param_clf__min_samples_leaf  \
+0       16.933806         1.507642         0.930074          0.971181  (DecisionTreeClassifier(class_weight=None, cri...                   11                        60                           2   
+1       16.240545         1.624237         0.932550          0.971269  (DecisionTreeClassifier(class_weight=None, cri...                   11                        60                           2   
+2       16.025845         6.790849         0.926361          0.959600  (DecisionTreeClassifier(class_weight=None, cri...                   11                        60                           2   
+3       16.542374         7.774035         0.931312          0.960484  (DecisionTreeClassifier(class_weight=None, cri...                   11                        60                           2   
+4       17.115757         8.040862         0.926361          0.961544  (DecisionTreeClassifier(class_weight=None, cri...                   11                        60                           2   
+5       19.504833         1.678771         0.931312          0.971004  (DecisionTreeClassifier(class_weight=None, cri...                   11                        60                           2   
+6       18.664669         1.971372         0.931312          0.971888  (DecisionTreeClassifier(class_weight=None, cri...                   11                        60                           2   
+7       18.460709         9.923716         0.927599          0.960837  (DecisionTreeClassifier(class_weight=None, cri...                   11                        60                           2   
+8       19.025791        11.379570         0.927599          0.961633  (DecisionTreeClassifier(class_weight=None, cri...                   11                        60                           2   
+9       19.258929        11.934501         0.926980          0.961633  (DecisionTreeClassifier(class_weight=None, cri...                   11                        60                           2   
+10      16.714797         1.252747         0.930693          0.972861  (DecisionTreeClassifier(class_weight=None, cri...                   11                        70                           2   
+11      16.366608         1.492721         0.935025          0.973391  (DecisionTreeClassifier(class_weight=None, cri...                   11                        70                           2   
+12      16.326938         6.727592         0.926361          0.959600  (DecisionTreeClassifier(class_weight=None, cri...                   11                        70                           2   
+13      16.800223         8.023083         0.931312          0.960484  (DecisionTreeClassifier(class_weight=None, cri...                   11                        70                           2   
+14      16.935971         8.019405         0.926361          0.961544  (DecisionTreeClassifier(class_weight=None, cri...                   11                        70                           2   
+15      19.335591         1.692868         0.931312          0.972595  (DecisionTreeClassifier(class_weight=None, cri...                   11                        70                           2   
+16      19.025132         2.042463         0.932550          0.973833  (DecisionTreeClassifier(class_weight=None, cri...                   11                        70                           2   
+17      18.388276        10.003278         0.927599          0.960837  (DecisionTreeClassifier(class_weight=None, cri...                   11                        70                           2   
+18      18.911124        11.438727         0.927599          0.961633  (DecisionTreeClassifier(class_weight=None, cri...                   11                        70                           2   
+19      18.897162        12.177878         0.926980          0.961633  (DecisionTreeClassifier(class_weight=None, cri...                   11                        70                           2   
+20      16.874608         1.517116         0.928837          0.974187  (DecisionTreeClassifier(class_weight=None, cri...                   11                      None                           2   
+21      30.064701         2.389477         0.931312          0.974098  (DecisionTreeClassifier(class_weight=None, cri...                   11                      None                           2   
+22      18.567147         6.323128         0.925124          0.957655  (DecisionTreeClassifier(class_weight=None, cri...                   11                      None                           2   
+23      18.835836         7.963260         0.925743          0.959511  (DecisionTreeClassifier(class_weight=None, cri...                   11                      None                           2   
+24      23.036257         8.409315         0.932550          0.961368  (DecisionTreeClassifier(class_weight=None, cri...                   11                      None                           2   
+25      25.652979         1.927741         0.930074          0.974010  (DecisionTreeClassifier(class_weight=None, cri...                   11                      None                           2   
+26      22.557605         2.439590         0.933168          0.973657  (DecisionTreeClassifier(class_weight=None, cri...                   11                      None                           2   
+27      24.622960        10.401756         0.926361          0.957567  (DecisionTreeClassifier(class_weight=None, cri...                   11                      None                           2   
+28      25.312882        11.888347         0.928837          0.960926  (DecisionTreeClassifier(class_weight=None, cri...                   11                      None                           2   
+29      26.543426        12.969736         0.928837          0.961545  (DecisionTreeClassifier(class_weight=None, cri...                   11                      None                           2   
+
+   param_clf__min_samples_split param_clf__n_estimators param_select__k  rank_test_score  split0_test_score  split0_train_score  split1_test_score  split1_train_score  split2_test_score  \
+0                             2                    1100            6000               13           0.911330            0.972399           0.926108            0.970276           0.965517   
+1                             2                    1100           10000                3           0.921182            0.971691           0.931034            0.969568           0.970443   
+2                             2                    1100          300000               24           0.921182            0.958953           0.906404            0.960368           0.975369   
+3                             2                    1100          411500                6           0.940887            0.954706           0.916256            0.963907           0.975369   
+4                             2                    1100          455500               24           0.921182            0.960368           0.906404            0.961076           0.970443   
+5                             2                    1600            6000                6           0.911330            0.972399           0.926108            0.969568           0.970443   
+6                             2                    1600           10000                6           0.921182            0.973107           0.926108            0.971691           0.965517   
+7                             2                    1600          300000               18           0.921182            0.959660           0.911330            0.958953           0.975369   
+8                             2                    1600          411500               18           0.935961            0.957537           0.916256            0.963907           0.975369   
+9                             2                    1600          455500               22           0.926108            0.959660           0.916256            0.962491           0.970443   
+10                            2                    1100            6000               12           0.911330            0.973815           0.926108            0.971691           0.965517   
+11                            2                    1100           10000                1           0.926108            0.975938           0.935961            0.973107           0.975369   
+12                            2                    1100          300000               24           0.921182            0.958953           0.906404            0.960368           0.975369   
+13                            2                    1100          411500                6           0.940887            0.954706           0.916256            0.963907           0.975369   
+14                            2                    1100          455500               24           0.921182            0.960368           0.906404            0.961076           0.970443   
+15                            2                    1600            6000                6           0.911330            0.973815           0.926108            0.971691           0.970443   
+16                            2                    1600           10000                3           0.921182            0.975230           0.931034            0.974522           0.975369   
+17                            2                    1600          300000               18           0.921182            0.959660           0.911330            0.958953           0.975369   
+18                            2                    1600          411500               18           0.935961            0.957537           0.916256            0.963907           0.975369   
+19                            2                    1600          455500               22           0.926108            0.959660           0.916256            0.962491           0.970443   
+20                            2                    1100            6000               15           0.911330            0.975938           0.921182            0.975230           0.965517   
+21                            2                    1100           10000                6           0.926108            0.975230           0.926108            0.973107           0.965517   
+22                            2                    1100          300000               30           0.916256            0.955414           0.901478            0.954706           0.975369   
+23                            2                    1100          411500               29           0.931034            0.956122           0.906404            0.963907           0.970443   
+24                            2                    1100          455500                3           0.931034            0.958245           0.916256            0.961783           0.975369   
+25                            2                    1600            6000               13           0.911330            0.975230           0.926108            0.975938           0.970443   
+26                            2                    1600           10000                2           0.921182            0.975938           0.926108            0.974522           0.970443   
+27                            2                    1600          300000               24           0.921182            0.957537           0.911330            0.952583           0.970443   
+28                            2                    1600          411500               15           0.935961            0.958245           0.921182            0.963199           0.970443   
+29                            2                    1600          455500               15           0.931034            0.959660           0.911330            0.959660           0.975369   
+
+    split2_train_score  split3_test_score  split3_train_score  split4_test_score  split4_train_score  split5_test_score  split5_train_score  split6_test_score  split6_train_score  split7_test_score  \
+0             0.970276           0.920792            0.971004           0.945545            0.970297           0.905473            0.971025           0.920398            0.973852           0.945274   
+1             0.970984           0.925743            0.971004           0.940594            0.967468           0.910448            0.971731           0.920398            0.975265           0.940299   
+2             0.958953           0.915842            0.962518           0.935644            0.954738           0.900498            0.960424           0.930348            0.959011           0.925373   
+3             0.958953           0.915842            0.963225           0.935644            0.958274           0.905473            0.964664           0.930348            0.961131           0.930348   
+4             0.957537           0.920792            0.966054           0.945545            0.957567           0.900498            0.962544           0.915423            0.964664           0.930348   
+5             0.969568           0.920792            0.971004           0.940594            0.971004           0.905473            0.971025           0.925373            0.973145           0.950249   
+6             0.971691           0.925743            0.971711           0.935644            0.967468           0.910448            0.973145           0.920398            0.975265           0.945274   
+7             0.958953           0.910891            0.966761           0.940594            0.956860           0.900498            0.963251           0.930348            0.961837           0.930348   
+8             0.959660           0.915842            0.963225           0.935644            0.961103           0.905473            0.963958           0.910448            0.966078           0.925373   
+9             0.962491           0.920792            0.963225           0.945545            0.957567           0.900498            0.962544           0.910448            0.963251           0.925373   
+10            0.973107           0.925743            0.973126           0.940594            0.971711           0.905473            0.971731           0.925373            0.974558           0.945274   
+11            0.973107           0.925743            0.973126           0.940594            0.968883           0.910448            0.973145           0.925373            0.977385           0.940299   
+12            0.958953           0.915842            0.962518           0.935644            0.954738           0.900498            0.960424           0.930348            0.959011           0.925373   
+13            0.958953           0.915842            0.963225           0.935644            0.958274           0.905473            0.964664           0.930348            0.961131           0.930348   
+14            0.957537           0.920792            0.966054           0.945545            0.957567           0.900498            0.962544           0.915423            0.964664           0.930348   
+15            0.970984           0.925743            0.972419           0.940594            0.971711           0.905473            0.973145           0.925373            0.974558           0.945274   
+16            0.973815           0.925743            0.974540           0.935644            0.970297           0.905473            0.973145           0.920398            0.977385           0.945274   
+17            0.958953           0.910891            0.966761           0.940594            0.956860           0.900498            0.963251           0.930348            0.961837           0.930348   
+18            0.959660           0.915842            0.963225           0.935644            0.961103           0.905473            0.963958           0.910448            0.966078           0.925373   
+19            0.962491           0.920792            0.963225           0.945545            0.957567           0.900498            0.962544           0.910448            0.963251           0.925373   
+20            0.974522           0.925743            0.974540           0.935644            0.971711           0.905473            0.974558           0.925373            0.974558           0.940299   
+21            0.975230           0.920792            0.975248           0.935644            0.971711           0.910448            0.974558           0.930348            0.976678           0.935323   
+22            0.958953           0.915842            0.963225           0.940594            0.954031           0.900498            0.961131           0.920398            0.956890           0.930348   
+23            0.956829           0.915842            0.956860           0.945545            0.958274           0.900498            0.962544           0.910448            0.963251           0.925373   
+24            0.962491           0.920792            0.963225           0.945545            0.959689           0.900498            0.961837           0.935323            0.963251           0.935323   
+25            0.973815           0.925743            0.974540           0.935644            0.971711           0.905473            0.973852           0.925373            0.975265           0.940299   
+26            0.973815           0.925743            0.974540           0.935644            0.970297           0.915423            0.973852           0.930348            0.975972           0.940299   
+27            0.956829           0.910891            0.963225           0.940594            0.956153           0.900498            0.960424           0.920398            0.957597           0.935323   
+28            0.959660           0.905941            0.958982           0.950495            0.959689           0.900498            0.964664           0.910448            0.963958           0.935323   
+29            0.965322           0.915842            0.963932           0.940594            0.958982           0.905473            0.961131           0.920398            0.963958           0.930348   
+
+    split7_train_score  std_fit_time  std_score_time  std_test_score  std_train_score  
+0             0.970318      0.581989        0.288029        0.018981         0.001216  
+1             0.972438      0.422136        0.108985        0.017245         0.002098  
+2             0.961837      0.439050        0.366430        0.021564         0.002225  
+3             0.959011      0.466171        0.409378        0.019984         0.003160  
+4             0.962544      0.762067        0.320585        0.021153         0.002862  
+5             0.970318      0.832906        0.210028        0.020064         0.001179  
+6             0.971025      0.558405        0.139184        0.016208         0.002087  
+7             0.960424      0.410487        0.448833        0.021779         0.002881  
+8             0.957597      0.710636        0.867061        0.020858         0.002960  
+9             0.961837      0.929057        0.465132        0.020525         0.001868  
+10            0.973145      0.631152        0.096525        0.018069         0.000998  
+11            0.972438      0.277990        0.142608        0.017871         0.002344  
+12            0.961837      0.479192        0.387617        0.021564         0.002225  
+13            0.959011      0.605929        0.614798        0.019984         0.003160  
+14            0.962544      0.791224        0.417145        0.021153         0.002862  
+15            0.972438      0.680111        0.266567        0.019293         0.001112  
+16            0.971731      0.366531        0.123643        0.019584         0.002029  
+17            0.960424      0.390578        0.746258        0.021779         0.002881  
+18            0.957597      0.636439        0.549942        0.020858         0.002960  
+19            0.961837      0.408234        0.399782        0.020525         0.001868  
+20            0.972438      0.612450        0.314150        0.017538         0.001316  
+21            0.971025     13.423297        0.693726        0.015041         0.001833  
+22            0.956890      1.552245        1.048491        0.022794         0.003017  
+23            0.958304      2.126353        1.082990        0.021706         0.002983  
+24            0.960424      1.669787        1.170015        0.020786         0.001663  
+25            0.971731      2.317569        0.324113        0.018657         0.001483  
+26            0.970318      1.480217        0.282789        0.015906         0.002079  
+27            0.956184      2.742730        2.818919        0.020705         0.002947  
+28            0.959011      1.192596        3.234302        0.022418         0.002401  
+29            0.959717      2.389378        2.697993        0.020653         0.002318  
+Search results saved as search_results.csv
+2017-07-05 07:31:36,376 DEBUG randomized search done in 1:13:00.943792
+2017-07-05 07:31:41,329 INFO Evaluating the selected model on the test set...
+2017-07-05 07:31:41,329 DEBUG Generating feature vector...
+Vector union has 1485775 features.
+2017-07-05 07:31:59,556 INFO Generated vector of 6 features in 0:00:18.226619 from 2155 samples.
+2017-07-05 07:32:02,237 DEBUG Fitted 1616 data points.
+2017-07-05 07:32:02,237 DEBUG Fitting done in 0:00:20.907626
+2017-07-05 07:32:02,237 DEBUG Generating feature vector...
+Vector union has 1485775 features.
+2017-07-05 07:32:12,639 INFO Generated vector of 6 features in 0:00:10.402244 from 2155 samples.
+Evaluation report:
+             precision    recall  f1-score   support
+
+     cancer       0.90      0.98      0.94       271
+  nonCancer       0.98      0.88      0.93       268
+
+avg / total       0.94      0.93      0.93       539
+
+Accuracy: 0.9332096474953617
+2017-07-05 07:32:13,456 DEBUG Evaluation done in 0:00:00.805769
+2017-07-05 07:32:13,460 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': True,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 70,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 2,
+ 'clf__min_samples_split': 2,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1100,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7f21a2343ee8>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'select': SelectKBest(k=10000, score_func=<function chi2 at 0x7f21ab3792f0>),
+ 'select__k': 10000,
+ 'select__score_func': <function chi2 at 0x7f21ab3792f0>}
+2017-07-05 07:32:13,462 DEBUG Generating feature vector...
+Vector union has 1863572 features.
+2017-07-05 07:33:21,665 INFO Generated vector of 1863572 features in 0:01:08.203379 from 2155 samples.
+2017-07-05 07:33:24,748 DEBUG Fitted 2155 data points.
+2017-07-05 07:33:24,748 DEBUG Fitting done in 0:00:03.081549
+Model saved as model_2017-07-05--07-32-13.pkl
+

@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.metrics import classification_report, accuracy_score
+from sklearn.feature_selection import SelectKBest
 from sklearn.feature_extraction.text import HashingVectorizer, CountVectorizer
 
 import file_io as io
@@ -36,6 +37,7 @@ def filtered(params):
                        and not isinstance(value, HashingVectorizer)
                        and not isinstance(value, CountVectorizer)
                        and not isinstance(value, RandomForestClassifier)
+                       and not isinstance(value, SelectKBest)
                        and not isinstance(value, ExtraTreesClassifier)
                        and not isinstance(value, NLTKPreprocessor)
                        and not isinstance(value, WordNetLemmatizer)
@@ -54,6 +56,7 @@ def filtered_best_params(params):
                        and not isinstance(value, CountVectorizer)
                        and not isinstance(value, RandomForestClassifier)
                        and not isinstance(value, ExtraTreesClassifier)
+                       and not isinstance(value, SelectKBest)
                        and not isinstance(value, NLTKPreprocessor)
                        and not isinstance(value, WordNetLemmatizer)
                        and not key.endswith('steps')
@@ -83,17 +86,17 @@ def filtered_search_space(param_search_space):
     return filtered_params
 
 
-def print_fitting_report(pipeline, dt_fitting, x_train, y_train, min_estimators=None, max_estimators=None, error_rate=None):
+def print_fitting_report(pipeline, dt_fitting, x_train, y_train, min_estimators=None, max_estimators=None, score=None):
     """Prints the training report."""
 
-    if min_estimators and max_estimators and error_rate:
+    if min_estimators and max_estimators and score:
 
-        # Generate the "OOB error rate" vs. "n_estimators" plot.
-        xs, ys = zip(*error_rate)
+        # Generate the "OOB score" vs. "n_estimators" plot.
+        xs, ys = zip(*score)
         plt.plot(xs, ys, label="Estimator")
         plt.xlim(min_estimators, max_estimators)
         plt.xlabel("n_estimators")
-        plt.ylabel("OOB error rate")
+        plt.ylabel("OOB Score rate")
         plt.legend(loc="upper right")
 
         log.debug("Fitted {} data points.".format(len(y_train)))
@@ -105,20 +108,21 @@ def print_fitting_report(pipeline, dt_fitting, x_train, y_train, min_estimators=
     else:
         log.debug("Fitted {} data points.".format(len(y_train)))
         log.debug("Fitting done in {}".format(dt_fitting))
-  
-def print_feature_importances_report(pipeline, dt_fitting, x_train, y_train, n_estimators=None, importances = None, indices = None):
+
+
+def print_feature_importances_report(pipeline, dt_fitting, x_train, y_train, n_estimators=None, p_importances = None, p_indices = None):
 
     if n_estimators:
         # Print the feature ranking
         log.debug("Print the feature ranking...")
         for f in range(x_train.shape[1]):
-            print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
+            print("%d. feature %d (%f)" % (f + 1, p_indices[f], p_importances[p_indices[f]]))
         
         # Plot the feature importances
         plt.figure()
         plt.title("Feature importances")
-        plt.bar(range(x_train.shape[1]), importances[indices], color="r", yerr=std[indices], align="center")
-        plt.xticks(range(x_train.shape[1]), indices)
+        plt.bar(range(x_train.shape[1]), p_importances[p_indices], color="r", yerr=std[p_indices], align="center")
+        plt.xticks(range(x_train.shape[1]), p_indices)
         plt.xlim([-1, x_train.shape[1]])
 
         log.debug("Fitted {} data points.".format(len(y_train)))
@@ -126,7 +130,6 @@ def print_feature_importances_report(pipeline, dt_fitting, x_train, y_train, n_e
 
         plt.savefig('feature_importances.png', transparent=True)
         plt.show()
-
 
     else:
         log.debug("Fitted {} data points.".format(len(y_train)))
