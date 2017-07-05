@@ -165,7 +165,7 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test):
                             y_train=y_train,
                             min_estimators=clf_n_min,
                             max_estimators=clf_n_max,
-                            error_rate=oob_scores)
+                            score=oob_scores)
     
     # --- Feature Importances ---
     if args.importance:
