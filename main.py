@@ -127,23 +127,22 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test):
     if args.oob:
         clf_n_min = 25
         clf_n_max = clf_pl.get_params()['clf__n_estimators']
-        oob_errors = []
+        oob_scores = []
 
         bs = clf_pl.get_params()['clf__bootstrap']
         clf_pl.set_params(clf__bootstrap=True)
         clf_pl.set_params(clf__oob_score=True)
         clf_pl.set_params(clf__warm_start=True)
 
-        log.debug("Calculating out-of-bag error over tree count (range {}-{})...".format(clf_n_min, clf_n_max))
+        log.debug("Calculating out-of-bag score over tree count (range {}-{})...".format(clf_n_min, clf_n_max))
         for i in range(clf_n_min, clf_n_max + 1):
             clf_pl.set_params(clf__n_estimators=i)
             clf_pl.fit(x_train, y_train)
-            oob_error = 1 - clf_pl.get_params()['clf'].oob_score_
-            oob_errors.append((i, oob_error))
+            oob_scores.append((i, clf_pl.get_params()['clf'].oob_score_))
             if i % 10 == 0:
-                log.debug("Out-of-bag error for {} trees = {}".format(i, oob_error))
+                log.debug("Out-of-bag score for {} trees = {}".format(i, clf_pl.get_params()['clf'].oob_score_))
 
-        io.store_oob_error_data(clf_pl.get_params(), oob_errors)
+        io.store_oob_score_data(clf_pl.get_params(), oob_scores)
 
         clf_pl.set_params(clf__bootstrap=bs)
         clf_pl.set_params(clf__oob_score=False)
@@ -153,7 +152,7 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test):
     else:
         clf_n_min = None
         clf_n_max = None
-        oob_errors = None
+        oob_scores = None
         clf_pl.fit(x_train, y_train)
 
     rp.print_fitting_report(clf_pl,
@@ -162,7 +161,7 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test):
                             y_train=y_train,
                             min_estimators=clf_n_min,
                             max_estimators=clf_n_max,
-                            error_rate=oob_errors)
+                            error_rate=oob_scores)
 
     log.debug("Generating feature vector...")
     t0 = datetime.now()

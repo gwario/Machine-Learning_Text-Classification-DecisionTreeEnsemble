@@ -32,7 +32,7 @@ def get_args(args_parser):
 
     args_parser.add_argument('--data', metavar='FILE', type=argparse.FileType('r'),
                              help='''The data to get keywords and terms for. The terms are saved to disk.
-                             <data>.{terms|keywords}''')
+                             <data>.add''')
 
     return args_parser.parse_args()
 

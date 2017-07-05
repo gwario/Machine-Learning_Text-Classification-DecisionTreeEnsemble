@@ -96,17 +96,17 @@ def load_additional_data(data_file):
 def save_additional_data(data, filename):
     """Saves the data to <filename>.add."""
     data.to_csv(filename + ".add", sep=',', index=False, encoding='utf-8')
-    print("Prediction saved as {}".format(filename))
+    print("Additional data saved as {}".format(filename))
 
 
-def store_oob_error_data(params, oob_errors):
+def store_oob_score_data(params, oob_errors):
     """Stores the oob error data in to a oob.csv"""
     filename = "oob.csv"
     data = pd.DataFrame(oob_errors)
     #print(data)
 
     data.to_csv(filename, sep=',', index=False, encoding='utf-8')
-    print("OOB error saved as {}".format(filename))
+    print("OOB Score saved as {}".format(filename))
 
 
 def store_search_data(data):

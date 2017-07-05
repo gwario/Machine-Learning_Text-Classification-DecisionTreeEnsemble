@@ -2,6 +2,7 @@ import pandas as pd
 from numpy.random import RandomState
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer, HashingVectorizer, TfidfTransformer
+from sklearn.ensemble import AdaBoostClassifier
 from sklearn.feature_selection import chi2, SelectKBest
 from sklearn.pipeline import FeatureUnion, Pipeline
 
@@ -70,10 +71,24 @@ class PipelineConfiguration:
             #('feature_count_printer', FeatureCountPrinter(key+'_additional_data_vectorizer_pipeline')),
         ])
 
+    def clf_adabost_extra_trees(self):
+        return AdaBoostClassifier(base_estimator=ExtraTreesClassifier(random_state=self.classifier_random_state,
+                                                                      n_jobs=-1,
+                                                                      min_impurity_split=1e-05,
+                                                                      max_features='log2'),
+                                  random_state=self.classifier_random_state)
+
     def clf_extra_trees(self):
         return ExtraTreesClassifier(random_state=self.classifier_random_state, n_jobs=-1,
                                     min_impurity_split=1e-05,
                                     max_features='log2')
+
+    def clf_adabost_random_forest(self):
+        return AdaBoostClassifier(base_estimator=RandomForestClassifier(random_state=self.classifier_random_state,
+                                                                        n_jobs=-1,
+                                                                        min_impurity_split=1e-05,
+                                                                        max_features='log2'),
+                                  random_state=self.classifier_random_state)
 
     def clf_random_forest(self):
         return RandomForestClassifier(random_state=self.classifier_random_state, n_jobs=-1,
@@ -162,7 +177,7 @@ class PipelineConfiguration:
     # This set of parameters is used when --hp randomized was specified.
     ############
     # The parameter space must be larger than or equal to n_iter
-    pipeline_parameters_randomized_n_iter = 178 # space = 12320 / 6 = 2053
+    pipeline_parameters_randomized_n_iter = 59 # space = 12320 / 6 = 2053
     # The default is to cross-validate with 3 folds, this takes a considerable amount of time
     # Must be greater or equal to 2
     pipeline_parameters_randomized_n_splits = 3
@@ -170,22 +185,50 @@ class PipelineConfiguration:
     pipeline_parameters_randomized_random_state = RandomState(654321)
 
     def binary_pipeline_parameters_randomized(self):
-
         return {
-            'select__k': [10,20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,320,340,360,380,400,450,500,550,
-                          600,650,700,750,800,850,900,950,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3500,
-                          4000,4500,5000,5500,6000,6500,7000,7500,8000,8500,9000,9500,10000,12500,15000,17500,20000,
-                          25000,50000,75000,100000,150000,200000,250000,300000,350000,400000,450000,500000,550000,
-                          600000,650000,700000,750000,800000,850000,900000,950000,1000000,1100000,1200000,1300000,
-                          1400000,1485775, 'all'],
-            'clf': [self.clf_extra_trees(), self.clf_random_forest()],
-            'clf__max_depth': [12],#[6,7,8,9,10,12,13,14,15,16,17,18,19,20],
-            'clf__max_leaf_nodes': [35],
-            'clf__min_samples_leaf': [3],
-            'clf__min_samples_split': [5],
-            'clf__n_estimators': [420],#[1289,1290,1291,1292,1293,1294],  # Has to be > 25 for oob
+            'select__k': [13000,247000,420000,6000,7000,18000,206000,272000,280000,460000],
+            'clf': [self.clf_random_forest()],
+            'clf__max_depth': [11],
+            'clf__max_leaf_nodes': [70|70,None],
+            'clf__min_samples_leaf': [1|2],
+            'clf__min_samples_split': [3|2],
+            'clf__n_estimators': [1100,1600],
         }
-
+        """
+        all et
+        return {
+            'select__k': [6000,10000,300000,411500,455500],
+            'clf': [self.clf_extra_trees()],
+            'clf__max_depth': [12,21,25,27,35,45],
+            'clf__max_leaf_nodes': [40,50,None],
+            'clf__min_samples_leaf': [1,2,3],
+            'clf__min_samples_split': [2,5,8,10,12],
+            'clf__n_estimators': [1100, 1600],
+        }
+        """
+        """
+        all rf
+        return {
+            'select__k': [6000,10000,411500, 455500],
+            'clf': [self.clf_random_forest()],
+            'clf__max_depth': [11],
+            'clf__max_leaf_nodes': [60,70,None],
+            'clf__min_samples_leaf': [1,2],
+            'clf__min_samples_split': [2,3,],
+            'clf__n_estimators': [1100, 1600],
+        }
+        """
+        """ backup
+        return {
+            'select__k': [10000,411500],#, 407000, 411500, 416000, 418500, 427000, 427500, 428500, 434000, 451000, 455500, ],
+            'clf': [self.clf_extra_trees(), self.clf_random_forest()],
+            'clf__max_depth': [12,21,25,27,35,45],
+            'clf__max_leaf_nodes': [40,70,None],
+            'clf__min_samples_leaf': [1,2,3],
+            'clf__min_samples_split': [2,4,5,8,10,12],
+            'clf__n_estimators': [1600],#et: [1100],  # Has to be > 25 for oob
+        }
+        """
     def multiclass_pipeline_parameters_randomized(self):
         return {
             'clf__max_depth': (2, 5, 10, 20),
@@ -197,15 +240,13 @@ class PipelineConfiguration:
     # This custom set of parameters is used when --hp config was specified.
     def binary_pipeline_parameters(self):
         return {
-            'clf__criterion': 'gini',
+            'select__k': 13000, #[13000,247000,420000,6000,7000,18000,206000,272000,280000,460000],
+            'clf': self.clf_random_forest(),
             'clf__max_depth': 11,
-            'clf__max_features': 'log2',
-            'clf__max_leaf_nodes': 55,
-            'clf__min_impurity_split': 1e-05,
-            'clf__min_samples_leaf': 2,
-            'clf__min_samples_split': 3,
-            'clf__min_weight_fraction_leaf': 0.0,
-            'clf__n_estimators': 1000, #  Has to be > 25 for oob
+            'clf__max_leaf_nodes': 70, #[70|70,None],
+            'clf__min_samples_leaf': 1, #[1|2],
+            'clf__min_samples_split': 3, #[3|2],
+            'clf__n_estimators': 1100, #[1100,1600]
         }
 
     def multiclass_pipeline_parameters(self):
