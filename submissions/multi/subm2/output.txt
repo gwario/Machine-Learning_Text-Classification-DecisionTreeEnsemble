@@ -1,0 +1,82 @@
+2017-07-06 20:59:21,459 DEBUG Commandline arguments: Namespace(hp='config', hp_metric='accuracy', importance=False, model=None, oob=False, predict=<open file 'test_multiclass_pre.csv', mode 'r' at 0x1141c9b70>, score=True, test_size=0.1, train=<open file 'train_multiclass_pre.csv', mode 'r' at 0x1141c9ae0>)
+2017-07-06 20:59:21,459 DEBUG Valid mode of operation
+2017-07-06 20:59:21,459 INFO Mode score->train->predict
+2017-07-06 20:59:21,459 DEBUG Loading data...
+2017-07-06 20:59:22,539 INFO Created training set (41028) and test set (4559)
+2017-07-06 20:59:22,539 INFO Recognised data-set: multi-class
+2017-07-06 20:59:22,541 INFO Using the pre-selected model (hyper-parameters)...
+2017-07-06 20:59:22,543 INFO Evaluating the selected model on the test set...
+2017-07-06 20:59:22,544 DEBUG Generating feature vector...
+Vector union has 1860331 features.
+2017-07-06 21:02:56,054 INFO Generated vector of 3 features in 0:03:33.510500 from 45587 samples.
+2017-07-06 21:03:12,630 DEBUG Fitted 41028 data points.
+2017-07-06 21:03:12,630 DEBUG Fitting done in 0:03:50.085961
+2017-07-06 21:03:12,630 DEBUG Generating feature vector...
+Vector union has 1860331 features.
+2017-07-06 21:04:18,631 INFO Generated vector of 3 features in 0:01:06.001046 from 45587 samples.
+Evaluation report:
+/usr/local/lib/python2.7/site-packages/sklearn/metrics/classification.py:1113: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples.
+  'precision', 'predicted', average, warn_for)
+                                                     precision    recall  f1-score   support
+
+                                    Animal Diseases       0.00      0.00      0.00        41
+                   Bacterial Infections and Mycoses       0.27      0.42      0.33       206
+                            Cardiovascular Diseases       0.51      0.57      0.54       482
+                          Digestive System Diseases       0.00      0.00      0.00       240
+                  Disorders of Environmental Origin       0.41      0.29      0.34       231
+                                 Endocrine Diseases       0.00      0.00      0.00        68
+                                       Eye Diseases       0.65      0.25      0.36        79
+Female Genital Diseases and Pregnancy Complications       0.39      0.37      0.38       131
+                       Hemic and Lymphatic Diseases       0.00      0.00      0.00       102
+                               Immunologic Diseases       0.40      0.25      0.31       249
+                           Musculoskeletal Diseases       0.00      0.00      0.00       136
+                Neonatal Diseases and Abnormalities       0.00      0.00      0.00        87
+                                          Neoplasms       0.45      0.67      0.54       507
+                            Nervous System Diseases       0.00      0.00      0.00       314
+                 Nutritional and Metabolic Diseases       0.44      0.34      0.39       152
+                      Otorhinolaryngologic Diseases       0.00      0.00      0.00        57
+                                 Parasitic Diseases       0.62      0.29      0.40        34
+        Pathological Conditions, Signs and Symptoms       0.20      0.56      0.30       770
+                         Respiratory Tract Diseases       0.00      0.00      0.00       206
+                Skin and Connective Tissue Diseases       0.00      0.00      0.00       129
+                            Stomatognathic Diseases       0.00      0.00      0.00        44
+                 Urologic and Male Genital Diseases       0.39      0.28      0.33       201
+                                     Virus Diseases       0.21      0.15      0.18        93
+
+                                        avg / total       0.26      0.32      0.27      4559
+
+Accuracy: 0.321781092345
+2017-07-06 21:04:20,498 DEBUG Evaluation done in 0:00:01.837686
+2017-07-06 21:04:20,603 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': True,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 11,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 70,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 1,
+ 'clf__min_samples_split': 3,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1600,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x164a4d690>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'select__k': 400,
+ 'select__score_func': <function chi2 at 0x112b4d2a8>}
+2017-07-06 21:04:20,605 DEBUG Generating feature vector...
+Vector union has 1935008 features.
+2017-07-06 21:09:22,692 INFO Generated vector of 1935008 features in 0:05:02.083135 from 45587 samples.
+2017-07-06 21:09:41,409 DEBUG Fitted 45587 data points.
+2017-07-06 21:09:41,409 DEBUG Fitting done in 0:00:18.708871
+Model saved as model_2017-07-06--21-04-20.pkl
+2017-07-06 21:10:42,355 DEBUG Loading data...
+2017-07-06 21:10:42,614 INFO Predicting 11397 data points...
+2017-07-06 21:10:42,615 DEBUG Generating feature vector...
+Vector union has 1935008 features.
+2017-07-06 21:12:16,766 INFO Generated vector of 1935008 features in 0:01:34.151141 from 11397 samples.
+2017-07-06 21:12:19,313 DEBUG Prediction done in 0:00:02.546393
+Prediction saved as prediction_2017-07-06--21-10-42.csv
