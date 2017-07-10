@@ -1,0 +1,42 @@
+python3 main.py --train ../wbi_binary/pre2_train.csv --predict ../wbi_binary/pre2_test.csv 
+2017-07-08 20:05:13,771 DEBUG Commandline arguments: Namespace(hp='config', hp_metric='accuracy', importance=False, model=None, oob=False, predict=<_io.TextIOWrapper name='../wbi_binary/pre2_test.csv' mode='r' encoding='UTF-8'>, score=False, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-07-08 20:05:13,771 DEBUG Valid mode of operation
+2017-07-08 20:05:13,771 INFO Mode train->predict
+2017-07-08 20:05:13,771 DEBUG Loading data...
+2017-07-08 20:05:13,853 INFO Created training set (1616) and test set (539)
+2017-07-08 20:05:13,856 INFO Recognised data-set: binary
+2017-07-08 20:05:13,858 INFO Using the pre-selected model (hyper-parameters)...
+2017-07-08 20:05:13,859 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': False,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 12,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': 40,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 3,
+ 'clf__min_samples_split': 5,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 1598,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7f1790746ee8>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'select__k': 358000,
+ 'select__score_func': <function chi2 at 0x7f17977412f0>}
+2017-07-08 20:05:13,860 DEBUG Generating feature vector...
+Vector union has 1160500 features.
+2017-07-08 20:05:34,105 INFO Generated vector of 1160500 features in 0:00:20.244365 from 2155 samples.
+2017-07-08 20:05:37,981 DEBUG Fitted 2155 data points.
+2017-07-08 20:05:37,981 DEBUG Fitting done in 0:00:03.876107
+Model saved as model_2017-07-08--20-05-13.pkl
+2017-07-08 20:06:15,710 DEBUG Loading data...
+2017-07-08 20:06:15,745 INFO Predicting 381 data points...
+2017-07-08 20:06:15,745 DEBUG Generating feature vector...
+Vector union has 1160500 features.
+2017-07-08 20:06:23,336 INFO Generated vector of 1160500 features in 0:00:07.591374 from 381 samples.
+2017-07-08 20:06:27,945 DEBUG Prediction done in 0:00:04.608898
+Prediction saved as prediction_2017-07-08--20-06-15.csv
+

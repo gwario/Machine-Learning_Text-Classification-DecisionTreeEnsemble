@@ -138,19 +138,19 @@ class PipelineConfiguration:
             ('abstractPosTokLemSyn', self.additional_data_vectorizer_pipeline('Tokens', (1, 3))),
 
             # 32588 features on 1616 samples
-            ('title_word_ngrams', self.word_ngrams_pipeline('Title', (1, 3))),
+            #('title_word_ngrams', self.word_ngrams_pipeline('Title', (1, 3))),
             # 384864 features on 1616 samples
-            ('abstract_word_ngrams', self.word_ngrams_pipeline('Abstract', (1, 3))),
+            #('abstract_word_ngrams', self.word_ngrams_pipeline('Abstract', (1, 3))),
 
             # 132175 features on 1616 samples
-            ('title_char_ngrams', self.char_ngrams_pipeline('Title', (3, 9))),
+            #('title_char_ngrams', self.char_ngrams_pipeline('Title', (3, 9))),
             # 566240 features on 1616 samples
             ('abstract_char_ngrams', self.char_ngrams_pipeline('Abstract', (3, 9))),
 
             # 2213 features in 1616 samples
             ('term_vector', self.additional_data_vectorizer_pipeline('Terms', (1, 1))),
             # 2306 features in 1616 samples
-            ('keyword_vector', self.additional_data_vectorizer_pipeline('Keywords', (1, 1))),
+            #('keyword_vector', self.additional_data_vectorizer_pipeline('Keywords', (1, 1))),
 
             # sum of all feature vectors is 1485775
         ]), self.clf_pipeline())
@@ -177,23 +177,25 @@ class PipelineConfiguration:
     # This set of parameters is used when --hp randomized was specified.
     ############
     # The parameter space must be larger than or equal to n_iter
-    pipeline_parameters_randomized_n_iter = 59 # space = 12320 / 6 = 2053
+    pipeline_parameters_randomized_n_iter = 5 # space = 12320 / 6 = 2053
     # The default is to cross-validate with 3 folds, this takes a considerable amount of time
     # Must be greater or equal to 2
-    pipeline_parameters_randomized_n_splits = 3
+    pipeline_parameters_randomized_n_splits = 20
     # To ensure some reproducibility
     pipeline_parameters_randomized_random_state = RandomState(654321)
 
     def binary_pipeline_parameters_randomized(self):
         return {
-            'select__k': [13000,247000,420000,6000,7000,18000,206000,272000,280000,460000],
+            'select__k': [358000],
             'clf': [self.clf_random_forest()],
-            'clf__max_depth': [11],
-            'clf__max_leaf_nodes': [70|70,None],
-            'clf__min_samples_leaf': [1|2],
-            'clf__min_samples_split': [3|2],
-            'clf__n_estimators': [1100,1600],
+            'clf__max_depth': [60],
+            'clf__max_leaf_nodes': [None],
+            'clf__min_impurity_split': [1e-4, 1e-5, 1e-6, 1e-7, 1e-8],
+            'clf__min_samples_leaf': [1],
+            'clf__min_samples_split': [2],
+            'clf__n_estimators': [1600],
         }
+
         """
         all et
         return {
@@ -240,13 +242,13 @@ class PipelineConfiguration:
     # This custom set of parameters is used when --hp config was specified.
     def binary_pipeline_parameters(self):
         return {
-            'select__k': 13000, #[13000,247000,420000,6000,7000,18000,206000,272000,280000,460000],
-            'clf': self.clf_random_forest(),
-            'clf__max_depth': 11,
-            'clf__max_leaf_nodes': 70, #[70|70,None],
-            'clf__min_samples_leaf': 1, #[1|2],
-            'clf__min_samples_split': 3, #[3|2],
-            'clf__n_estimators': 1100, #[1100,1600]
+            'select__k': 200000,
+            'clf': self.clf_extra_trees(),
+            'clf__max_depth': 12,
+            'clf__max_leaf_nodes': 40,
+            'clf__min_samples_leaf': 3,
+            'clf__min_samples_split': 5,
+            'clf__n_estimators': 1531,
         }
 
     def multiclass_pipeline_parameters(self):
