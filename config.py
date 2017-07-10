@@ -160,8 +160,8 @@ class PipelineConfiguration:
         return (self.union_pipeline([
             # Pipeline for pulling features from the articles's title
             # ('textWordCount', self.word_count_pipeline('Text')),
-            # ('textTokenizedAndLemmatized', self.tokenized_and_lemmatized_pipeline('Text')),
-            # ('word_ngrams', self.word_ngrams_pipeline('Text')),
+            ('textTokenizedAndLemmatized', self.additional_data_vectorizer_pipeline('Tokens', (1, 3))),
+            ('word_ngrams', self.word_ngrams_pipeline('Text')),
             ('char_ngrams', self.char_ngrams_pipeline('Text')),
         ]), self.clf_pipeline())
 
@@ -233,6 +233,7 @@ class PipelineConfiguration:
         """
     def multiclass_pipeline_parameters_randomized(self):
         return {
+            'select__k': [1000],
             'clf__max_depth': (2, 5, 10, 20),
             'clf__n_estimators': (10, 20, 50, 80, 300),
             'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2)))
@@ -253,8 +254,9 @@ class PipelineConfiguration:
 
     def multiclass_pipeline_parameters(self):
         return {
-            'clf__max_depth': 8,
-            'clf__n_estimators': 10,
+            'select__k': 750,
+            'clf__max_depth': 10,
+            'clf__n_estimators': 1200,
         }
 
     # This set of parameters is used when --hp evolutionary was specified.
@@ -276,6 +278,7 @@ class PipelineConfiguration:
 
     def multiclass_pipeline_parameters_evolutionary(self):
         return {
+            'select__k': [1000],
             'clf__max_depth': (2, 10, 40),
             'clf__n_estimators': (10, 80, 300),
             'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2)))
@@ -295,6 +298,7 @@ class PipelineConfiguration:
 
     def multiclass_pipeline_parameters_grid(self):
         return {
+            'select__k': [1000],
             'clf__max_depth': (2, 5),
             'clf__n_estimators': (10, 80),
             'union__textTokenizedAndLemmatized': (None, self.additional_data_vectorizer_pipeline('Tokens', (1,2))),
