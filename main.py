@@ -126,7 +126,7 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
     log.debug("Generating feature vector...")
     t0 = datetime.now()
     x_train = fu_pl.fit_transform(x_train)
-    log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
+    log.info("Generated vector of {} features in {} from {} samples.".format(x_train.shape[1], datetime.now() - t0, x_train.shape[0]))
 
     if args.oob:
         clf_n_min = 25
@@ -203,18 +203,24 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
         std = np.std([tree.feature_importances_ for tree in clf_pl.estimators_], axis=0)
         indices = np.argsort(importances)[::-1]
 
+        rp.print_feature_importances_report(clf_pl,
+                                            dt_fitting=datetime.now() - tFit,
+                                            x_train=x_train,
+                                            y_train=y_train,
+                                            n_estimators=clf_n,
+                                            p_importances=importances,
+                                            p_indices=indices)
+
     else:
-        clf_n = None
         clf_pl.fit(x_train, y_train)
 
+        rp.print_feature_importances_report(clf_pl,
+                                            dt_fitting=datetime.now() - tFit,
+                                            x_train=x_train,
+                                            y_train=y_train)
+
         
-    rp.print_feature_importances_report(clf_pl,
-                                        dt_fitting=datetime.now() - tFit,
-                                        x_train=x_train,
-                                        y_train=y_train,
-                                        n_estimators=clf_n,
-                                        p_importances=importances,
-                                        p_indices=indices)
+
     #--- End ---
 
     log.debug("Generating feature vector...")

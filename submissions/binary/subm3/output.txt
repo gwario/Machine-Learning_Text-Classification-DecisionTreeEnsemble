@@ -1,0 +1,42 @@
+python3 main.py --train ../wbi_binary/pre2_train.csv --predict ../wbi_binary/pre2_test.csv 
+2017-07-07 10:41:34,013 DEBUG Commandline arguments: Namespace(hp='config', hp_metric='accuracy', importance=False, model=None, oob=False, predict=<_io.TextIOWrapper name='../wbi_binary/pre2_test.csv' mode='r' encoding='UTF-8'>, score=False, test_size=0.25, train=<_io.TextIOWrapper name='../wbi_binary/pre2_train.csv' mode='r' encoding='UTF-8'>)
+2017-07-07 10:41:34,013 DEBUG Valid mode of operation
+2017-07-07 10:41:34,014 INFO Mode train->predict
+2017-07-07 10:41:34,014 DEBUG Loading data...
+2017-07-07 10:41:34,206 INFO Created training set (1616) and test set (539)
+2017-07-07 10:41:34,206 INFO Recognised data-set: binary
+2017-07-07 10:41:34,207 INFO Using the pre-selected model (hyper-parameters)...
+2017-07-07 10:41:34,209 INFO Building the selected model on the whole data set...
+Hyper parameters:
+{'clf__bootstrap': False,
+ 'clf__class_weight': None,
+ 'clf__criterion': 'gini',
+ 'clf__max_depth': 21,
+ 'clf__max_features': 'log2',
+ 'clf__max_leaf_nodes': None,
+ 'clf__min_impurity_split': 1e-05,
+ 'clf__min_samples_leaf': 1,
+ 'clf__min_samples_split': 10,
+ 'clf__min_weight_fraction_leaf': 0.0,
+ 'clf__n_estimators': 752,
+ 'clf__n_jobs': -1,
+ 'clf__oob_score': False,
+ 'clf__random_state': <mtrand.RandomState object at 0x7f39657ecf78>,
+ 'clf__verbose': 0,
+ 'clf__warm_start': False,
+ 'select__k': 358000,
+ 'select__score_func': <function chi2 at 0x7f396c7e92f0>}
+2017-07-07 10:41:34,210 DEBUG Generating feature vector...
+Vector union has 1863572 features.
+2017-07-07 10:41:59,727 INFO Generated vector of 1863572 features in 0:00:25.517603 from 2155 samples.
+2017-07-07 10:42:02,928 DEBUG Fitted 2155 data points.
+2017-07-07 10:42:02,928 DEBUG Fitting done in 0:00:03.200048
+Model saved as model_2017-07-07--10-41-34.pkl
+2017-07-07 10:43:47,609 DEBUG Loading data...
+2017-07-07 10:44:11,591 INFO Predicting 381 data points...
+2017-07-07 10:44:11,591 DEBUG Generating feature vector...
+Vector union has 1863572 features.
+2017-07-07 10:44:22,834 INFO Generated vector of 1863572 features in 0:00:11.242166 from 381 samples.
+2017-07-07 10:44:25,855 DEBUG Prediction done in 0:00:03.021151
+Prediction saved as prediction_2017-07-07--10-44-11.csv
+
