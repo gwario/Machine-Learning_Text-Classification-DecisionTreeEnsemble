@@ -125,7 +125,7 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
 
     log.debug("Generating feature vector...")
     t0 = datetime.now()
-    x_train = fu_pl.fit_transform(x_train)
+    x_train = fu_pl.fit_transform(x_train, y_train)
     log.info("Generated vector of {} features in {} from {} samples.".format(x_train.shape[1], datetime.now() - t0, x_train.shape[0]))
 
     if args.oob:
@@ -139,36 +139,25 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
         # clf_pl.set_params(clf__warm_start=True)
 
         if dataset == 'binary':
-            log.debug("Calculating out-of-bag error over tree count (range {}-{})...".format(clf_n_min, clf_n_max))
+            log.debug("Calculating out-of-bag score over tree count (range {}-{})...".format(clf_n_min, clf_n_max))
             for i in range(clf_n_min, clf_n_max + 1):
                 clf_pl.set_params(clf__n_estimators=i)
                 clf_pl.fit(x_train, y_train)
-                oob_error = 1 - clf_pl.get_params()['clf'].oob_score_
-                oob_errors.append((i, oob_error))
+                oob_score = clf_pl.get_params()['clf'].oob_score_
+                oob_scores.append((i, oob_score))
                 if i % 10 == 0:
-                    log.debug("Out-of-bag error for {} trees = {}".format(i, oob_error))
+                    log.debug("Out-of-bag score for {} trees = {}".format(i, oob_scores))
 
         elif dataset == 'multi-class':
             select_k = [100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000,
                          1100000, 1200000, 1300000, 1400000]
-            log.debug("Calculating out-of-bag error for k {}...".format(', '.join(str(e) for e in select_k)))            
+            log.debug("Calculating out-of-bag score for k {}...".format(', '.join(str(e) for e in select_k)))
             for i in select_k:
                 clf_pl.set_params(select__k=i)
                 clf_pl.fit(x_train, y_train)
-                oob_error = 1 - clf_pl.get_params()['clf'].oob_score_
-                oob_errors.append((i, oob_error))
-                log.debug("Out-of-bag error for {} k = {}".format(i, oob_error))
-
-<<<<<<< HEAD
-=======
-        log.debug("Calculating out-of-bag score over tree count (range {}-{})...".format(clf_n_min, clf_n_max))
-        for i in range(clf_n_min, clf_n_max + 1):
-            clf_pl.set_params(clf__n_estimators=i)
-            clf_pl.fit(x_train, y_train)
-            oob_scores.append((i, clf_pl.get_params()['clf'].oob_score_))
-            if i % 10 == 0:
-                log.debug("Out-of-bag score for {} trees = {}".format(i, clf_pl.get_params()['clf'].oob_score_))
->>>>>>> 1ad1c114029439348059ed06c5d90f80303eab17
+                oob_score = clf_pl.get_params()['clf'].oob_score_
+                oob_scores.append((i, oob_score))
+                log.debug("Out-of-bag score for {} trees = {}".format(i, oob_score))
 
         io.store_oob_score_data(clf_pl.get_params(), oob_scores)
 
@@ -225,7 +214,7 @@ def mode_score(args, fu_pl, clf_pl, x_train, y_train, x_test, y_test, dataset):
 
     log.debug("Generating feature vector...")
     t0 = datetime.now()
-    x_test = fu_pl.transform(x_test)
+    x_test = fu_pl.transform(x_test, y_test)
     log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
 
     tPredict = datetime.now()
@@ -282,7 +271,7 @@ def mode_train(fu_pl, clf_pl, x, y):
 
     log.debug("Generating feature vector...")
     t0 = datetime.now()
-    x = fu_pl.fit_transform(x)
+    x = fu_pl.fit_transform(x, y)
     log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
 
     t_fit = datetime.now()

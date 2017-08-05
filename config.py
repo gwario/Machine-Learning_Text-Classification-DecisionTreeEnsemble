@@ -3,7 +3,7 @@ from numpy.random import RandomState
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer, HashingVectorizer, TfidfTransformer
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn.feature_selection import chi2, SelectKBest
+from sklearn.feature_selection import chi2, mutual_info_classif, SelectKBest
 from sklearn.pipeline import FeatureUnion, Pipeline
 
 from extractor import ItemSelector, FeatureCountPrinter
@@ -68,7 +68,7 @@ class PipelineConfiguration:
                                            preprocessor=None,
                                            lowercase=False,
                                            ngram_range=ngram_range)),
-            #('feature_count_printer', FeatureCountPrinter(key+'_additional_data_vectorizer_pipeline')),
+            ('feature_count_printer', FeatureCountPrinter(key+'_additional_data_vectorizer_pipeline')),
         ])
 
     def clf_adabost_extra_trees(self):
@@ -99,14 +99,14 @@ class PipelineConfiguration:
         # Use FeatureUnion to combine the features
         return Pipeline([
             ('union', FeatureUnion(subpipelines, n_jobs=-1)),
-            ('feature_count', FeatureCountPrinter('union')),
-            #('select_mic', SelectKBest(mutual_info_classif, k=1000)),
+            #('feature_count', FeatureCountPrinter('union')),
+            ('select_mic', SelectKBest(chi2, k=4000)),
             #('feature_count_mic', FeatureCountPrinter('kbest_mic')),
             ])
 
     def clf_pipeline(self):
         # Use FeatureUnion to combine the features
-        return Pipeline([('select', SelectKBest(chi2)),
+        return Pipeline([#('select', SelectKBest(chi2)),
                          ('clf', self.clf_extra_trees()),
                          # ('clf', DummyClassifier()),
                          ])
@@ -135,7 +135,7 @@ class PipelineConfiguration:
     def binary_pipelines(self):
         return (self.union_pipeline([
             # 365389 feature on 1616 samples
-            ('abstractPosTokLemSyn', self.additional_data_vectorizer_pipeline('Tokens', (1, 3))),
+            ('abstractPosTokLemSyn', self.additional_data_vectorizer_pipeline('Tokens', (1, 2))),
 
             # 32588 features on 1616 samples
             #('title_word_ngrams', self.word_ngrams_pipeline('Title', (1, 3))),
@@ -145,10 +145,10 @@ class PipelineConfiguration:
             # 132175 features on 1616 samples
             #('title_char_ngrams', self.char_ngrams_pipeline('Title', (3, 9))),
             # 566240 features on 1616 samples
-            ('abstract_char_ngrams', self.char_ngrams_pipeline('Abstract', (3, 9))),
+            #('abstract_char_ngrams', self.char_ngrams_pipeline('Abstract', (3, 9))),
 
             # 2213 features in 1616 samples
-            ('term_vector', self.additional_data_vectorizer_pipeline('Terms', (1, 1))),
+            #('term_vector', self.additional_data_vectorizer_pipeline('Terms', (1, 1))),
             # 2306 features in 1616 samples
             #('keyword_vector', self.additional_data_vectorizer_pipeline('Keywords', (1, 1))),
 
@@ -177,23 +177,17 @@ class PipelineConfiguration:
     # This set of parameters is used when --hp randomized was specified.
     ############
     # The parameter space must be larger than or equal to n_iter
-    pipeline_parameters_randomized_n_iter = 5 # space = 12320 / 6 = 2053
+    pipeline_parameters_randomized_n_iter = 1 # space = 12320 / 6 = 2053
     # The default is to cross-validate with 3 folds, this takes a considerable amount of time
     # Must be greater or equal to 2
-    pipeline_parameters_randomized_n_splits = 20
+    pipeline_parameters_randomized_n_splits = 50
     # To ensure some reproducibility
     pipeline_parameters_randomized_random_state = RandomState(654321)
 
     def binary_pipeline_parameters_randomized(self):
         return {
-            'select__k': [358000],
-            'clf': [self.clf_random_forest()],
-            'clf__max_depth': [60],
-            'clf__max_leaf_nodes': [None],
-            'clf__min_impurity_split': [1e-4, 1e-5, 1e-6, 1e-7, 1e-8],
-            'clf__min_samples_leaf': [1],
-            'clf__min_samples_split': [2],
-            'clf__n_estimators': [1600],
+            'clf': [self.clf_extra_trees()],
+            'clf__n_estimators': [1000],
         }
 
         """
@@ -243,12 +237,9 @@ class PipelineConfiguration:
     # This custom set of parameters is used when --hp config was specified.
     def binary_pipeline_parameters(self):
         return {
-            'select__k': 200000,
+            'select__score_func': mutual_info_classif,
+            'select__k': 4000,
             'clf': self.clf_extra_trees(),
-            'clf__max_depth': 12,
-            'clf__max_leaf_nodes': 40,
-            'clf__min_samples_leaf': 3,
-            'clf__min_samples_split': 5,
             'clf__n_estimators': 1531,
         }
 

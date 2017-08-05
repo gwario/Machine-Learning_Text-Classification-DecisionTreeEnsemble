@@ -36,7 +36,7 @@ def get_search(type, pipeline_configuration, hp_metric):
                                 n_iter=pipeline_configuration.pipeline_parameters_randomized_n_iter,
                                 cv=pipeline_configuration.pipeline_parameters_randomized_n_splits,
                                 refit=False,
-                                n_jobs=-1,
+                                n_jobs=3,
                                 #pre_dispatch=6,
                                 verbose=1), fu_pl
     elif type == 'evolutionary':
@@ -65,7 +65,7 @@ def get_result(type, pipeline_configuration, hp_metric, x, y):
 
     log.debug("Generating feature vector...")
     t0 = datetime.now()
-    x = fu_pl.fit_transform(x)
+    x = fu_pl.fit_transform(x, y)
     log.info("Generated vector of {} features in {} from {} samples.".format(x.shape[1], datetime.now() - t0, x.shape[0]))
 
     t0 = datetime.now()

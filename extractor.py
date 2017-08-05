@@ -3,6 +3,7 @@ Contains feature extractors.
 
 """
 from pprint import pprint
+import logging as log
 from sklearn.base import BaseEstimator, TransformerMixin
 
 
@@ -28,9 +29,9 @@ class FeatureCountPrinter(BaseEstimator, TransformerMixin):
         (row_cnt, column_cnt) = input.shape
 
         if self.vector_name:
-            print("Vector {} has {} features.".format(self.vector_name, column_cnt))
+            log.info("Vector {} has {} features.".format(self.vector_name, column_cnt))
         else:
-            print("Vector has {} features.".format(column_cnt))
+            log.info("Vector has {} features.".format(column_cnt))
 
         return input
 
