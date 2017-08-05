@@ -1,8 +1,0 @@
-mean_fit_time,mean_score_time,mean_test_score,mean_train_score,param_clf,param_clf__max_depth,param_clf__max_leaf_nodes,param_clf__min_samples_leaf,param_clf__min_samples_split,param_clf__n_estimators,param_select__k,rank_test_score,split0_test_score,split0_train_score,split1_test_score,split1_train_score,std_fit_time,std_score_time,std_test_score,std_train_score
-37.07675766944885,19.168564438819885,0.9393564356435643,0.9758685972401561,"ExtraTreesClassifier(bootstrap=False, class_weight=None, criterion='gini',
-           max_depth=12, max_features='log2', max_leaf_nodes=35,
-           min_impurity_split=1e-05, min_samples_leaf=3,
-           min_samples_split=5, min_weight_fraction_leaf=0.0,
-           n_estimators=1500, n_jobs=-1, oob_score=False,
-           random_state=<mtrand.RandomState object at 0x7efbbfdea7e0>,
-           verbose=0, warm_start=False)",12,35,3,5,1500,411500,1,0.9493201483312732,0.9776951672862454,0.929368029739777,0.9740420271940667,0.9909894466400146,0.46273863315582275,0.009976051655517458,0.0018265700460893264
